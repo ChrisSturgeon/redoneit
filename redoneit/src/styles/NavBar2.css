@@ -1,6 +1,6 @@
 nav {
   padding: 0 20px;
-  min-height: 9vh;
+  min-height: 6vh;
   background: #1c2022;
   display: flex;
   justify-content: space-between;
@@ -32,13 +32,34 @@ ul {
 }
 
 .overlay-open {
-  height: 91vh;
+  height: 94vh;
   background-color: #1c2022;
   transition: height 0.4s ease-in;
 }
 
+.overlay-menu {
+  list-style: none;
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.overlay-menu li.closed {
+  opacity: 0;
+  transition: opacity 0.4s ease-in;
+}
+
+.overlay-menu li.open {
+  opacity: 1;
+  transition: opacity 0.7s ease-in;
+}
+
 @media screen and (max-width: 769px) {
-  ul {
+  .main-nav {
     display: none;
   }
 
@@ -49,6 +70,10 @@ ul {
 
 @media screen and (min-width: 769px) {
   .overlay {
+    display: none;
+  }
+
+  .mobile-nav li {
     display: none;
   }
 }

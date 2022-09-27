@@ -10,20 +10,22 @@ export default function NavBar() {
     <div>
       <nav>
         <h1>Reddit</h1>
-        <ul>
-          <li>Link 1</li>
-          <li>Link 2</li>
-          <li>Link 3</li>
-        </ul>
+        <div className="main-nav">
+          <ul>
+            <li>Link 1</li>
+            <li>Link 2</li>
+            <li>Link 3</li>
+          </ul>
+        </div>
         <button className="hamburger-btn" onClick={toggleMenu}>
           Button
         </button>
       </nav>
       <div className={expanded ? 'overlay-open' : 'overlay-closed'}>
-        <ul>
-          <li>Link 1</li>
-          <li>Link 2</li>
-          <li>Link 3</li>
+        <ul className="overlay-menu">
+          <li className={expanded ? 'open' : 'closed'}>Link 1</li>
+          <li className={expanded ? 'open' : 'closed'}>Link 2</li>
+          <li className={expanded ? 'open' : 'closed'}>Link 3</li>
         </ul>
       </div>
     </div>
