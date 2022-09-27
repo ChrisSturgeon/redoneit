@@ -1,0 +1,54 @@
+nav {
+  padding: 0 20px;
+  min-height: 9vh;
+  background: #1c2022;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  color: white;
+  font-size: 2rem;
+}
+
+ul {
+  display: flex;
+  list-style: none;
+  color: white;
+  cursor: pointer;
+}
+
+.hamburger-btn {
+  display: none;
+}
+
+.overlay-closed {
+  position: absolute;
+  height: 0vh;
+  width: 100vw;
+  background: #1c2022;
+  transition: height 0.4s ease-in;
+}
+
+.overlay-open {
+  height: 91vh;
+  background-color: #1c2022;
+  transition: height 0.4s ease-in;
+}
+
+@media screen and (max-width: 769px) {
+  ul {
+    display: none;
+  }
+
+  .hamburger-btn {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .overlay {
+    display: none;
+  }
+}
