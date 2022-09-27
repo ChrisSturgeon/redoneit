@@ -1,4 +1,4 @@
-import NavBar from './components/NavBar2';
+import NavBar from './components/NavBar';
 
 import './App.css';
 

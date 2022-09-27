@@ -9,7 +9,7 @@ nav {
 
 h1 {
   color: white;
-  font-size: 2rem;
+  font-size: 1.75rem;
 }
 
 ul {
@@ -23,29 +23,34 @@ ul {
   display: none;
 }
 
+.overlay-closed,
+.overlay-open {
+  display: flex;
+  justify-content: center;
+  background-color: #1c2022;
+  transition: height 0.4s ease-in;
+  padding: 0 2em;
+}
+
 .overlay-closed {
   position: absolute;
   height: 0vh;
   width: 100vw;
-  background: #1c2022;
-  transition: height 0.4s ease-in;
 }
 
 .overlay-open {
   height: 94vh;
-  background-color: #1c2022;
-  transition: height 0.4s ease-in;
 }
 
 .overlay-menu {
   list-style: none;
-  position: absolute;
-  left: 50%;
-  top: 45%;
-  transform: translate(-50%, -50%);
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  align-items: center;
+  gap: 0.75em;
+  padding-top: 2em;
+  width: 100%;
 }
 
 .overlay-menu li.closed {

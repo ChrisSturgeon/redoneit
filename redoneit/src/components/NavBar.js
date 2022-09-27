@@ -1,4 +1,4 @@
-import '../styles/NavBar2.css';
+import '../styles/NavBar.css';
 import React, { useState } from 'react';
 
 export default function NavBar() {
@@ -26,6 +26,9 @@ export default function NavBar() {
           <li className={expanded ? 'open' : 'closed'}>Link 1</li>
           <li className={expanded ? 'open' : 'closed'}>Link 2</li>
           <li className={expanded ? 'open' : 'closed'}>Link 3</li>
+          <li className={expanded ? 'open' : 'closed'}>Link 3</li>
+          <li className={expanded ? 'open' : 'closed'}>Link 1</li>
+          <li className={expanded ? 'open' : 'closed'}>Link 2</li>
           <li className={expanded ? 'open' : 'closed'}>Link 3</li>
         </ul>
       </div>
