@@ -5,6 +5,16 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  width: 100vw;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 2s;
+}
+
+.no-shadow {
+  box-shadow: none;
 }
 
 h1 {
@@ -21,6 +31,9 @@ ul {
 
 .hamburger-btn {
   display: none;
+  z-index: 99;
+  background-color: transparent;
+  border: none;
 }
 
 .overlay-closed,
@@ -30,26 +43,29 @@ ul {
   background-color: #1c2022;
   transition: height 0.4s ease-in;
   padding: 0 2em;
+
+  position: fixed;
 }
 
 .overlay-closed {
-  position: absolute;
   height: 0vh;
   width: 100vw;
 }
 
 .overlay-open {
-  height: 94vh;
+  height: 100vh;
+  width: 100vw;
 }
 
 .overlay-menu {
+  max-height: 80vh;
   list-style: none;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.75em;
-  padding-top: 2em;
+  margin-top: 10vh;
   width: 100%;
 }
 
@@ -61,6 +77,22 @@ ul {
 .overlay-menu li.open {
   opacity: 1;
   transition: opacity 0.7s ease-in;
+}
+
+.main-nav ul {
+  display: flex;
+  gap: 1em;
+}
+
+.main-nav a,
+.overlay-menu a {
+  color: white;
+  text-decoration: none;
+}
+
+i {
+  color: white;
+  font-size: 1.5rem;
 }
 
 @media screen and (max-width: 769px) {
@@ -78,7 +110,7 @@ ul {
     display: none;
   }
 
-  .mobile-nav li {
+  .overlay-menu {
     display: none;
   }
 }
