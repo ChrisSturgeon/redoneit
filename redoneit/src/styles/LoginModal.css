@@ -1,0 +1,128 @@
+.modal-bg {
+  position: fixed;
+  z-index: 100;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: var(--modal-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5em;
+}
+
+.close-btn {
+  left: 70px;
+  padding: 0px;
+  align-self: flex-end;
+}
+
+.step {
+  display: flex;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+.step-art {
+  width: 100px;
+  border-radius: 5px;
+}
+
+.close-btn i {
+  font-size: 1.25rem;
+}
+
+h1 {
+  font-size: 1.25rem;
+}
+
+.step-content {
+  min-width: 600px;
+  display: flex;
+  flex-direction: column;
+  padding: 3em;
+  gap: 15px;
+}
+
+.step-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.step-header button,
+.step-header button i {
+  border: none;
+  background-color: transparent;
+  color: var(--dark-grey);
+}
+
+.step-body {
+  width: 50%;
+}
+
+.oAuth-btn {
+  width: 100%;
+  margin: 5px 0;
+  padding: 0.8em;
+  background-color: transparent;
+  border: 1px solid var(--main-grey);
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.line-divider {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+  color: var(--dark-grey);
+  font-weight: 700;
+}
+
+.line {
+  background-color: var(--main-grey);
+  width: 40%;
+  height: 1px;
+}
+
+label {
+  font-size: 0.8rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.login-form button {
+  margin-top: 0.8em;
+  padding: 0.75em;
+}
+
+input {
+  padding: 0.75em;
+  font-size: 1rem;
+  border: 1px solid var(--main-grey);
+  background-color: var(--light-grey);
+  border-radius: 4px;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid var(--dark-grey);
+}
+
+.user-management {
+  font-size: 0.8rem;
+}
+
+.user-management div:first-of-type {
+  margin-bottom: 1.2em;
+}
+
+.user-management a {
+  color: var(--accent-blue);
+  font-weight: 700;
+  text-decoration: none;
+}
