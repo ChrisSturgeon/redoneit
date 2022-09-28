@@ -26,7 +26,9 @@ export default function LoginModal(props) {
             </div>
 
             <div className="step-body">
-              <button className="oAuth-btn">Continue with Google</button>
+              <button onClick={() => props.signInUser()} className="oAuth-btn">
+                Continue with Google
+              </button>
               <button className="oAuth-btn">Continue with GitHub</button>
               <div className="line-divider">
                 <span className="line"></span>

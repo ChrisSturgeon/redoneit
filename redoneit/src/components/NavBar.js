@@ -1,10 +1,12 @@
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+
 import '../styles/NavBar.css';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import LoginModal from './LoginModal';
 
-export default function NavBar() {
+export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
 
@@ -25,6 +27,9 @@ export default function NavBar() {
         <div className="main-nav">
           <ul>
             <li>
+              <button onClick={() => props.test()}>Test</button>
+            </li>
+            <li>
               <Link>
                 <button className="signup-btn">Sign Up</button>
               </Link>
@@ -35,6 +40,9 @@ export default function NavBar() {
                   Log In
                 </button>
               </Link>
+            </li>
+            <li>
+              <button onClick={() => props.signOutUser()}>Log out </button>
             </li>
             <li>
               <Link to="/">Home</Link>
@@ -71,7 +79,11 @@ export default function NavBar() {
           <li className={expanded ? 'open' : 'closed'}>Link 6</li>
         </ul>
       </div>
-      <LoginModal loginOpen={loginOpen} toggleLogin={toggleLogin} />
+      <LoginModal
+        loginOpen={loginOpen}
+        toggleLogin={toggleLogin}
+        signInUser={props.signInUser}
+      />
     </div>
   );
 }
