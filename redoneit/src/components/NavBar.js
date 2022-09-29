@@ -1,21 +1,46 @@
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  signInWithRedirect,
+} from 'firebase/auth';
 
 import '../styles/NavBar.css';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { auth, provider } from '../firebase';
 
 import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
 
 export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
 
   const toggleMenu = () => {
     setExpanded(!expanded);
   };
 
+  // Toggles login modal display
   const toggleLogin = () => {
+    if (registerOpen) {
+      toggleRegister();
+    }
     setLoginOpen(!loginOpen);
+  };
+
+  // Toggles register modal display
+  const toggleRegister = () => {
+    if (loginOpen) {
+      toggleLogin();
+    }
+    setRegisterOpen(!registerOpen);
+  };
+
+  // Signs out current user
+  const signOutUser = () => {
+    signOut(auth);
   };
 
   return (
@@ -27,30 +52,37 @@ export default function NavBar(props) {
         <div className="main-nav">
           <ul>
             <li>
-              <button onClick={() => props.test()}>Test</button>
+              <button onClick={props.testFunction}>Test</button>
             </li>
-            <li>
-              <Link>
-                <button className="signup-btn">Sign Up</button>
-              </Link>
-            </li>
-            <li>
-              <Link>
-                <button onClick={toggleLogin} className="login-btn">
-                  Log In
-                </button>
-              </Link>
-            </li>
-            <li>
-              <button onClick={() => props.signOutUser()}>Log out </button>
-            </li>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="subreddit">Subreddit</Link>
-            </li>
-            <li>Link 3</li>
+            {!props.userName ? (
+              <>
+                <li>
+                  <Link>
+                    <button onClick={toggleRegister} className="signup-btn">
+                      Sign Up
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link>
+                    <button onClick={toggleLogin} className="login-btn">
+                      Log In
+                    </button>
+                  </Link>
+                </li>
+              </>
+            ) : null}
+
+            {props.userName ? (
+              <>
+                <li>Welcome, {props.userName}</li>
+                <li>
+                  <button onClick={signOutUser} className="signup-btn">
+                    Log out{' '}
+                  </button>
+                </li>
+              </>
+            ) : null}
           </ul>
         </div>
         <button className="hamburger-btn" onClick={toggleMenu}>
@@ -79,11 +111,11 @@ export default function NavBar(props) {
           <li className={expanded ? 'open' : 'closed'}>Link 6</li>
         </ul>
       </div>
-      <LoginModal
-        loginOpen={loginOpen}
-        toggleLogin={toggleLogin}
-        signInUser={props.signInUser}
+      <RegisterModal
+        registerOpen={registerOpen}
+        toggleRegister={toggleRegister}
       />
+      <LoginModal loginOpen={loginOpen} toggleLogin={toggleLogin} />
     </div>
   );
 }

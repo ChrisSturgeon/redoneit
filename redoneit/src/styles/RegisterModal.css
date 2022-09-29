@@ -1,4 +1,4 @@
-.login-modal-bg {
+.register-modal-bg {
   position: fixed;
   z-index: 100;
   width: 100vw;
@@ -15,7 +15,7 @@
   align-self: flex-end;
 }
 
-.login-step {
+.register-step {
   display: flex;
   background-color: white;
   border-radius: 5px;
@@ -27,6 +27,11 @@
   border-radius: 5px;
 }
 
+.register-step-header {
+  display: flex;
+  justify-content: space-between;
+}
+
 .close-btn i {
   font-size: 1.25rem;
 }
@@ -35,7 +40,7 @@ h1 {
   font-size: 1.25rem;
 }
 
-.login-step-content {
+.register-step-content {
   min-width: 600px;
   display: flex;
   flex-direction: column;
@@ -43,19 +48,21 @@ h1 {
   gap: 15px;
 }
 
-.step-header {
-  display: flex;
-  justify-content: space-between;
-}
-
-.step-header button,
-.step-header button i {
+.register-step-header button,
+.register-step-header button i {
   border: none;
   background-color: transparent;
   color: var(--dark-grey);
 }
 
-.login-step-body {
+.step-body {
+  display: flex;
+  width: 100%;
+  gap: 50px;
+}
+
+.step-body-left,
+.step-body-right {
   width: 50%;
 }
 
@@ -111,18 +118,4 @@ input:focus {
   outline: none;
   border: 1px solid var(--dark-grey);
   background-color: transparent;
-}
-
-.user-management {
-  font-size: 0.8rem;
-}
-
-.user-management div:first-of-type {
-  margin-bottom: 1.2em;
-}
-
-.user-management a {
-  color: var(--accent-blue);
-  font-weight: 700;
-  text-decoration: none;
 }
