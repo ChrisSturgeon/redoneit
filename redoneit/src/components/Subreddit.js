@@ -1,4 +1,11 @@
 import '../styles/Subreddit.css';
+
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
 export default function Subreddit() {
-  return <div className="main">I'm a test subreddit page</div>;
+  const { subName } = useParams();
+  return (
+    <div className="subreddit-main">Hi! this is the {subName} subreddit</div>
+  );
 }

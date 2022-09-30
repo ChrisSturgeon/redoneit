@@ -1,14 +1,9 @@
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut,
-  signInWithRedirect,
-} from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 
 import '../styles/NavBar.css';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { auth, provider } from '../firebase';
+import { auth } from '../firebase';
 
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
@@ -19,6 +14,7 @@ export default function NavBar(props) {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
 
+  // Toggles mobile menu display
   const toggleMenu = () => {
     setExpanded(!expanded);
   };
@@ -53,7 +49,9 @@ export default function NavBar(props) {
         <div className="main-nav">
           <ul>
             <li>
-              <button onClick={props.testFunction}>Test</button>
+              <Link to="r">
+                <button>Test</button>
+              </Link>
             </li>
             {!props.userName ? (
               <>

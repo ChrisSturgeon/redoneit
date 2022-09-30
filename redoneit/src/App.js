@@ -1,14 +1,14 @@
-import { initializeApp } from 'firebase/app';
 import { onAuthStateChanged } from 'firebase/auth';
-
 import { auth, getUserName } from '../src/firebase';
 
 import NavBar from './components/NavBar';
 import Home from './components/Home';
-import Subreddit from './components/Subreddit';
+
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { useEffect, useState } from 'react';
+import Subreddit from './components/Subreddit';
+import Subreddits from './components/Subreddits';
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -42,7 +42,8 @@ function App() {
       <NavBar userId={userId} userName={username} testFunction={testFunction} />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="subreddit" element={<Subreddit />}></Route>
+        <Route path="r" element={<Subreddits />}></Route>
+        <Route path="r/:subName" element={<Subreddit />}></Route>
       </Routes>
     </div>
   );
