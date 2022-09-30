@@ -1,0 +1,6 @@
+.comments-section-main {
+  width: 100%;
+  min-height: 90vh;
+  background-color: var(--home-bg-grey);
+  padding: 1em;
+}

@@ -1,0 +1,76 @@
+.subreddit-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.upper {
+  width: 100%;
+  min-height: 10vh;
+  background-color: #66cc79;
+  z-index: -2;
+}
+
+.subreddit-header .lower {
+  width: 100%;
+  display: block;
+}
+
+.subreddit-header .details-box {
+  max-width: 968px;
+  margin: 0 auto;
+  padding: 1em;
+  display: flex;
+  gap: 1em;
+}
+
+.subreddit-header .logo {
+  height: 75px;
+  width: 75px;
+  position: relative;
+  bottom: 27px;
+  display: flex;
+  justify-content: center;
+  z-index: -1;
+  align-items: center;
+  font-size: 2.2rem;
+  color: white;
+  background-color: #66cc79;
+  border-radius: 50px;
+  border: 6px solid white;
+}
+
+.subreddit-header .text-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.subreddit-header .display-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.subreddit-header .r-sub-name {
+  font-size: 0.8rem;
+  color: var(--dark-grey);
+}
+
+.subreddit-header .member-count {
+  font-size: 0.8rem;
+}
+
+.subreddit-header .join-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.subreddit-header button {
+  padding: 0.6em 2.5em;
+  background-color: rgb(253, 104, 164);
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 100px;
+  letter-spacing: 0.3px;
+}
