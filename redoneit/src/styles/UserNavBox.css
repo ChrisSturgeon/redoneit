@@ -1,0 +1,14 @@
+.user-nav-box {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  min-width: 100px;
+}
+
+.user-nav-box .username {
+  font-weight: 500;
+}
+
+.user-nav-box .karma {
+  color: var(--dark-grey);
+}

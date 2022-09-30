@@ -25,10 +25,9 @@ function App() {
       const getBasicInfo = async () => {
         const user = auth.currentUser;
         setUserId(user.uid);
-        console.log(`${user.uid} has logged in`);
+
         const result = await getUserName(user.uid);
         setUsername(result.username);
-        console.log(typeof result.username);
       };
       if (user) {
         getBasicInfo();
@@ -40,7 +39,7 @@ function App() {
 
   return (
     <div>
-      <NavBar userName={username} testFunction={testFunction} />
+      <NavBar userId={userId} userName={username} testFunction={testFunction} />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="subreddit" element={<Subreddit />}></Route>

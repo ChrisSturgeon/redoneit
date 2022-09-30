@@ -39,17 +39,10 @@ export default function RegisterModal(props) {
   // Validates registration inputs and then creates new Firebase user
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(userName);
-    console.log(email);
-    console.log(password1);
-    console.log(password2);
-    console.log('Go!');
 
     if (password1 === password2) {
-      console.log('match');
       registerNewUser(email, password1, userName);
     }
-
     props.toggleRegister();
   };
 

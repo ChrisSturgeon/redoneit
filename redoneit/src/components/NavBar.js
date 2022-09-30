@@ -6,12 +6,13 @@ import {
 } from 'firebase/auth';
 
 import '../styles/NavBar.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { auth, provider } from '../firebase';
 
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
+import UserNavBox from './UserNavBox';
 
 export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);
@@ -75,7 +76,7 @@ export default function NavBar(props) {
 
             {props.userName ? (
               <>
-                <li>Welcome, {props.userName}</li>
+                <UserNavBox userId={props.userId} />
                 <li>
                   <button onClick={signOutUser} className="signup-btn">
                     Log out{' '}

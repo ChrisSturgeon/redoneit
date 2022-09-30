@@ -18,6 +18,7 @@ export default function LoginModal(props) {
     setPassword(event.target.value);
   };
 
+  // Logs in user and closes modal
   const onLoginSubmit = (event) => {
     event.preventDefault();
     signInWithEmailAndPassword(auth, email, password)

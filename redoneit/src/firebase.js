@@ -35,13 +35,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
-const db = getFirestore(app);
+export const db = getFirestore(app);
 
 export function authChange() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       user = auth.currentUser;
-      console.log(`${user.displayName} has logged in`);
     } else {
       console.log('No user logged in');
     }
@@ -75,7 +74,6 @@ export async function registerNewUser(email, password, username) {
       // Signed in
       const user = userCredential.user;
       createProfile(user.uid, username);
-      // ...
     })
     .catch((error) => {
       const errorCode = error.code;
