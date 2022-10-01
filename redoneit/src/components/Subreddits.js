@@ -1,6 +1,6 @@
 import '../styles/Subreddits.css';
 import React, { useEffect, useState } from 'react';
-import { onSnapshot, query, collection } from 'firebase/firestore';
+import { onSnapshot, query, collection, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 
 import SubredditsTable from './SubredditsTable';
@@ -12,7 +12,7 @@ export default function Subreddits() {
   // into array and stores this in state
   useEffect(() => {
     async function subredditSub() {
-      const queryRef = query(collection(db, 'subreddits'));
+      const queryRef = query(collection(db, 'subreddits'), orderBy('posted'));
       onSnapshot(queryRef, (querySnapshot) => {
         const summaries = [];
         querySnapshot.forEach((doc) => {

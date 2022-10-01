@@ -1,0 +1,11 @@
+.subreddit-sidebar {
+  background-color: rgb(0, 255, 255);
+  height: 50vh;
+  width: 200px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .subreddit-sidebar {
+    display: none;
+  }
+}

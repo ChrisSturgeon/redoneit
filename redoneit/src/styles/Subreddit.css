@@ -4,3 +4,23 @@
   flex-direction: column;
   align-items: center;
 }
+
+.subreddit-body {
+  background-color: var(--home-bg-grey);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.subreddit-content {
+  display: flex;
+  padding: 1em;
+  width: 100%;
+  border: 1px solid red;
+}
+
+@media only screen and (min-width: 1200px) {
+  .subreddit-content {
+    max-width: 968px;
+  }
+}

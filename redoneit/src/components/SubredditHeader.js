@@ -14,7 +14,7 @@ export default function SubredditHeader(props) {
             <div className="r-sub-name">r/{data.subName}</div>
             <div className="member-count">{data.memberCount} members</div>
           </div>
-          <div class="join-box">
+          <div className="join-box">
             <button>Join</button>
           </div>
         </div>
