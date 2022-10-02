@@ -1,7 +1,7 @@
 .subreddit-sidebar {
   background-color: rgb(0, 255, 255);
   height: 50vh;
-  width: 200px;
+  width: 300px;
 }
 
 @media only screen and (max-width: 1000px) {

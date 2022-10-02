@@ -10,14 +10,19 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
 }
 
 .subreddit-content {
   display: flex;
-  gap: 2em;
+  gap: 1em;
   padding: 1em;
   width: 100%;
-  border: 1px solid red;
+}
+
+.subreddit-posts {
+  width: 100%;
 }
 
 @media only screen and (min-width: 1200px) {

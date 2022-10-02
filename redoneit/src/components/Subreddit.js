@@ -2,7 +2,13 @@ import '../styles/Subreddit.css';
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { onSnapshot, query, collection, doc } from 'firebase/firestore';
+import {
+  onSnapshot,
+  query,
+  collection,
+  doc,
+  orderBy,
+} from 'firebase/firestore';
 
 import SubredditHeader from './SubredditHeader';
 import SubredditSidebar from './SubredditSidebar';
@@ -30,7 +36,8 @@ export default function Subreddit() {
   useEffect(() => {
     async function postsSub() {
       const queryRef = query(
-        collection(db, 'subreddits', `${subName}`, 'posts')
+        collection(db, 'subreddits', `${subName}`, 'posts'),
+        orderBy('karma', 'desc')
       );
       onSnapshot(queryRef, (querySnapshot) => {
         const posts = [];
@@ -51,11 +58,13 @@ export default function Subreddit() {
       {overview ? <SubredditHeader overview={overview} /> : null}
       <div className="subreddit-body">
         <div className="subreddit-content">
-          {posts
-            ? posts.map((post) => {
-                return <Post key={post.id} data={post} />;
-              })
-            : null}
+          <div className="subreddit-posts">
+            {posts
+              ? posts.map((post) => {
+                  return <Post key={post.id} data={post} />;
+                })
+              : null}
+          </div>
           <SubredditSidebar />
         </div>
       </div>
