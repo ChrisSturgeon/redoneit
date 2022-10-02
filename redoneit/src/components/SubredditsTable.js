@@ -9,7 +9,7 @@ export default function SubredditsTable(props) {
       {subreddits.map((subreddit) => (
         <div key={subreddit.subName}>
           {subreddit.subName} with {subreddit.memberCount} users
-          <Link to={`${subreddit.subName}`}>Visit</Link>
+          <Link to={`${subreddit.subName}`}> Visit</Link>
         </div>
       ))}
     </div>

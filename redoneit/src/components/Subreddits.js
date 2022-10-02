@@ -12,12 +12,14 @@ export default function Subreddits() {
   // into array and stores this in state
   useEffect(() => {
     async function subredditSub() {
-      const queryRef = query(collection(db, 'subreddits'), orderBy('posted'));
+      const queryRef = query(collection(db, 'subreddits'));
       onSnapshot(queryRef, (querySnapshot) => {
         const summaries = [];
         querySnapshot.forEach((doc) => {
           summaries.push(doc.data());
+          console.log(doc.data());
         });
+        console.log('dog');
         setSubreddits(summaries);
       });
     }

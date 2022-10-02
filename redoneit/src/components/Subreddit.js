@@ -7,6 +7,7 @@ import { onSnapshot, query, collection, doc } from 'firebase/firestore';
 import SubredditHeader from './SubredditHeader';
 import SubredditSidebar from './SubredditSidebar';
 import Posts from './Posts';
+import Post from './Post';
 import { db } from '../firebase';
 
 export default function Subreddit() {
@@ -34,10 +35,12 @@ export default function Subreddit() {
       onSnapshot(queryRef, (querySnapshot) => {
         const posts = [];
         querySnapshot.forEach((doc) => {
-          posts.push(doc.data());
+          const data = doc.data();
+          data.id = doc.id;
+          posts.push(data);
         });
-        console.log(posts);
         setPosts(posts);
+        console.log(posts);
       });
     }
     postsSub();
@@ -48,7 +51,11 @@ export default function Subreddit() {
       {overview ? <SubredditHeader overview={overview} /> : null}
       <div className="subreddit-body">
         <div className="subreddit-content">
-          <Posts />
+          {posts
+            ? posts.map((post) => {
+                return <Post key={post.id} data={post} />;
+              })
+            : null}
           <SubredditSidebar />
         </div>
       </div>

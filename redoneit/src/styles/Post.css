@@ -1,0 +1,16 @@
+.post-main {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  border: 1px solid var(--dark-grey);
+  border-radius: 3px;
+  margin-bottom: 1em;
+}
+
+.karma-box {
+  background-color: var(--medium-grey);
+  padding: 0.25em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
