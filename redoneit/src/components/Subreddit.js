@@ -1,7 +1,7 @@
 import '../styles/Subreddit.css';
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Route, Routes, Link } from 'react-router-dom';
 import {
   onSnapshot,
   query,
@@ -12,7 +12,6 @@ import {
 
 import SubredditHeader from './SubredditHeader';
 import SubredditSidebar from './SubredditSidebar';
-import Posts from './Posts';
 import Post from './Post';
 import { db } from '../firebase';
 
@@ -58,6 +57,11 @@ export default function Subreddit() {
       <div className="subreddit-body">
         <div className="subreddit-content">
           <div className="subreddit-posts">
+            <Link to={'submit'} className="new-post-link">
+              {' '}
+              Create Post
+            </Link>
+
             {posts
               ? posts.map((post) => {
                   return <Post key={post.id} data={post} />;

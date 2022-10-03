@@ -10,7 +10,10 @@ export default function Post(props) {
   const dateObj = new Date(postData.posted.seconds * 1000);
   const dateString = format(dateObj, 'do LLL yy');
   const timeString = format(dateObj, 'HH:mm');
-  const urlString = postData.url.split('').slice(12, 60).join('');
+  let urlString = null;
+  if (postData.type === 'link') {
+    urlString = postData.url.split('').slice(12, 60).join('');
+  }
 
   return (
     <div key={postData.id} className="post-main">
@@ -41,14 +44,23 @@ export default function Post(props) {
           Posted by u/{postData.user} on {dateString} at {timeString}
         </div>
         <div className="post-title">{postData.title}</div>
-        <a
-          className="post-url"
-          href={postData.url}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {urlString}...
-        </a>
+
+        {(() => {
+          if (postData.type === 'link') {
+            return (
+              <a
+                className="post-url"
+                href={postData.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {urlString}...
+              </a>
+            );
+          } else if (postData.type === 'text') {
+            return <div>{postData.postText}</div>;
+          }
+        })()}
       </div>
     </div>
   );

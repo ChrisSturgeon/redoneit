@@ -21,8 +21,23 @@
   width: 100%;
 }
 
+.subreddit-posts .new-post-link {
+  width: 100%;
+  padding: 0.5em;
+  background-color: white;
+  border: 1.25px solid var(--medium-grey);
+  border-radius: 4px;
+  margin-bottom: 1em;
+}
+
+.new-post-link:hover {
+  border: 1.25px solid var(--accent-blue);
+}
+
 .subreddit-posts {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 @media only screen and (min-width: 1200px) {

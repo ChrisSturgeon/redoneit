@@ -58,7 +58,7 @@ button {
 :root {
   --main-white: #ffffff;
   --main-grey: rgb(199, 199, 199);
-  --medium-grey: rgb(240, 240, 240);
+  --medium-grey: rgb(214, 214, 214);
   --dark-grey: rgb(134, 134, 134);
   --light-grey: #f9f9f9;
   --main-black: #000000;
@@ -67,4 +67,6 @@ button {
   --accent-blue-hover: rgb(64, 156, 237);
   --modal-bg: rgba(0, 0, 0, 0.438);
   --std-box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+  --input-valid: rgb(198, 236, 198);
+  --input-invalid: rgb(255, 202, 202);
 }

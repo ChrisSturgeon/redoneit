@@ -23,6 +23,8 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  addDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -92,11 +94,12 @@ already upvoted or downvoted,
 undos this. Stores record of their vote in both the
 post document and user documents arrays
 */
-
 export async function postVote(subreddit, postUser, postId, direction) {
+  const currentUser = auth.currentUser.uid;
+  const currentUserRef = doc(db, 'users', `${currentUser}`);
   const postUserRef = doc(db, 'users', `${postUser}`);
   const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
-  const currentUser = auth.currentUser.uid;
+
   const docSnap = await getDoc(postRef);
   const postData = docSnap.data();
 
@@ -105,6 +108,7 @@ export async function postVote(subreddit, postUser, postId, direction) {
       await updateDoc(postUserRef, { karma: increment(1) });
       await updateDoc(postRef, { karma: increment(1), upVotes: increment(1) });
       await updateDoc(postRef, { upVotedBy: arrayUnion(`${currentUser}`) });
+      await updateDoc(currentUserRef, { upVoted: arrayUnion(`${postId}`) });
     } else {
       await updateDoc(postUserRef, { karma: increment(-1) });
       await updateDoc(postRef, {
@@ -112,6 +116,7 @@ export async function postVote(subreddit, postUser, postId, direction) {
         upVotes: increment(-1),
       });
       await updateDoc(postRef, { upVotedBy: arrayRemove(`${currentUser}`) });
+      await updateDoc(currentUserRef, { upVoted: arrayRemove(`${postId}`) });
     }
   } else if (direction === 'downVote') {
     if (!postData.downVotedBy.includes(currentUser)) {
@@ -121,10 +126,60 @@ export async function postVote(subreddit, postUser, postId, direction) {
         upVotes: increment(-1),
       });
       await updateDoc(postRef, { downVotedBy: arrayUnion(`${currentUser}`) });
+      await updateDoc(currentUserRef, { downVoted: arrayUnion(`${postId}`) });
     } else {
       await updateDoc(postUserRef, { karma: increment(1) });
       await updateDoc(postRef, { karma: increment(1), upVotes: increment(1) });
       await updateDoc(postRef, { downVotedBy: arrayRemove(`${currentUser}`) });
+      await updateDoc(currentUserRef, { downVoted: arrayRemove(`${postId}`) });
     }
   }
+}
+
+export async function newURLPost(title, url, subName) {
+  const currentUser = auth.currentUser.uid;
+  const userName = await getUserName(currentUser);
+
+  const docRef = await addDoc(
+    collection(db, 'subreddits', `${subName}`, 'posts'),
+    {
+      downVotedBy: [],
+      downVotes: 0,
+      karma: 0,
+      posted: serverTimestamp(),
+      subreddit: subName,
+      title: title,
+      type: 'link',
+      upVotedBy: [],
+      upVotes: 0,
+      url: url,
+      user: userName.username,
+      userId: currentUser,
+    }
+  );
+  console.log(docRef.id);
+}
+
+export async function newTextPost(title, postText, subName) {
+  const currentUser = auth.currentUser.uid;
+  const userName = await getUserName(currentUser);
+
+  const docRef = await addDoc(
+    collection(db, 'subreddits', `${subName}`, 'posts'),
+    {
+      downVotedBy: [],
+      downVotes: 0,
+      karma: 0,
+      posted: serverTimestamp(),
+      subreddit: subName,
+      title: title,
+      type: 'text',
+      upVotedBy: [],
+      upVotes: 0,
+      postText: postText,
+      user: userName.username,
+      userId: currentUser,
+    }
+  );
+  console.log(docRef.id);
 }

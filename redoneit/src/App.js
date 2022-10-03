@@ -9,6 +9,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import Subreddit from './components/Subreddit';
 import Subreddits from './components/Subreddits';
+import PostForm from './components/postForm';
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -44,6 +45,7 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="r" element={<Subreddits />}></Route>
         <Route path="r/:subName" element={<Subreddit />}></Route>
+        <Route path="r/:subName/submit" element={<PostForm />}></Route>
       </Routes>
     </div>
   );
