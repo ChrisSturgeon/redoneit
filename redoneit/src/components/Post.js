@@ -1,6 +1,7 @@
 import { verifyPasswordResetCode } from 'firebase/auth';
 import '../styles/Post.css';
 import { Link } from 'react-router-dom';
+import { postVote } from '../firebase';
 
 import { format } from 'date-fns';
 
@@ -12,17 +13,26 @@ export default function Post(props) {
   const urlString = postData.url.split('').slice(12, 60).join('');
 
   return (
-    <div
-      key={postData.id}
-      onClick={() => console.log(urlString)}
-      className="post-main"
-    >
+    <div key={postData.id} className="post-main">
       <div className="karma-box">
-        <button>
+        <button
+          onClick={() =>
+            postVote(postData.subreddit, postData.userId, postData.id, 'upVote')
+          }
+        >
           <i className="fa-sharp fa-solid fa-arrow-up"></i>
         </button>
         <div>{postData.karma}</div>
-        <button>
+        <button
+          onClick={() =>
+            postVote(
+              postData.subreddit,
+              postData.userId,
+              postData.id,
+              'downVote'
+            )
+          }
+        >
           <i className="fa-sharp fa-solid fa-arrow-down"></i>
         </button>
       </div>

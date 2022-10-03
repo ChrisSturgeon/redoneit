@@ -19,6 +19,10 @@ import {
   getDoc,
   getDocs,
   setDoc,
+  increment,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -34,6 +38,7 @@ const firebaseConfig = {
 // Firebase constants
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+let user = auth.currentUser;
 export const provider = new GoogleAuthProvider();
 export const db = getFirestore(app);
 
@@ -80,4 +85,46 @@ export async function registerNewUser(email, password, username) {
       const errorMessage = error.message;
       // ..
     });
+}
+
+/* Increments or decrements post karma by 1. If user has
+already upvoted or downvoted,
+undos this. Stores record of their vote in both the
+post document and user documents arrays
+*/
+
+export async function postVote(subreddit, postUser, postId, direction) {
+  const postUserRef = doc(db, 'users', `${postUser}`);
+  const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
+  const currentUser = auth.currentUser.uid;
+  const docSnap = await getDoc(postRef);
+  const postData = docSnap.data();
+
+  if (direction === 'upVote') {
+    if (!postData.upVotedBy.includes(currentUser)) {
+      await updateDoc(postUserRef, { karma: increment(1) });
+      await updateDoc(postRef, { karma: increment(1), upVotes: increment(1) });
+      await updateDoc(postRef, { upVotedBy: arrayUnion(`${currentUser}`) });
+    } else {
+      await updateDoc(postUserRef, { karma: increment(-1) });
+      await updateDoc(postRef, {
+        karma: increment(-1),
+        upVotes: increment(-1),
+      });
+      await updateDoc(postRef, { upVotedBy: arrayRemove(`${currentUser}`) });
+    }
+  } else if (direction === 'downVote') {
+    if (!postData.downVotedBy.includes(currentUser)) {
+      await updateDoc(postUserRef, { karma: increment(-1) });
+      await updateDoc(postRef, {
+        karma: increment(-1),
+        upVotes: increment(-1),
+      });
+      await updateDoc(postRef, { downVotedBy: arrayUnion(`${currentUser}`) });
+    } else {
+      await updateDoc(postUserRef, { karma: increment(1) });
+      await updateDoc(postRef, { karma: increment(1), upVotes: increment(1) });
+      await updateDoc(postRef, { downVotedBy: arrayRemove(`${currentUser}`) });
+    }
+  }
 }

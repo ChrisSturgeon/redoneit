@@ -17,9 +17,7 @@ export default function Subreddits() {
         const summaries = [];
         querySnapshot.forEach((doc) => {
           summaries.push(doc.data());
-          console.log(doc.data());
         });
-        console.log('dog');
         setSubreddits(summaries);
       });
     }

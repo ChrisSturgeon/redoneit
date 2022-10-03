@@ -47,7 +47,6 @@ export default function Subreddit() {
           posts.push(data);
         });
         setPosts(posts);
-        console.log(posts);
       });
     }
     postsSub();
