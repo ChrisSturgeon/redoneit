@@ -20,19 +20,15 @@ export default function Subreddit() {
   const [overview, setOverview] = useState(null);
   const [posts, setPosts] = useState(null);
 
-  // On render fetches subreddit overview info and sets it to overview state
+  // On mount and url param change-fetch suboverview data and posts
+  //  storing them to state
   useEffect(() => {
     async function fetchSubData() {
       onSnapshot(doc(db, 'subreddits', `${subName}`), (doc) => {
         setOverview(doc.data());
       });
     }
-    fetchSubData();
-  }, []);
 
-  // Subscribes to subreddit posts meta list on mount, compiles summaries
-  // into array and stores this in state
-  useEffect(() => {
     async function postsSub() {
       const queryRef = query(
         collection(db, 'subreddits', `${subName}`, 'posts'),
@@ -48,8 +44,9 @@ export default function Subreddit() {
         setPosts(posts);
       });
     }
+    fetchSubData();
     postsSub();
-  }, []);
+  }, [subName]);
 
   return (
     <div className="subreddit-main">
