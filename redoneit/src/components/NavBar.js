@@ -1,18 +1,21 @@
 import { signOut } from 'firebase/auth';
 
 import '../styles/NavBar.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, getUserSubs } from '../firebase';
 
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import UserNavBox from './UserNavBox';
+import SubsNav from './SubsNav';
 
 export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [subsOpen, setSubsOpen] = useState(false);
+  const userId = props.userId;
 
   // Toggles mobile menu display
   const toggleMenu = () => {
@@ -40,14 +43,29 @@ export default function NavBar(props) {
     signOut(auth);
   };
 
+  const toggleSubsNav = () => {
+    setSubsOpen(!subsOpen);
+  };
+
   return (
     <div>
       <nav className={expanded ? 'no-shadow' : null}>
         <h1>
           <Link to="/">Reddit</Link>
         </h1>
+        <div className="subs-nav">
+          <button onClick={toggleSubsNav} className="subs-btn">
+            Show subs
+          </button>
+          <div className={subsOpen ? 'subs-modal-open' : 'subs-modal-closed'}>
+            {userId ? <SubsNav toggleSubsNav={toggleSubsNav} /> : null}
+          </div>
+        </div>
         <div className="main-nav">
           <ul>
+            <li>
+              <button>Test func</button>
+            </li>
             <li>
               <Link to="r">
                 <button>Test</button>

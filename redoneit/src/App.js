@@ -1,23 +1,24 @@
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth, getUserName } from '../src/firebase';
+import { auth, getUserName, db } from '../src/firebase';
 
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Switch } from 'react-router-dom';
 import './App.css';
 import { useEffect, useState } from 'react';
 import Subreddit from './components/Subreddit';
 import Subreddits from './components/Subreddits';
 import PostForm from './components/postForm';
+import { onSnapshot, doc } from 'firebase/firestore';
 
 function App() {
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   const testFunction = async () => {
     const legs = await getUserName(userId);
-    console.log(legs);
   };
 
   // Monitors user authentication state
@@ -26,7 +27,6 @@ function App() {
       const getBasicInfo = async () => {
         const user = auth.currentUser;
         setUserId(user.uid);
-
         const result = await getUserName(user.uid);
         setUsername(result.username);
       };
@@ -38,13 +38,28 @@ function App() {
     });
   }, []);
 
+  // Listener for changes to user data
+  useEffect(() => {
+    const subUserData = (userId) => {
+      onSnapshot(doc(db, 'users', `${userId}`), (doc) => {
+        setUserData(doc.data());
+      });
+    };
+    subUserData(userId);
+  }, [userId]);
+
   return (
     <div>
-      <NavBar userId={userId} userName={username} testFunction={testFunction} />
+      <NavBar
+        userId={userId}
+        userName={username}
+        testFunction={testFunction}
+        userData={userData}
+      />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="r" element={<Subreddits />}></Route>
-        <Route path="r/:subName" element={<Subreddit />}></Route>
+        <Route path="r/" element={<Subreddits />}></Route>
+        <Route path="/r/:subName/" element={<Subreddit />}></Route>
         <Route path="r/:subName/submit" element={<PostForm />}></Route>
       </Routes>
     </div>

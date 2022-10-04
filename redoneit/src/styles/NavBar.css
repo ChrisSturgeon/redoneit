@@ -23,6 +23,33 @@ h1 {
   font-weight: 500;
 }
 
+.subs-nav {
+  width: 270px;
+}
+
+.subs-nav button {
+  width: 100%;
+}
+
+.subs-modal-open {
+  width: inherit;
+  position: fixed;
+  max-height: 200px;
+  overflow-y: scroll;
+  background-color: red;
+  padding: 0px;
+}
+
+.subs-modal-closed {
+  display: none;
+}
+
+.test-area {
+  height: 20px;
+  background-color: green;
+  min-height: 400px;
+}
+
 ul {
   display: flex;
   list-style: none;

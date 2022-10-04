@@ -183,3 +183,15 @@ export async function newTextPost(title, postText, subName) {
   );
   console.log(docRef.id);
 }
+
+export async function getUserSubs(userId) {
+  const currentUser = auth.currentUser.uid;
+  let subs = [];
+  const q = query(collection(db, 'users', `${currentUser}`, 'subscribed'));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    subs.push(doc.data());
+  });
+
+  return subs;
+}
