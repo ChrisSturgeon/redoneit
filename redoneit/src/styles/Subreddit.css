@@ -21,17 +21,31 @@
   width: 100%;
 }
 
-.subreddit-posts .new-post-link {
+.new-post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
   width: 100%;
-  padding: 0.5em;
+  margin-bottom: 1em;
   background-color: white;
   border: 1.25px solid var(--medium-grey);
   border-radius: 4px;
-  margin-bottom: 1em;
+  padding: 0.5em;
 }
 
-.new-post-link:hover {
+.new-post-link,
+.new-post-link input {
+  width: 100%;
+}
+
+.new-post-link input {
+  border: 1.25px solid var(--main-grey);
+}
+
+.new-post-link input:hover {
   border: 1.25px solid var(--accent-blue);
+  border-radius: 4px;
 }
 
 .subreddit-posts {

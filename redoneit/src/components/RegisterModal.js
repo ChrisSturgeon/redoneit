@@ -32,6 +32,7 @@ export default function RegisterModal(props) {
     signInWithRedirect(auth, provider);
   };
 
+  // Locks home screen scroll when register modal open
   props.registerOpen
     ? (document.body.style.overflow = 'hidden')
     : (document.body.style.overflow = 'auto');

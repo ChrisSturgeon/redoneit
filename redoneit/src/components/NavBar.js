@@ -100,8 +100,8 @@ export default function NavBar(props) {
             </Link>
           </li>
           <li className={expanded ? 'open' : 'closed'}>
-            <Link to="subreddit" onClick={toggleMenu}>
-              Subreddit
+            <Link to="r" onClick={toggleMenu}>
+              All Subreddits
             </Link>
           </li>
           <li className={expanded ? 'open' : 'closed'}>Link 3</li>

@@ -92,6 +92,11 @@ ul {
   gap: 0.75em;
   margin-top: 10vh;
   width: 100%;
+  color: white;
+}
+
+.overlay-menu li a {
+  color: white;
 }
 
 .overlay-menu li.closed {

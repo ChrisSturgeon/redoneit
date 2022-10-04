@@ -57,10 +57,14 @@ export default function Subreddit() {
       <div className="subreddit-body">
         <div className="subreddit-content">
           <div className="subreddit-posts">
-            <Link to={'submit'} className="new-post-link">
-              {' '}
-              Create Post
-            </Link>
+            <div className="new-post">
+              <Link to="submit?type=text" className="new-post-link">
+                <input type="text" placeholder="Create Post"></input>
+              </Link>
+              <Link to="submit?type=link">
+                <i className="fa-solid fa-link"></i>
+              </Link>
+            </div>
 
             {posts
               ? posts.map((post) => {

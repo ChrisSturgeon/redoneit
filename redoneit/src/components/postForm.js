@@ -1,23 +1,42 @@
 import '../styles/PostForm.css';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { newTextPost, newURLPost } from '../firebase';
+import { set } from 'date-fns';
 
 export default function PostForm() {
   const { subName } = useParams();
-  const [postType, setPostType] = useState('link');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [postType, setPostType] = useState(null);
   const [title, setTitle] = useState('');
+  const [titleLength, setTitleLength] = useState(0);
   const [url, setUrl] = useState('');
   const [urlClass, setURLClass] = useState('');
   const [postText, setPostText] = useState('');
+  const [linkBtnActive, setlinkBtnActive] = useState(null);
+  const [textBtnActive, setTextBtnActive] = useState(null);
 
   const titleChange = (event) => {
     setTitle(event.target.value);
   };
 
+  // Updates title length counter in input bar
+  useEffect(() => {
+    setTitleLength(title.length);
+  }, [title]);
+
   const urlChange = (event) => {
     setUrl(event.target.value);
   };
+
+  // Sets post-type state from URL search params
+  // and activates relevant form render and styling
+  useEffect(() => {
+    setPostType(searchParams.get('type'));
+    searchParams.get('type') === 'text'
+      ? setTextBtnActive(true)
+      : setlinkBtnActive(true);
+  }, [searchParams]);
 
   useEffect(() => {
     if (url) {
@@ -33,10 +52,21 @@ export default function PostForm() {
     setPostText(event.target.value);
   };
 
+  const selectLinkPost = () => {
+    setSearchParams('type=link');
+    setlinkBtnActive(true);
+    setTextBtnActive(false);
+  };
+
+  const selectTextPost = () => {
+    setSearchParams('type=text');
+    setlinkBtnActive(false);
+    setTextBtnActive(true);
+  };
+
+  // Calls Firebase new post function with post-type state on for submit
   const onFormSubmit = (event) => {
     event.preventDefault();
-    console.log(title);
-    console.log(url);
 
     if (postType === 'link') {
       newURLPost(title, url, subName);
@@ -54,17 +84,35 @@ export default function PostForm() {
         <h1>Create a post in r/{subName}</h1>
         <hr></hr>
         <div className="post-type">
-          <button onClick={() => setPostType('link')}>Link Post</button>
-          <button onClick={() => setPostType('text')}>Text Post</button>
+          <button
+            onClick={selectTextPost}
+            className={
+              textBtnActive ? 'post-type-btn-active' : 'post-type-btn-inactive'
+            }
+          >
+            <i className="fa-regular fa-file-lines"></i>Text Post
+          </button>
+          <button
+            onClick={selectLinkPost}
+            className={
+              linkBtnActive ? 'post-type-btn-active' : 'post-type-btn-inactive'
+            }
+          >
+            <i className="fa-solid fa-link"></i> Link Post
+          </button>
         </div>
         <form onSubmit={onFormSubmit} className="new-post-form">
           <label htmlFor="titleInput">Title</label>
-          <input
-            value={title}
-            onChange={titleChange}
-            id="titleInput"
-            type="text"
-          ></input>
+          <div className="title-input">
+            <input
+              value={title}
+              onChange={titleChange}
+              id="titleInput"
+              type="text"
+              maxLength={300}
+            ></input>
+            <div>{titleLength}/300</div>
+          </div>
           {postType === 'link' ? (
             <>
               <label htmlFor="postURL">URL</label>
@@ -83,7 +131,9 @@ export default function PostForm() {
             </>
           )}
 
-          <button type="submit">Submit</button>
+          <button type="submit" className="post-submit-btn">
+            Post
+          </button>
         </form>
       </div>
     </div>
