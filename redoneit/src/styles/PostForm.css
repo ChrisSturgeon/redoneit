@@ -10,10 +10,14 @@
 .post-form-content {
   display: flex;
   flex-direction: column;
-
   padding: 1em;
   width: 100%;
-  border: 1px solid red;
+}
+
+.post-form-content h1 {
+  font-size: 1rem;
+  margin-bottom: 1em;
+  font-weight: 500;
 }
 
 .post-form-content hr {
@@ -64,6 +68,7 @@
 
 #titleInput {
   padding: 0.25em;
+  border: none;
 }
 
 .title-input {
@@ -71,6 +76,12 @@
   gap: 0.5em;
   align-items: center;
   padding: 0.25em;
+}
+
+.title-input {
+  background-color: var(--light-grey);
+  border: 1px solid var(--main-grey);
+  border-radius: 4px;
 }
 
 .new-post-form input {

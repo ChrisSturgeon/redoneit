@@ -25,6 +25,7 @@ import {
   arrayRemove,
   addDoc,
   serverTimestamp,
+  onSnapshot,
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -194,4 +195,16 @@ export async function getUserSubs(userId) {
   });
 
   return subs;
+}
+
+export async function getUserSubsTest() {
+  const currentUser = auth.currentUser.uid;
+  const subs = [];
+  const q = query(collection(db, 'users', `${currentUser}`, 'subscribed'));
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      subs.push(doc.data());
+    });
+  });
+  return unsubscribe;
 }

@@ -20,8 +20,8 @@ export default function Subreddit() {
   const [overview, setOverview] = useState(null);
   const [posts, setPosts] = useState(null);
 
-  // On mount and url param change-fetch suboverview data and posts
-  //  storing them to state
+  // On mount and url param change fetches subreddit overview data
+  // and posts storing them to state
   useEffect(() => {
     async function fetchSubData() {
       onSnapshot(doc(db, 'subreddits', `${subName}`), (doc) => {

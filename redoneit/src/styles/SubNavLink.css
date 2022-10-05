@@ -1,0 +1,15 @@
+.sub-nav-link-main {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  padding: 0.25em 1em;
+}
+
+.sub-nav-link-main:hover {
+  background-color: var(--hover-grey);
+}
+
+.sub-nav-link-main i {
+  font-size: 1.2rem;
+}

@@ -59,10 +59,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="r/" element={<Subreddits />}></Route>
-        <Route
-          path="r/:subName"
-          element={<Subreddit key={window.location.href} />}
-        ></Route>
+        <Route path="r/:subName" element={<Subreddit />}></Route>
         <Route path="r/:subName/submit" element={<PostForm />}></Route>
       </Routes>
     </div>

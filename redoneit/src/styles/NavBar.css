@@ -35,19 +35,14 @@ h1 {
   width: inherit;
   position: fixed;
   max-height: 200px;
-  overflow-y: scroll;
-  background-color: red;
-  padding: 0px;
+  background-color: white;
+  border-left: 1px solid var(--hover-grey);
+  border-right: 1px solid var(--hover-grey);
+  border-bottom: 1px solid var(--hover-grey);
 }
 
 .subs-modal-closed {
   display: none;
-}
-
-.test-area {
-  height: 20px;
-  background-color: green;
-  min-height: 400px;
 }
 
 ul {
