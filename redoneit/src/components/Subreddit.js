@@ -48,30 +48,38 @@ export default function Subreddit() {
     postsSub();
   }, [subName]);
 
-  return (
-    <div className="subreddit-main">
-      {overview ? <SubredditHeader overview={overview} /> : null}
-      <div className="subreddit-body">
-        <div className="subreddit-content">
-          <div className="subreddit-posts">
-            <div className="new-post">
-              <Link to="submit?type=text" className="new-post-link">
-                <input type="text" placeholder="Create Post"></input>
-              </Link>
-              <Link to="submit?type=link">
-                <i className="fa-solid fa-link"></i>
-              </Link>
-            </div>
+  if (overview) {
+    return (
+      <div className="subreddit-main">
+        <SubredditHeader overview={overview} />
+        <div className="subreddit-body">
+          <div className="subreddit-content">
+            <div className="subreddit-posts">
+              <div className="new-post">
+                <Link to="submit?type=text" className="new-post-link">
+                  <input type="text" placeholder="Create Post"></input>
+                </Link>
+                <Link to="submit?type=link">
+                  <i className="fa-solid fa-link"></i>
+                </Link>
+              </div>
 
-            {posts
-              ? posts.map((post) => {
-                  return <Post key={post.id} data={post} />;
-                })
-              : null}
+              {posts
+                ? posts.map((post) => {
+                    return <Post key={post.id} data={post} />;
+                  })
+                : null}
+            </div>
+            <SubredditSidebar />
           </div>
-          <SubredditSidebar />
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="subreddit-loading">
+        <div className="lds-dual-ring"></div>
+      </div>
+    );
+  }
 }

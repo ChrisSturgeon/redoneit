@@ -185,7 +185,7 @@ export async function newTextPost(title, postText, subName) {
   console.log(docRef.id);
 }
 
-export async function getUserSubs(userId) {
+export async function getUserSubs() {
   const currentUser = auth.currentUser.uid;
   let subs = [];
   const q = query(collection(db, 'users', `${currentUser}`, 'subscribed'));
@@ -207,4 +207,24 @@ export async function getUserSubsTest() {
     });
   });
   return unsubscribe;
+}
+
+// Un-favourites a subreddit in user's profile
+export async function favouriteSub(subName) {
+  const currentUser = auth.currentUser.uid;
+  const subRef = doc(db, 'users', `${currentUser}`, 'subscribed', `${subName}`);
+
+  await updateDoc(subRef, {
+    favourite: true,
+  });
+}
+
+// Un-favourites a subreddit in user's profile
+export async function unFavouriteSub(subName) {
+  const currentUser = auth.currentUser.uid;
+  const subRef = doc(db, 'users', `${currentUser}`, 'subscribed', `${subName}`);
+
+  await updateDoc(subRef, {
+    favourite: false,
+  });
 }

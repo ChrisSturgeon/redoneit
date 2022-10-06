@@ -17,15 +17,8 @@ import { db, auth } from '../firebase';
 export default function SubsNav(props) {
   const [subsArr, setSubsArr] = useState(null);
 
-  // On navbar mount fetches users subs and sets them to state for rendering
-  // useEffect(() => {
-  //   const setSubs = async () => {
-  //     const subsArr = await getUserSubs();
-  //     setSubsArr(subsArr);
-  //   };
-  //   setSubs();
-  // }, []);
-
+  // On mount establishes listener for users
+  // subreddit subscriptions and sets to state
   useEffect(() => {
     async function userSubs() {
       const currentUser = auth.currentUser.uid;
@@ -44,12 +37,35 @@ export default function SubsNav(props) {
   }, []);
 
   return (
-    <div>
+    <div className="subs-nav">
       <Link className="all-subs-nav" to="r">
         View all subs
       </Link>
-      <hr></hr>
-      <div>Your subs</div>
+
+      <h2>FAVOURITES</h2>
+
+      {subsArr ? (
+        <div>
+          {subsArr.map((sub) => {
+            const linkString = `r/${sub.subName}`;
+            if (sub.favourite) {
+              return (
+                <SubNavLink
+                  key={sub.subName}
+                  subName={sub.subName}
+                  onClick={props.toggleSubNav}
+                  linkString={linkString}
+                  favourite={sub.favourite}
+                />
+              );
+            } else {
+              return null;
+            }
+          })}
+        </div>
+      ) : null}
+
+      <h2>YOUR COMMUNITIES</h2>
 
       {subsArr ? (
         <div>

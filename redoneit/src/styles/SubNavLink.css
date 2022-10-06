@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-
+  align-items: center;
   padding: 0.25em 1em;
 }
 
@@ -10,6 +10,13 @@
   background-color: var(--hover-grey);
 }
 
+.sub-nav-link-main button {
+  width: auto;
+  background-color: transparent;
+  border: none;
+}
+
 .sub-nav-link-main i {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  color: var(--accent-blue);
 }
