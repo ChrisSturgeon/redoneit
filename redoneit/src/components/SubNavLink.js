@@ -5,14 +5,15 @@ import { Link } from 'react-router-dom';
 
 export default function SubNavLink(props) {
   return (
-    <Link
-      to={props.linkString}
-      onClick={() => {
-        props.closeNav();
-      }}
-      className="sub-nav-link-main"
-    >
-      {props.subName}
+    <div className="sub-nav-link-main">
+      <Link
+        to={props.linkString}
+        onClick={() => {
+          props.closeNav();
+        }}
+      >
+        {props.subName}
+      </Link>
 
       {props.favourite ? (
         <button
@@ -33,6 +34,6 @@ export default function SubNavLink(props) {
           <i className="fa-regular fa-star"></i>
         </button>
       )}
-    </Link>
+    </div>
   );
 }

@@ -38,12 +38,10 @@ export default function SubsNav(props) {
 
   return (
     <div className="subs-nav">
-      <Link className="all-subs-nav" to="r">
-        View all subs
+      <Link className="all-subs-btn" to="r">
+        <span>View all subreddits</span>
       </Link>
-
       <h2>FAVOURITES</h2>
-
       {subsArr ? (
         <div>
           {subsArr.map((sub) => {

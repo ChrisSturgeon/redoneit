@@ -1,4 +1,12 @@
 .subs-nav {
+  position: relative;
+  z-index: 99;
+  background-color: white;
+}
+
+.subs-nav .all-subs-btn {
+  background-color: pink;
+  width: 270px;
 }
 
 .subs-nav h2 {

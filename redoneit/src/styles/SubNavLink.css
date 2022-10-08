@@ -6,6 +6,10 @@
   padding: 0.25em 1em;
 }
 
+.sub-nav-link-main a {
+  width: 100%;
+}
+
 .sub-nav-link-main:hover {
   background-color: var(--hover-grey);
 }
