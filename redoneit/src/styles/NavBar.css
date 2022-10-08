@@ -17,10 +17,14 @@ nav {
   box-shadow: none;
 }
 
-h1 {
+.home-nav-link {
   color: var(--main-black);
   font-size: 1.75rem;
   font-weight: 500;
+}
+
+.subs-btn {
+  width: 270px;
 }
 
 .subs-nav {

@@ -38,7 +38,7 @@ export default function SubsNav(props) {
 
   return (
     <div className="subs-nav">
-      <Link className="all-subs-btn" to="r">
+      <Link onClick={props.toggleSubsNav} className="all-subs-btn" to="r">
         <span>View all subreddits</span>
       </Link>
       <h2>FAVOURITES</h2>
@@ -51,9 +51,9 @@ export default function SubsNav(props) {
                 <SubNavLink
                   key={sub.subName}
                   subName={sub.subName}
-                  onClick={props.toggleSubNav}
                   linkString={linkString}
                   favourite={sub.favourite}
+                  toggleSubsNav={props.toggleSubsNav}
                 />
               );
             } else {
@@ -73,7 +73,7 @@ export default function SubsNav(props) {
               <SubNavLink
                 key={sub.subName}
                 subName={sub.subName}
-                onClick={props.toggleSubNav}
+                toggleSubsNav={props.toggleSubsNav}
                 linkString={linkString}
                 favourite={sub.favourite}
               />

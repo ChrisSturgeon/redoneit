@@ -50,16 +50,20 @@ export default function NavBar(props) {
   return (
     <div>
       <nav className={expanded ? 'no-shadow' : null}>
-        <h1>
-          <Link to="/">Reddit</Link>
-        </h1>
-        <div className="subs-nav">
+        <Link className="home-nav-link" to="/">
+          Reddit
+        </Link>
+        <div>
           <button onClick={toggleSubsNav} className="subs-btn">
             Show subs
           </button>
+          {subsOpen && userId ? (
+            <SubsNav toggleSubsNav={toggleSubsNav} />
+          ) : null}
+          {/* 
           <div className={subsOpen ? 'subs-modal-open' : 'subs-modal-closed'}>
             {userId ? <SubsNav toggleSubsNav={toggleSubsNav} /> : null}
-          </div>
+          </div> */}
         </div>
         <div className="main-nav">
           <ul>
@@ -110,7 +114,7 @@ export default function NavBar(props) {
           )}
         </button>
       </nav>
-      <div className={expanded ? 'overlay-open' : 'overlay-closed'}>
+      {/* <div className={expanded ? 'overlay-open' : 'overlay-closed'}>
         <ul className="overlay-menu">
           <li className={expanded ? 'open' : 'closed'}>
             <Link to="/" onClick={toggleMenu}>
@@ -127,7 +131,7 @@ export default function NavBar(props) {
           <li className={expanded ? 'open' : 'closed'}>Link 5</li>
           <li className={expanded ? 'open' : 'closed'}>Link 6</li>
         </ul>
-      </div>
+      </div> */}
       <RegisterModal
         registerOpen={registerOpen}
         toggleRegister={toggleRegister}

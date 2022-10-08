@@ -4,14 +4,11 @@ import { favouriteSub, unFavouriteSub } from '../firebase';
 import { Link } from 'react-router-dom';
 
 export default function SubNavLink(props) {
+  const testNav = props.toggleSubsNav;
+
   return (
     <div className="sub-nav-link-main">
-      <Link
-        to={props.linkString}
-        onClick={() => {
-          props.closeNav();
-        }}
-      >
+      <Link onClick={props.toggleSubsNav} to={props.linkString}>
         {props.subName}
       </Link>
 
