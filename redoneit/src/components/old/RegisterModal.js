@@ -2,7 +2,7 @@ import '../styles/RegisterModal.css';
 import { Link } from 'react-router-dom';
 import stepArt from '../imgs/loginDecoration.png';
 import { signInWithRedirect } from 'firebase/auth';
-import { auth, provider, registerNewUser } from '../firebase';
+import { auth, provider, registerNewUser } from '../../firebase';
 
 import React, { useState } from 'react';
 

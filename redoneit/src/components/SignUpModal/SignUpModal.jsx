@@ -1,6 +1,6 @@
 import Backdrop from '../Backdrop/Backdrop';
 import { motion } from 'framer-motion';
-import LoginForm from '../LoginForm/LoginForm';
+import SignUpForm from '../SignUpForm/SignUpForm';
 
 const dropIn = {
   hidden: {
@@ -22,7 +22,7 @@ const dropIn = {
   },
 };
 
-export default function LoginModal({ modalOpen, handleClose }) {
+export default function SignUpModal({ modalOpen, handleClose }) {
   return (
     <Backdrop onClick={handleClose}>
       <motion.div
@@ -32,7 +32,7 @@ export default function LoginModal({ modalOpen, handleClose }) {
         animate="visible"
         exit="exit"
       >
-        <LoginForm handleClose={handleClose} modalOpen={modalOpen} />
+        <SignUpForm handleClose={handleClose} modalOpen={modalOpen} />
       </motion.div>
     </Backdrop>
   );

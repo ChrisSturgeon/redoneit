@@ -1,51 +1,37 @@
 import { signOut } from 'firebase/auth';
 
 import '../styles/NavBar.css';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { auth, getUserSubs } from '../firebase';
+import { auth } from '../firebase';
 
-import LoginModal from './LoginModal';
-import RegisterModal from './RegisterModal';
 import UserNavBox from './UserNavBox';
 import SubsNav from './SubsNav';
+import LoginModal from './LoginModal/LoginModal';
+import SignUpModal from './SignUpModal/SignUpModal';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import TestModal from './LoginModal/LoginModal';
+import { AnimatePresence } from 'framer-motion';
 
 export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [registerOpen, setRegisterOpen] = useState(false);
   const [subsOpen, setSubsOpen] = useState(false);
-  const [testModal, setTestModal] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const userId = props.userId;
 
-  // Toggle for test modal
+  // Toggles login modal open/closed
+  const toggleLoginModal = () => {
+    setLoginModalOpen(!loginModalOpen);
+  };
 
-  const testModalToggle = () => {
-    setTestModal(!testModal);
+  // Toggles register modal open/closed
+  const toggleRegisterModal = () => {
+    setRegisterModalOpen(!registerModalOpen);
   };
 
   // Toggles mobile menu display
   const toggleMenu = () => {
     setExpanded(!expanded);
-  };
-
-  // Toggles login modal display
-  const toggleLogin = () => {
-    if (registerOpen) {
-      toggleRegister();
-    }
-    setLoginOpen(!loginOpen);
-  };
-
-  // Toggles register modal display
-  const toggleRegister = () => {
-    if (loginOpen) {
-      toggleLogin();
-    }
-    setRegisterOpen(!registerOpen);
   };
 
   // Signs out current user
@@ -83,7 +69,7 @@ export default function NavBar(props) {
         <div className="main-nav">
           <ul>
             <li>
-              <button onClick={testModalToggle}>Test Modal</button>
+              <button onClick={toggleLoginModal}>Test Modal</button>
             </li>
             <li>
               <Link to="r">
@@ -94,14 +80,17 @@ export default function NavBar(props) {
               <>
                 <li>
                   <Link>
-                    <button onClick={toggleRegister} className="signup-btn">
+                    <button
+                      onClick={toggleRegisterModal}
+                      className="signup-btn"
+                    >
                       Sign Up
                     </button>
                   </Link>
                 </li>
                 <li>
                   <Link>
-                    <button onClick={testModalToggle} className="login-btn">
+                    <button onClick={toggleLoginModal} className="login-btn">
                       Log In
                     </button>
                   </Link>
@@ -147,18 +136,21 @@ export default function NavBar(props) {
           <li className={expanded ? 'open' : 'closed'}>Link 6</li>
         </ul>
       </div>
-      <RegisterModal
-        registerOpen={registerOpen}
-        toggleRegister={toggleRegister}
-      />
-      <LoginModal loginOpen={loginOpen} toggleLogin={toggleLogin} />
 
       <AnimatePresence initial={false} wait={true}>
-        {testModal && (
-          <TestModal
-            modalOpen={testModal}
-            handleClose={testModalToggle}
-            text={'Hiya!'}
+        {registerModalOpen && (
+          <SignUpModal
+            modalOpen={registerModalOpen}
+            handleClose={toggleRegisterModal}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence initial={false} wait={true}>
+        {loginModalOpen && (
+          <LoginModal
+            modalOpen={loginModalOpen}
+            handleClose={toggleLoginModal}
           />
         )}
       </AnimatePresence>
