@@ -1,8 +1,7 @@
 .subs-nav {
   position: fixed;
-  background-color: red;
   z-index: 99;
-  /* background-color: white; */
+  background-color: white;
 }
 
 .subs-nav .all-subs-btn {

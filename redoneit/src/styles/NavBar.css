@@ -96,6 +96,7 @@ ul {
   transition: height 0.4s ease-in;
   padding: 0 2em;
   position: fixed;
+  color: white;
 }
 
 .overlay-closed {
@@ -108,8 +109,24 @@ ul {
   width: 100vw;
 }
 
-.overlay-menu {
-  max-height: 80vh;
+.menu-open {
+  height: 0vh;
+}
+
+.overlay-menu-closed {
+  list-style: none;
+  position: relative;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75em;
+  margin-top: 10vh;
+  width: 100%;
+  transition-delay: 1s;
+  transition: color 1s ease-in;
+}
+
+.overlay-menu-open {
   list-style: none;
   position: relative;
   display: flex;
@@ -118,7 +135,6 @@ ul {
   gap: 0.75em;
   margin-top: 10vh;
   width: 100%;
-  color: white;
 }
 
 .overlay-menu li a {
@@ -162,6 +178,10 @@ i {
 
   .hamburger-btn {
     display: block;
+  }
+
+  .desktop-subs-nav {
+    display: none;
   }
 }
 

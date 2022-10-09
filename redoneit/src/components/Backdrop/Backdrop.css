@@ -1,0 +1,13 @@
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: var(--modal-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: hidden;
+}

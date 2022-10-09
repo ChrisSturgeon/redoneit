@@ -10,12 +10,22 @@ import RegisterModal from './RegisterModal';
 import UserNavBox from './UserNavBox';
 import SubsNav from './SubsNav';
 
+import { motion, AnimatePresence } from 'framer-motion';
+import TestModal from './LoginModal/LoginModal';
+
 export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const [subsOpen, setSubsOpen] = useState(false);
+  const [testModal, setTestModal] = useState(false);
   const userId = props.userId;
+
+  // Toggle for test modal
+
+  const testModalToggle = () => {
+    setTestModal(!testModal);
+  };
 
   // Toggles mobile menu display
   const toggleMenu = () => {
@@ -43,6 +53,7 @@ export default function NavBar(props) {
     signOut(auth);
   };
 
+  // Opens and closes the subreddit navigation div
   const toggleSubsNav = () => {
     setSubsOpen(!subsOpen);
   };
@@ -50,25 +61,29 @@ export default function NavBar(props) {
   return (
     <div>
       <nav className={expanded ? 'no-shadow' : null}>
-        <Link className="home-nav-link" to="/">
+        <Link
+          onClick={() => {
+            if (subsOpen) {
+              toggleSubsNav();
+            }
+          }}
+          className="home-nav-link"
+          to="/"
+        >
           Reddit
         </Link>
-        <div>
+        <div className="desktop-subs-nav">
           <button onClick={toggleSubsNav} className="subs-btn">
             Show subs
           </button>
           {subsOpen && userId ? (
             <SubsNav toggleSubsNav={toggleSubsNav} />
           ) : null}
-          {/* 
-          <div className={subsOpen ? 'subs-modal-open' : 'subs-modal-closed'}>
-            {userId ? <SubsNav toggleSubsNav={toggleSubsNav} /> : null}
-          </div> */}
         </div>
         <div className="main-nav">
           <ul>
             <li>
-              <button>Test func</button>
+              <button onClick={testModalToggle}>Test Modal</button>
             </li>
             <li>
               <Link to="r">
@@ -86,7 +101,7 @@ export default function NavBar(props) {
                 </li>
                 <li>
                   <Link>
-                    <button onClick={toggleLogin} className="login-btn">
+                    <button onClick={testModalToggle} className="login-btn">
                       Log In
                     </button>
                   </Link>
@@ -114,8 +129,8 @@ export default function NavBar(props) {
           )}
         </button>
       </nav>
-      {/* <div className={expanded ? 'overlay-open' : 'overlay-closed'}>
-        <ul className="overlay-menu">
+      <div className={expanded ? 'overlay-open' : 'overlay-closed'}>
+        <ul className={expanded ? 'overlay-menu-open' : 'overlay-menu-closed'}>
           <li className={expanded ? 'open' : 'closed'}>
             <Link to="/" onClick={toggleMenu}>
               Home
@@ -131,12 +146,22 @@ export default function NavBar(props) {
           <li className={expanded ? 'open' : 'closed'}>Link 5</li>
           <li className={expanded ? 'open' : 'closed'}>Link 6</li>
         </ul>
-      </div> */}
+      </div>
       <RegisterModal
         registerOpen={registerOpen}
         toggleRegister={toggleRegister}
       />
       <LoginModal loginOpen={loginOpen} toggleLogin={toggleLogin} />
+
+      <AnimatePresence initial={false} wait={true}>
+        {testModal && (
+          <TestModal
+            modalOpen={testModal}
+            handleClose={testModalToggle}
+            text={'Hiya!'}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
