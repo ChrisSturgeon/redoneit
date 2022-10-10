@@ -31,10 +31,10 @@ export default function SignUpForm(props) {
     signInWithRedirect(auth, provider);
   };
 
-  // Locks home screen scroll when register modal open
-  props.registerOpen
-    ? (document.body.style.overflow = 'hidden')
-    : (document.body.style.overflow = 'auto');
+  // // Locks home screen scroll when register modal open
+  // props.registerOpen
+  //   ? (document.body.style.overflow = 'hidden')
+  //   : (document.body.style.overflow = 'auto');
 
   // Validates registration inputs and then creates new Firebase user
   const onSubmit = (event) => {

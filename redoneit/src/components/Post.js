@@ -1,11 +1,13 @@
 import { verifyPasswordResetCode } from 'firebase/auth';
 import '../styles/Post.css';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { postVote } from '../firebase';
 
 import { format } from 'date-fns';
 
 export default function Post(props) {
+  const { subName } = useParams();
+  const navigate = useNavigate();
   const postData = props.data;
   const dateObj = new Date(postData.posted.seconds * 1000);
   const dateString = format(dateObj, 'do LLL yy');
@@ -15,8 +17,16 @@ export default function Post(props) {
     urlString = postData.url.split('').slice(12, 60).join('');
   }
 
+  // Prevents loading post details when hyperlink clicked
+  const navigateToPost = (event) => {
+    if (event.target.tagName !== 'A') {
+      console.log('Dog!!');
+      navigate(`/r/${subName}/post/${postData.id}`);
+    }
+  };
+
   return (
-    <div key={postData.id} className="post-main">
+    <div onClick={navigateToPost} key={postData.id} className="post-main">
       <div className="karma-box">
         <button
           onClick={() =>
@@ -39,6 +49,7 @@ export default function Post(props) {
           <i className="fa-sharp fa-solid fa-arrow-down"></i>
         </button>
       </div>
+      <button>Visit Post</button>
       <div className="details-box">
         <div className="user-time">
           Posted by u/{postData.user} on {dateString} at {timeString}

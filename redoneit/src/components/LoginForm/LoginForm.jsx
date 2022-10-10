@@ -88,7 +88,15 @@ export default function LoginForm(props) {
               Forgot your <Link>username</Link> or <Link>password</Link>?
             </div>
             <div>
-              New to Reddit? <Link>Sign Up</Link>
+              New to Reddit?{' '}
+              <button
+                onClick={() => {
+                  props.handleClose();
+                  props.toggleRegisterModal();
+                }}
+              >
+                Sign Up
+              </button>
             </div>
           </div>
         </div>

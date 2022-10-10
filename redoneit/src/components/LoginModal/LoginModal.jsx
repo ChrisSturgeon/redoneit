@@ -22,7 +22,11 @@ const dropIn = {
   },
 };
 
-export default function LoginModal({ modalOpen, handleClose }) {
+export default function LoginModal({
+  modalOpen,
+  handleClose,
+  toggleRegisterModal,
+}) {
   return (
     <Backdrop onClick={handleClose}>
       <motion.div
@@ -32,7 +36,11 @@ export default function LoginModal({ modalOpen, handleClose }) {
         animate="visible"
         exit="exit"
       >
-        <LoginForm handleClose={handleClose} modalOpen={modalOpen} />
+        <LoginForm
+          handleClose={handleClose}
+          modalOpen={modalOpen}
+          toggleRegisterModal={toggleRegisterModal}
+        />
       </motion.div>
     </Backdrop>
   );

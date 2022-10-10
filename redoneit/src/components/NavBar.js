@@ -1,7 +1,7 @@
 import { signOut } from 'firebase/auth';
 
 import '../styles/NavBar.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { auth } from '../firebase';
 
@@ -18,6 +18,15 @@ export default function NavBar(props) {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const userId = props.userId;
+
+  // Locks body scroll when register or login modals are open
+  useEffect(() => {
+    if (loginModalOpen || registerModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [loginModalOpen, registerModalOpen]);
 
   // Toggles login modal open/closed
   const toggleLoginModal = () => {
@@ -151,6 +160,7 @@ export default function NavBar(props) {
           <LoginModal
             modalOpen={loginModalOpen}
             handleClose={toggleLoginModal}
+            toggleRegisterModal={toggleRegisterModal}
           />
         )}
       </AnimatePresence>

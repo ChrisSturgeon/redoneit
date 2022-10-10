@@ -39,6 +39,7 @@ export default function Subreddit() {
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           data.id = doc.id;
+
           posts.push(data);
         });
         setPosts(posts);
@@ -63,7 +64,6 @@ export default function Subreddit() {
                   <i className="fa-solid fa-link"></i>
                 </Link>
               </div>
-
               {posts
                 ? posts.map((post) => {
                     return <Post key={post.id} data={post} />;

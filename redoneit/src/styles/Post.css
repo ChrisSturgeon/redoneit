@@ -42,8 +42,13 @@
 .details-box .post-url {
   color: var(--accent-blue);
   font-size: 0.8rem;
+  z-index: 99;
 }
 
 .details-box .post-url:hover {
   text-decoration: underline;
+}
+
+.post-url {
+  color: red;
 }

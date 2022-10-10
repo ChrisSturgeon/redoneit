@@ -1,16 +1,19 @@
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, getUserName, db } from '../src/firebase';
-
-import NavBar from './components/NavBar';
-import Home from './components/Home';
-
-import { Route, Routes, Switch } from 'react-router-dom';
 import './App.css';
 import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+// User authentication and data
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, getUserName, db } from '../src/firebase';
+import { onSnapshot, doc } from 'firebase/firestore';
+
+// Components
+import NavBar from './components/NavBar';
+import Home from './components/Home';
 import Subreddit from './components/Subreddit';
 import Subreddits from './components/Subreddits';
 import PostForm from './components/postForm';
-import { onSnapshot, doc } from 'firebase/firestore';
+import PostDetail from './components/PostDetail/PostDetail';
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -63,6 +66,7 @@ function App() {
         <Route path="r/" element={<Subreddits />}></Route>
         <Route path="r/:subName" element={<Subreddit />}></Route>
         <Route path="r/:subName/submit" element={<PostForm />}></Route>
+        <Route path="r/:subName/post/:postId" element={<PostDetail />}></Route>
       </Routes>
     </div>
   );

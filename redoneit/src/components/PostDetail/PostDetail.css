@@ -1,0 +1,6 @@
+.post-detail-main {
+  margin-top: 6vh;
+  min-height: 94vh;
+  padding: 1em;
+  background-color: var(--home-bg-grey);
+}
