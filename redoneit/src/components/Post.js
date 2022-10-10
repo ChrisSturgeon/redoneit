@@ -26,7 +26,7 @@ export default function Post(props) {
   };
 
   return (
-    <div onClick={navigateToPost} key={postData.id} className="post-main">
+    <div key={postData.id} className="post-main">
       <div className="karma-box">
         <button
           onClick={() =>
@@ -49,8 +49,8 @@ export default function Post(props) {
           <i className="fa-sharp fa-solid fa-arrow-down"></i>
         </button>
       </div>
-      <button>Visit Post</button>
-      <div className="details-box">
+
+      <div onClick={navigateToPost} className="details-box">
         <div className="user-time">
           Posted by u/{postData.user} on {dateString} at {timeString}
         </div>
@@ -69,9 +69,16 @@ export default function Post(props) {
               </a>
             );
           } else if (postData.type === 'text') {
-            return <div>{postData.postText}</div>;
+            return <div className="post-text">{postData.postText}</div>;
           }
         })()}
+        <div className="comments-share-box">
+          <div className="comments-box">
+            <i className=" fa-regular fa-message"></i> {postData.comments}{' '}
+            comments
+          </div>
+          <div className="share-box">share</div>
+        </div>
       </div>
     </div>
   );

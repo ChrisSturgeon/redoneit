@@ -2,17 +2,22 @@
   width: 100%;
   background-color: white;
   display: flex;
-  border: 1.25px solid var(--medium-grey);
+  border: 1px solid var(--medium-grey);
   border-radius: 4px;
   margin-bottom: 1em;
 }
 
+.post-main:hover {
+  border: 1px solid black;
+}
+
 .karma-box {
   background-color: var(--light-grey);
-  padding: 0.25em;
+  padding: 0.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 4px;
 }
 
 .karma-box button {
@@ -27,16 +32,19 @@
 
 .details-box {
   padding: 0.5em;
+  width: 100%;
 }
 
 .user-time {
   font-size: 0.8rem;
   color: var(--dark-grey);
+  margin-bottom: 0.3em;
 }
 
 .post-title {
   font-size: 1.1rem;
   font-weight: 500;
+  margin-bottom: 0.2em;
 }
 
 .details-box .post-url {
@@ -49,6 +57,30 @@
   text-decoration: underline;
 }
 
-.post-url {
-  color: red;
+.comments-share-box {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--darkest-grey);
+}
+.comments-share-box i {
+  font-size: 1.2rem;
+  position: relative;
+  top: 2px;
+  color: var(--darkest-grey);
+}
+
+.comments-box,
+.share-box {
+  margin-top: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.25em 0.6em;
+  border-radius: 3px;
+}
+
+.comments-box:hover,
+.share-box:hover {
+  background-color: var(--hover-grey);
 }

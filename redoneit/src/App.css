@@ -60,6 +60,7 @@ button {
   --main-grey: rgb(199, 199, 199);
   --medium-grey: rgb(214, 214, 214);
   --dark-grey: rgb(134, 134, 134);
+  --darkest-grey: rgb(108, 108, 108);
   --light-grey: #f9f9f9;
   --hover-grey: rgb(231, 230, 230);
   --main-black: #000000;

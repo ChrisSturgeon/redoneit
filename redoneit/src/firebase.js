@@ -144,6 +144,7 @@ export async function newURLPost(title, url, subName) {
   const docRef = await addDoc(
     collection(db, 'subreddits', `${subName}`, 'posts'),
     {
+      comments: 0,
       downVotedBy: [],
       downVotes: 0,
       karma: 0,
@@ -168,6 +169,7 @@ export async function newTextPost(title, postText, subName) {
   const docRef = await addDoc(
     collection(db, 'subreddits', `${subName}`, 'posts'),
     {
+      comments: 0,
       downVotedBy: [],
       downVotes: 0,
       karma: 0,
