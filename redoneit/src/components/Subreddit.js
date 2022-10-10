@@ -38,7 +38,6 @@ export default function Subreddit() {
         const posts = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          console.log(doc.data());
           data.id = doc.id;
           posts.push(data);
         });

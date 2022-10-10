@@ -5,6 +5,10 @@
   font-family: 'IBM-Plex-Sans', Helvetica, Arial, sans-serif;
 }
 
+body {
+  overscroll-behavior-y: none;
+}
+
 button {
   cursor: pointer;
 }

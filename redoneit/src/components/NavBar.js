@@ -1,16 +1,17 @@
-import { signOut } from 'firebase/auth';
-
 import '../styles/NavBar.css';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+
+// User authentication and datta
+import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
+// Components
 import UserNavBox from './UserNavBox';
 import SubsNav from './SubsNav';
 import LoginModal from './LoginModal/LoginModal';
 import SignUpModal from './SignUpModal/SignUpModal';
-
-import { AnimatePresence } from 'framer-motion';
 
 export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);

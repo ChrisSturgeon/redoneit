@@ -32,13 +32,11 @@ function App() {
         setUserId(user.uid);
         const result = await getUserName(user.uid);
         setUsername(result.username);
-        console.log(`${result.username} signed in!`);
       };
       if (user) {
         getBasicInfo();
       } else {
         setUsername(null);
-        console.log('signed out');
       }
     });
   }, []);

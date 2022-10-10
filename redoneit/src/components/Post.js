@@ -20,7 +20,6 @@ export default function Post(props) {
   // Prevents loading post details when hyperlink clicked
   const navigateToPost = (event) => {
     if (event.target.tagName !== 'A') {
-      console.log('Dog!!');
       navigate(`/r/${subName}/post/${postData.id}`);
     }
   };
