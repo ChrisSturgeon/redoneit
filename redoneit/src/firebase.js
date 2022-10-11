@@ -91,8 +91,9 @@ export async function registerNewUser(email, password, username) {
     });
 }
 
-export async function upVotePost(subreddit, postId) {
+export async function upVotePost(subreddit, postId, postUser) {
   const currentUser = auth.currentUser.uid;
+  const postUserRef = doc(db, 'users', `${postUser}`);
   const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
 
   const docSnap = await getDoc(postRef);
@@ -104,6 +105,7 @@ export async function upVotePost(subreddit, postId) {
       karma: increment(1),
       downVotedBy: arrayRemove(`${currentUser}`),
     });
+    await updateDoc(postUserRef, { karma: increment(1) });
   }
 
   // Upvote the comment
@@ -112,16 +114,19 @@ export async function upVotePost(subreddit, postId) {
       karma: increment(-1),
       upVotedBy: arrayRemove(`${currentUser}`),
     });
+    await updateDoc(postUserRef, { karma: increment(-1) });
   } else {
     await updateDoc(postRef, {
       karma: increment(1),
       upVotedBy: arrayUnion(`${currentUser}`),
     });
+    await updateDoc(postUserRef, { karma: increment(1) });
   }
 }
 
-export async function downVotePost(subreddit, postId) {
+export async function downVotePost(subreddit, postId, postUser) {
   const currentUser = auth.currentUser.uid;
+  const postUserRef = doc(db, 'users', `${postUser}`);
   const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
 
   const docSnap = await getDoc(postRef);
@@ -133,6 +138,7 @@ export async function downVotePost(subreddit, postId) {
       karma: increment(-1),
       upVotedBy: arrayRemove(`${currentUser}`),
     });
+    await updateDoc(postUserRef, { karma: increment(-1) });
   }
 
   // Downvote the comment
@@ -141,13 +147,17 @@ export async function downVotePost(subreddit, postId) {
       karma: increment(1),
       downVotedBy: arrayRemove(`${currentUser}`),
     });
+    await updateDoc(postUserRef, { karma: increment(1) });
   } else {
     await updateDoc(postRef, {
       karma: increment(-1),
       downVotedBy: arrayUnion(`${currentUser}`),
     });
+    await updateDoc(postUserRef, { karma: increment(-1) });
   }
 }
+
+// Now redundant
 
 /* Increments or decrements post karma by 1. If user has
 already upvoted or downvoted,

@@ -46,7 +46,11 @@ export default function Post(props) {
   return (
     <div key={postData.id} className="post-main">
       <div className="karma-box">
-        <button onClick={() => upVotePost(postData.subreddit, postData.id)}>
+        <button
+          onClick={() =>
+            upVotePost(postData.subreddit, postData.id, postData.userId)
+          }
+        >
           <i
             className={
               hasUpVoted
@@ -56,7 +60,11 @@ export default function Post(props) {
           ></i>
         </button>
         <div>{postData.karma}</div>
-        <button onClick={() => downVotePost(postData.subreddit, postData.id)}>
+        <button
+          onClick={() =>
+            downVotePost(postData.subreddit, postData.id, postData.userId)
+          }
+        >
           <i
             className={
               hasDownVoted
