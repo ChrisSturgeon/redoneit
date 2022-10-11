@@ -26,6 +26,7 @@ import {
   addDoc,
   serverTimestamp,
   onSnapshot,
+  connectFirestoreEmulator,
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -229,4 +230,82 @@ export async function unFavouriteSub(subName) {
   await updateDoc(subRef, {
     favourite: false,
   });
+}
+
+// Upvotes comment after checking user has not already upvoted.
+// If they have already upvoted, removes upvote
+export async function upVoteComment(subreddit, postId, commentId) {
+  const currentUser = auth.currentUser.uid;
+  const commentRef = doc(
+    db,
+    'subreddits',
+    `${subreddit}`,
+    'posts',
+    `${postId}`,
+    'comments',
+    `${commentId}`
+  );
+
+  const docSnap = await getDoc(commentRef);
+  const commentData = docSnap.data();
+
+  // Reverse any previous downvote to to start afresh
+  if (commentData.downVotedBy.includes(currentUser)) {
+    await updateDoc(commentRef, {
+      karma: increment(1),
+      downVotedBy: arrayRemove(`${currentUser}`),
+    });
+  }
+
+  // Upvote comment
+  if (commentData.upVotedBy.includes(currentUser)) {
+    await updateDoc(commentRef, {
+      karma: increment(-1),
+      upVotedBy: arrayRemove(`${currentUser}`),
+    });
+  } else {
+    await updateDoc(commentRef, {
+      karma: increment(1),
+      upVotedBy: arrayUnion(`${currentUser}`),
+    });
+  }
+}
+
+// Downvotes comment after checking user has not already downvoted.
+// If they have already downvoted, removes downvote
+export async function downVoteComment(subreddit, postId, commentId) {
+  const currentUser = auth.currentUser.uid;
+  const commentRef = doc(
+    db,
+    'subreddits',
+    `${subreddit}`,
+    'posts',
+    `${postId}`,
+    'comments',
+    `${commentId}`
+  );
+
+  const docSnap = await getDoc(commentRef);
+  const commentData = docSnap.data();
+
+  // Reverse any previous upvote to start afresh
+  if (commentData.upVotedBy.includes(currentUser)) {
+    await updateDoc(commentRef, {
+      karma: increment(-1),
+      upVotedBy: arrayRemove(`${currentUser}`),
+    });
+  }
+
+  // Downvote comment
+  if (commentData.downVotedBy.includes(currentUser)) {
+    await updateDoc(commentRef, {
+      karma: increment(1),
+      downVotedBy: arrayRemove(`${currentUser}`),
+    });
+  } else {
+    await updateDoc(commentRef, {
+      karma: increment(-1),
+      downVotedBy: arrayUnion(`${currentUser}`),
+    });
+  }
 }

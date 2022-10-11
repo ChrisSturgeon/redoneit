@@ -14,4 +14,4 @@ export default function SubredditsTable(props) {
       ))}
     </div>
   );
-}
+} 

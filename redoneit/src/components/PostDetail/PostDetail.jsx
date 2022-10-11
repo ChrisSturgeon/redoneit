@@ -2,11 +2,25 @@ import './PostDetail.css';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { auth, db, postVote } from '../../firebase';
-import { onSnapshot, doc } from 'firebase/firestore';
+import {
+  onSnapshot,
+  doc,
+  query,
+  collection,
+  orderBy,
+} from 'firebase/firestore';
+
+import Comment from '../Comment/Comment';
+import CommentForm from '../CommentForm/CommentForm';
 
 export default function PostDetail(props) {
   const { subName, postId } = useParams();
   const [overview, setOverview] = useState(null);
+  const [comments, setComments] = useState(null);
+
+  const test = () => {
+    console.log(comments);
+  };
 
   // Sets listener for postoverview information and stores to state
   useEffect(() => {
@@ -21,6 +35,36 @@ export default function PostDetail(props) {
     getOverview();
   }, [subName, postId]);
 
+  // Sets listener for post's comments to ordered by descending karma
+  useEffect(() => {
+    async function getComments() {
+      const currentUser = auth.currentUser.uid;
+      const queryRef = query(
+        collection(
+          db,
+          'subreddits',
+          `${subName}`,
+          'posts',
+          `${postId}`,
+          'comments'
+        ),
+        orderBy('karma', 'desc')
+      );
+      onSnapshot(queryRef, (QuerySnapshot) => {
+        const comments = [];
+        QuerySnapshot.forEach((doc) => {
+          // comments.push(doc.data());
+          const comment = doc.data();
+          comment.id = doc.id;
+          comments.push(comment);
+        });
+        setComments(comments);
+      });
+    }
+    getComments();
+  }, []);
+
+  // Ensure top of content is displayed on page load
   document.body.scrollTop = document.documentElement.scrollTop = 0;
 
   return (
@@ -104,23 +148,20 @@ export default function PostDetail(props) {
               return <div>...</div>;
             }
           })()}
+
+          <CommentForm />
+
+          <button onClick={test}>Test</button>
+
+          {/* Comments detail conditional */}
+
+          {comments
+            ? comments.map((comment) => {
+                return <Comment key={comment.id} data={comment} />;
+              })
+            : null}
         </div>
       </div>
     </div>
   );
-
-  // {() => {
-  //   if (overview) {
-  //     return (
-  //       <div>Hi!</div>
-  //     )
-  //   }
-  // }()}
-
-  // return (
-  //   <div className="post-detail-main">
-  //     I'm a post detail for {subName} post {postId}
-  //     <div>{overview ? `${overview.karma}` : '...'}</div>
-  //   </div>
-  // );
 }

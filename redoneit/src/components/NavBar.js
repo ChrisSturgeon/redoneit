@@ -20,9 +20,11 @@ export default function NavBar(props) {
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const userId = props.userId;
 
-  // Locks body scroll when register or login modals are open
+  // Scrolls to top of page and locks body scroll
+  //  register or login modals are open
   useEffect(() => {
     if (loginModalOpen || registerModalOpen) {
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';

@@ -1,0 +1,36 @@
+.comment-main {
+  width: 100%;
+  border: 1px solid red;
+  padding: 0 1em;
+  margin-bottom: 1em;
+}
+
+.user-and-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+}
+
+.user-and-time .username {
+  font-weight: 500;
+}
+
+.user-and-time .posted-interval {
+  color: grey;
+}
+
+.reply-text {
+  margin-bottom: 5px;
+}
+
+.karma-and-reply {
+  padding: 0.5em;
+  display: flex;
+  gap: 5px;
+}
+
+.karma-and-reply > *:hover {
+  background-color: red;
+}
