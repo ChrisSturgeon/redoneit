@@ -17,9 +17,15 @@ export default function PostDetail(props) {
   const { subName, postId } = useParams();
   const [overview, setOverview] = useState(null);
   const [comments, setComments] = useState(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const test = () => {
-    console.log(comments);
+    console.log(scrollPosition);
+    window.scroll(0, scrollPosition);
+  };
+
+  const updateScrollPosition = (offset) => {
+    setScrollPosition(offset);
   };
 
   // Sets listener for postoverview information and stores to state
@@ -34,6 +40,10 @@ export default function PostDetail(props) {
     }
     getOverview();
   }, [subName, postId]);
+
+  useEffect(() => {
+    setTimeout(() => window.scrollTo(0, scrollPosition), 1);
+  }, [comments]);
 
   // Sets listener for post's comments to ordered by descending karma
   useEffect(() => {
@@ -65,7 +75,7 @@ export default function PostDetail(props) {
   }, []);
 
   // Ensure top of content is displayed on page load
-  document.body.scrollTop = document.documentElement.scrollTop = 0;
+  // document.body.scrollTop = document.documentElement.scrollTop = 0;
 
   return (
     <div className="post-detail-main">
@@ -157,7 +167,13 @@ export default function PostDetail(props) {
 
           {comments
             ? comments.map((comment) => {
-                return <Comment key={comment.id} data={comment} />;
+                return (
+                  <Comment
+                    key={comment.id}
+                    data={comment}
+                    updateScrollPosition={updateScrollPosition}
+                  />
+                );
               })
             : null}
         </div>

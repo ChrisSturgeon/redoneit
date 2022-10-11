@@ -1,13 +1,15 @@
 import './CommentForm.css';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { submitComment } from '../../firebase';
-import { serverTimestamp } from 'firebase/firestore';
+import { set } from 'date-fns';
 
 export default function CommentForm() {
   const { subName, postId } = useParams();
   const [commentText, setCommentText] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleTextInput = (event) => {
     setCommentText(event.target.value);
@@ -15,19 +17,40 @@ export default function CommentForm() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    await submitComment(subName, postId, commentText, serverTimestamp());
+    if (commentText.length > 0) {
+      await submitComment(subName, postId, commentText);
+      setCommentText('');
+      setIsFormValid(false);
+      setSubmitted(true);
+    }
   };
+
+  useEffect(() => {
+    if (commentText.length > 0) {
+      setIsFormValid(true);
+    }
+  }, [commentText]);
+
   return (
     <div className="comment-form-main">
-      <form onSubmit={handleFormSubmit}>
-        <div>Commenting as XXX</div>
-        <textarea
-          onChange={handleTextInput}
-          value={commentText}
-          placeholder="What are your thoughts?"
-        ></textarea>
-        <button type="submit">Comment</button>
-      </form>
+      {!submitted ? (
+        <form onSubmit={handleFormSubmit}>
+          <div>Commenting as XXX</div>
+          <textarea
+            onChange={handleTextInput}
+            value={commentText}
+            placeholder="What are your thoughts?"
+          ></textarea>
+          <button disabled={!isFormValid} type="submit">
+            Comment
+          </button>
+        </form>
+      ) : (
+        <div>
+          <div>Thanks for your comment!</div>
+          <button onClick={() => setSubmitted(false)}>Add another?</button>
+        </div>
+      )}
     </div>
   );
 }
