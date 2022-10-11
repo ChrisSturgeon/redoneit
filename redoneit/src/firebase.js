@@ -309,3 +309,27 @@ export async function downVoteComment(subreddit, postId, commentId) {
     });
   }
 }
+
+export async function submitComment(subreddit, postId, commentText) {
+  const currentUser = auth.currentUser.uid;
+  const userName = await getUserName(currentUser);
+
+  const commentRef = collection(
+    db,
+    'subreddits',
+    `${subreddit}`,
+    'posts',
+    `${postId}`,
+    'comments'
+  );
+
+  await addDoc(commentRef, {
+    downVotedBy: [],
+    karma: 0,
+    posted: new Date(),
+    text: commentText,
+    upVotedBy: [],
+    user: userName.username,
+    userId: currentUser,
+  });
+}

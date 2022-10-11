@@ -5,9 +5,9 @@ import { upVoteComment, downVoteComment } from '../../firebase';
 
 export default function Comment({ data }) {
   const { subName, postId } = useParams();
-  const timeInverval = formatDistanceToNowStrict(
-    new Date(data.posted.seconds * 1000)
-  );
+
+  const dateObj = new Date(data.posted.seconds * 1000);
+  const timeInterval = formatDistanceToNowStrict(dateObj);
 
   // TO REMOVE - test function
   const test = () => {
@@ -27,7 +27,7 @@ export default function Comment({ data }) {
       <div className="user-and-time">
         <div className="username">{data.user}</div>
         <div>-</div>
-        <div className="posted-interval">{timeInverval} ago</div>
+        <div className="posted-interval">{timeInterval} ago</div>
       </div>
       <div className="reply-text">{data.text}</div>
 
