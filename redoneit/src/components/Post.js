@@ -1,8 +1,10 @@
 import '../styles/Post.css';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { postVote } from '../firebase';
+import { upVotePost, downVotePost, postVote } from '../firebase';
 
 import { formatDistanceToNowStrict } from 'date-fns';
+import { auth } from '../firebase';
 
 export default function Post(props) {
   const { subName } = useParams();
@@ -17,6 +19,23 @@ export default function Post(props) {
     urlString = postData.url.split('').slice(12, 60).join('');
   }
 
+  const [hasUpVoted, setHasUpvoted] = useState(null);
+  const [hasDownVoted, setHasDownVoted] = useState(null);
+
+  useEffect(() => {
+    if (postData.upVotedBy.includes(auth.currentUser.uid)) {
+      setHasUpvoted(true);
+    } else {
+      setHasUpvoted(false);
+    }
+
+    if (postData.downVotedBy.includes(auth.currentUser.uid)) {
+      setHasDownVoted(true);
+    } else {
+      setHasDownVoted(false);
+    }
+  }, [postData.upVotedBy, postData.downVotedBy]);
+
   // Redirects users to post page unless a hyperlink has been clicked
   const navigateToPost = (event) => {
     if (event.target.tagName !== 'A') {
@@ -27,25 +46,24 @@ export default function Post(props) {
   return (
     <div key={postData.id} className="post-main">
       <div className="karma-box">
-        <button
-          onClick={() =>
-            postVote(postData.subreddit, postData.userId, postData.id, 'upVote')
-          }
-        >
-          <i className="fa-sharp fa-solid fa-arrow-up"></i>
+        <button onClick={() => upVotePost(postData.subreddit, postData.id)}>
+          <i
+            className={
+              hasUpVoted
+                ? 'fa-sharp fa-solid fa-arrow-up hasUpVoted'
+                : 'fa-sharp fa-solid fa-arrow-up'
+            }
+          ></i>
         </button>
         <div>{postData.karma}</div>
-        <button
-          onClick={() =>
-            postVote(
-              postData.subreddit,
-              postData.userId,
-              postData.id,
-              'downVote'
-            )
-          }
-        >
-          <i className="fa-sharp fa-solid fa-arrow-down"></i>
+        <button onClick={() => downVotePost(postData.subreddit, postData.id)}>
+          <i
+            className={
+              hasDownVoted
+                ? 'fa-sharp fa-solid fa-arrow-down hasDownVoted'
+                : 'fa-sharp fa-solid fa-arrow-down '
+            }
+          ></i>
         </button>
       </div>
 

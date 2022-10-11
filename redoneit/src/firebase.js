@@ -91,6 +91,64 @@ export async function registerNewUser(email, password, username) {
     });
 }
 
+export async function upVotePost(subreddit, postId) {
+  const currentUser = auth.currentUser.uid;
+  const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
+
+  const docSnap = await getDoc(postRef);
+  const postData = docSnap.data();
+
+  // Undo any previous downvote
+  if (postData.downVotedBy.includes(currentUser)) {
+    await updateDoc(postRef, {
+      karma: increment(1),
+      downVotedBy: arrayRemove(`${currentUser}`),
+    });
+  }
+
+  // Upvote the comment
+  if (postData.upVotedBy.includes(currentUser)) {
+    await updateDoc(postRef, {
+      karma: increment(-1),
+      upVotedBy: arrayRemove(`${currentUser}`),
+    });
+  } else {
+    await updateDoc(postRef, {
+      karma: increment(1),
+      upVotedBy: arrayUnion(`${currentUser}`),
+    });
+  }
+}
+
+export async function downVotePost(subreddit, postId) {
+  const currentUser = auth.currentUser.uid;
+  const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
+
+  const docSnap = await getDoc(postRef);
+  const postData = docSnap.data();
+
+  // Undo any previous upvotes
+  if (postData.upVotedBy.includes(currentUser)) {
+    await updateDoc(postRef, {
+      karma: increment(-1),
+      upVotedBy: arrayRemove(`${currentUser}`),
+    });
+  }
+
+  // Downvote the comment
+  if (postData.downVotedBy.includes(currentUser)) {
+    await updateDoc(postRef, {
+      karma: increment(1),
+      downVotedBy: arrayRemove(`${currentUser}`),
+    });
+  } else {
+    await updateDoc(postRef, {
+      karma: increment(-1),
+      downVotedBy: arrayUnion(`${currentUser}`),
+    });
+  }
+}
+
 /* Increments or decrements post karma by 1. If user has
 already upvoted or downvoted,
 undos this. Stores record of their vote in both the

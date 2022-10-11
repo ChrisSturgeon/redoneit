@@ -30,6 +30,14 @@
   font-size: 1rem;
 }
 
+.hasUpVoted {
+  color: #ff4500;
+}
+
+.hasDownVoted {
+  color: #0079d3;
+}
+
 .details-box {
   padding: 0.5em;
   width: 100%;

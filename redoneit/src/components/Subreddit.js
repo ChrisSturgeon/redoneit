@@ -13,7 +13,7 @@ import {
 import SubredditHeader from './SubredditHeader';
 import SubredditSidebar from './SubredditSidebar';
 import Post from './Post';
-import { db } from '../firebase';
+import { db, auth } from '../firebase';
 
 export default function Subreddit() {
   const { subName } = useParams();
