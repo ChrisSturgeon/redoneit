@@ -302,8 +302,14 @@ export async function unFavouriteSub(subName) {
 
 // Upvotes comment after checking user has not already upvoted.
 // If they have already upvoted, removes upvote
-export async function upVoteComment(subreddit, postId, commentId) {
+export async function upVoteComment(
+  subreddit,
+  postId,
+  commentId,
+  commentUserId
+) {
   const currentUser = auth.currentUser.uid;
+  const commentUserRef = doc(db, 'users', `${commentUserId}`);
   const commentRef = doc(
     db,
     'subreddits',
@@ -323,6 +329,7 @@ export async function upVoteComment(subreddit, postId, commentId) {
       karma: increment(1),
       downVotedBy: arrayRemove(`${currentUser}`),
     });
+    await updateDoc(commentUserRef, { karma: increment(1) });
   }
 
   // Upvote comment
@@ -331,18 +338,26 @@ export async function upVoteComment(subreddit, postId, commentId) {
       karma: increment(-1),
       upVotedBy: arrayRemove(`${currentUser}`),
     });
+    await updateDoc(commentUserRef, { karma: increment(-1) });
   } else {
     await updateDoc(commentRef, {
       karma: increment(1),
       upVotedBy: arrayUnion(`${currentUser}`),
     });
+    await updateDoc(commentUserRef, { karma: increment(1) });
   }
 }
 
 // Downvotes comment after checking user has not already downvoted.
 // If they have already downvoted, removes downvote
-export async function downVoteComment(subreddit, postId, commentId) {
+export async function downVoteComment(
+  subreddit,
+  postId,
+  commentId,
+  commentUserId
+) {
   const currentUser = auth.currentUser.uid;
+  const commentUserRef = doc(db, 'users', `${commentUserId}`);
   const commentRef = doc(
     db,
     'subreddits',
@@ -362,6 +377,7 @@ export async function downVoteComment(subreddit, postId, commentId) {
       karma: increment(-1),
       upVotedBy: arrayRemove(`${currentUser}`),
     });
+    await updateDoc(commentUserRef, { karma: increment(-1) });
   }
 
   // Downvote comment
@@ -370,11 +386,13 @@ export async function downVoteComment(subreddit, postId, commentId) {
       karma: increment(1),
       downVotedBy: arrayRemove(`${currentUser}`),
     });
+    await updateDoc(commentUserRef, { karma: increment(1) });
   } else {
     await updateDoc(commentRef, {
       karma: increment(-1),
       downVotedBy: arrayUnion(`${currentUser}`),
     });
+    await updateDoc(commentUserRef, { karma: increment(-1) });
   }
 }
 

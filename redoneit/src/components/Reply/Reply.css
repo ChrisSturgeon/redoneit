@@ -1,24 +1,8 @@
-.comment-left {
-  display: flex;
-  padding: 0.5em 1em;
-}
-
-.comment-line {
-  border-left: 3px solid var(--main-grey);
-}
-
-.comment-line:hover {
-  border-left: 3px solid var(--accent-blue);
-}
-
-.comment-main {
+.reply-main {
   width: 100%;
   border: 1px solid red;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-right: 1em;
+  padding: 0 1em;
   margin-bottom: 1em;
-  display: flex;
 }
 
 .user-and-time {

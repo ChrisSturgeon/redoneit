@@ -17,15 +17,9 @@ export default function PostDetail(props) {
   const { subName, postId } = useParams();
   const [overview, setOverview] = useState(null);
   const [comments, setComments] = useState(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
 
   const test = () => {
-    console.log(scrollPosition);
-    window.scroll(0, scrollPosition);
-  };
-
-  const updateScrollPosition = (offset) => {
-    setScrollPosition(offset);
+    // Do something
   };
 
   // Sets listener for postoverview information and stores to state
@@ -40,10 +34,6 @@ export default function PostDetail(props) {
     }
     getOverview();
   }, [subName, postId]);
-
-  useEffect(() => {
-    setTimeout(() => window.scrollTo(0, scrollPosition), 1);
-  }, [comments]);
 
   // Sets listener for post's comments to ordered by descending karma
   useEffect(() => {
@@ -167,13 +157,7 @@ export default function PostDetail(props) {
 
           {comments
             ? comments.map((comment) => {
-                return (
-                  <Comment
-                    key={comment.id}
-                    data={comment}
-                    updateScrollPosition={updateScrollPosition}
-                  />
-                );
+                return <Comment key={comment.id} data={comment} />;
               })
             : null}
         </div>

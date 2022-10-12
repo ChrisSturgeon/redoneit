@@ -22,6 +22,8 @@ export default function Post(props) {
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
 
+  // Checks if user has previously upvoted or downvoted
+  // comment and stores this in state as boolean to colour up/down arrow buttons accordingly
   useEffect(() => {
     if (postData.upVotedBy.includes(auth.currentUser.uid)) {
       setHasUpvoted(true);
