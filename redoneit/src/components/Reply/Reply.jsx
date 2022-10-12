@@ -14,11 +14,12 @@ export default function Reply({ commentId, data }) {
   const [replies, setReplies] = useState(null);
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
+  const [karmaClass, setKarmaClass] = useState(null);
   const [replyForm, setReplyForm] = useState(null);
 
   // TO REMOVE - test function
   const test = () => {
-    console.log(data);
+    console.log(karmaClass);
   };
 
   const upVote = () => {
@@ -61,12 +62,14 @@ export default function Reply({ commentId, data }) {
   useEffect(() => {
     if (data.upVotedBy.includes(auth.currentUser.uid)) {
       setHasUpvoted(true);
+      setKarmaClass('hasUpVoted');
     } else {
       setHasUpvoted(false);
     }
 
     if (data.downVotedBy.includes(auth.currentUser.uid)) {
       setHasDownVoted(true);
+      setKarmaClass('hasDownVoted');
     } else {
       setHasDownVoted(false);
     }
@@ -74,35 +77,45 @@ export default function Reply({ commentId, data }) {
 
   return (
     <div key={data.id} className="reply-main">
-      <div className="user-and-time">
-        <div className="username">{data.user}</div>
-        <div>-</div>
-        <div className="posted-interval">{timeInterval} ago</div>
+      <div className="reply-left">
+        <div className="reply-line"></div>
       </div>
-      <div className="reply-text">{data.text}</div>
-      <div className="karma">
-        <button onClick={upVote}>
-          {' '}
-          <i
-            className={
-              hasUpVoted
-                ? 'fa-sharp fa-solid fa-arrow-up hasUpVoted'
-                : 'fa-sharp fa-solid fa-arrow-up'
-            }
-          ></i>
-        </button>
-        {postKarma ? `${postKarma}` : '0'}
-        <button onClick={downVote}>
-          {' '}
-          <i
-            className={
-              hasDownVoted
-                ? 'fa-sharp fa-solid fa-arrow-down hasDownVoted'
-                : 'fa-sharp fa-solid fa-arrow-down '
-            }
-          ></i>
-        </button>
-        <button onClick={test}>log props</button>
+      <div className="reply-body">
+        <div className="user-and-time">
+          <div className="username">{data.user}</div>
+          <div>-</div>
+          <div className="posted-interval">{timeInterval} ago</div>
+        </div>
+        <div className="reply-text">{data.text}</div>
+        <div className="karma">
+          <button onClick={upVote}>
+            {' '}
+            <i
+              className={
+                hasUpVoted
+                  ? 'fa-sharp fa-solid fa-arrow-up hasUpVoted'
+                  : 'fa-sharp fa-solid fa-arrow-up'
+              }
+            ></i>
+          </button>
+          {postKarma ? (
+            <div className="karma-bold">
+              <div className={karmaClass}>{postKarma}</div>
+            </div>
+          ) : (
+            <div className="karma-bold">0</div>
+          )}
+          <button onClick={downVote}>
+            {' '}
+            <i
+              className={
+                hasDownVoted
+                  ? 'fa-sharp fa-solid fa-arrow-down hasDownVoted'
+                  : 'fa-sharp fa-solid fa-arrow-down '
+              }
+            ></i>
+          </button>
+        </div>
       </div>
     </div>
   );

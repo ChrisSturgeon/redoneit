@@ -40,7 +40,8 @@ export default function Comment({ data }) {
           'comments',
           `${data.id}`,
           'replies'
-        )
+        ),
+        orderBy('karma', 'desc')
       );
       onSnapshot(queryRef, (QuerySnapshot) => {
         const replies = [];
@@ -134,7 +135,13 @@ export default function Comment({ data }) {
               }
             ></i>
           </button>
-          {postKarma ? <div className={karmaClass}>{postKarma}</div> : '0'}
+          {postKarma ? (
+            <div className="karma-bold">
+              <div className={karmaClass}>{postKarma}</div>
+            </div>
+          ) : (
+            <div className="karma-bold">0</div>
+          )}
           <button onClick={downVote}>
             {' '}
             <i
@@ -145,13 +152,16 @@ export default function Comment({ data }) {
               }
             ></i>
           </button>
-          <button onClick={toggleReplyForm}>Reply</button>
+          <button className="reply-btn" onClick={toggleReplyForm}>
+            <i className=" fa-regular fa-message"></i>
+            <div>reply</div>
+          </button>
           {/* TO REMOVE */}
           <button onClick={test}>Test</button>
         </div>
-        <div className="reply-box">
-          {replyForm ? <ReplyForm commentId={data.id} /> : null}
-        </div>
+
+        {replyForm ? <ReplyForm commentId={data.id} /> : null}
+
         <div>
           {replies
             ? replies.map((reply) => {

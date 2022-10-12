@@ -53,7 +53,6 @@ export default function PostDetail(props) {
       onSnapshot(queryRef, (QuerySnapshot) => {
         const comments = [];
         const data = QuerySnapshot.forEach((doc) => {
-          // comments.push(doc.data());
           const comment = doc.data();
           comment.id = doc.id;
           comments.push(comment);

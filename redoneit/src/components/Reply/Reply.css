@@ -1,9 +1,25 @@
+.reply-left {
+  display: flex;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-right: 0.5em;
+}
+
+.reply-line {
+  border-left: 3px solid var(--main-grey);
+}
+
+.reply-line:hover {
+  border-left: 3px solid var(--accent-blue);
+}
+
 .reply-main {
   margin-top: 0.5em;
-  width: 100%;
-  border: 1px solid red;
-  padding: 0 1em;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: 1em;
   margin-bottom: 1em;
+  display: flex;
 }
 
 .reply-main .user-and-time {
@@ -30,10 +46,22 @@
   padding: 0.5em;
   display: flex;
   gap: 5px;
+  align-items: center;
 }
 
 .reply-main .karma > *:hover {
-  background-color: red;
+  background-color: var(--hover-grey);
+}
+
+.karma i {
+  font-size: 1rem;
+}
+
+.karma button {
+  padding: 0.25em 0.5em;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
 }
 
 .reply-main .reply-box {

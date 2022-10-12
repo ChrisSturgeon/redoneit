@@ -517,3 +517,30 @@ export async function downVoteReply(
     await updateDoc(commentUserRef, { karma: increment(-1) });
   }
 }
+
+export async function commentReply(subreddit, postId, commentId, replyText) {
+  const currentUser = auth.currentUser.uid;
+  const userName = await getUserName(currentUser);
+
+  const docRef = await addDoc(
+    collection(
+      db,
+      'subreddits',
+      `${subreddit}`,
+      'posts',
+      `${postId}`,
+      'comments',
+      `${commentId}`,
+      'replies'
+    ),
+    {
+      downVotedBy: [],
+      karma: 0,
+      posted: new Date(),
+      upVotedBy: [],
+      text: replyText,
+      user: userName.username,
+      userId: currentUser,
+    }
+  );
+}

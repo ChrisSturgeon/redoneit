@@ -2,10 +2,10 @@ import './ReplyForm.css';
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { submitComment } from '../../firebase';
+import { commentReply } from '../../firebase';
 import { set } from 'date-fns';
 
-export default function ReplyForm() {
+export default function ReplyForm({ commentId }) {
   const { subName, postId } = useParams();
   const [commentText, setCommentText] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
@@ -18,7 +18,7 @@ export default function ReplyForm() {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     if (commentText.length > 0) {
-      await submitComment(subName, postId, commentText);
+      await commentReply(subName, postId, commentId, commentText);
       setCommentText('');
       setIsFormValid(false);
       setSubmitted(true);
@@ -32,7 +32,7 @@ export default function ReplyForm() {
   }, [commentText]);
 
   return (
-    <div className="comment-form-main">
+    <div className="reply-form-main">
       {!submitted ? (
         <form onSubmit={handleFormSubmit}>
           <div>Replying as XXX</div>
@@ -46,10 +46,7 @@ export default function ReplyForm() {
           </button>
         </form>
       ) : (
-        <div>
-          <div>Thanks for your comment!</div>
-          <button onClick={() => setSubmitted(false)}>Add another?</button>
-        </div>
+        <div>Reply posted!</div>
       )}
     </div>
   );

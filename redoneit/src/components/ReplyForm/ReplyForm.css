@@ -1,4 +1,4 @@
-.comment-form-main {
+.reply-form-main {
   width: 100%;
   padding: 1em 2em;
   border: 1px solid green;
@@ -6,19 +6,19 @@
   flex-direction: column;
 }
 
-.comment-form-main form {
+.reply-form-main form {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-.comment-form-main textarea {
+.reply-form-main textarea {
   min-height: 100px;
   width: 100%;
   padding: 0.75em;
   font-size: 0.9rem;
 }
 
-.comment-form-main form button {
+.reply-form-main form button {
   margin-left: auto;
 }
