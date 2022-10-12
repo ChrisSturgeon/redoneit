@@ -23,6 +23,7 @@ export default function Comment({ data }) {
   const [replies, setReplies] = useState(null);
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
+  const [karmaClass, setKarmaClass] = useState(null);
   const [replyForm, setReplyForm] = useState(null);
 
   // Sets listener for comment's replies to ordered by descending karma
@@ -97,12 +98,14 @@ export default function Comment({ data }) {
   useEffect(() => {
     if (data.upVotedBy.includes(auth.currentUser.uid)) {
       setHasUpvoted(true);
+      setKarmaClass('hasUpVoted');
     } else {
       setHasUpvoted(false);
     }
 
     if (data.downVotedBy.includes(auth.currentUser.uid)) {
       setHasDownVoted(true);
+      setKarmaClass('hasDownVoted');
     } else {
       setHasDownVoted(false);
     }
@@ -113,7 +116,7 @@ export default function Comment({ data }) {
       <div className="comment-left">
         <div className="comment-line"></div>
       </div>
-      <div clasName="comment-body">
+      <div className="comment-body">
         <div className="user-and-time">
           <div className="username">{data.user}</div>
           <div>-</div>
@@ -131,7 +134,7 @@ export default function Comment({ data }) {
               }
             ></i>
           </button>
-          {postKarma ? `${postKarma}` : '0'}
+          {postKarma ? <div className={karmaClass}>{postKarma}</div> : '0'}
           <button onClick={downVote}>
             {' '}
             <i

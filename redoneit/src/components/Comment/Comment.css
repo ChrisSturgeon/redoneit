@@ -48,7 +48,7 @@
 }
 
 .karma-and-reply > *:hover {
-  background-color: red;
+  background-color: var(--hover-grey);
 }
 
 .reply-box {

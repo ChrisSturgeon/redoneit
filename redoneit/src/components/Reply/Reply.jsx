@@ -2,7 +2,7 @@ import './Reply.css';
 import { useEffect, useState } from 'react';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useParams } from 'react-router-dom';
-import { upVoteComment, downVoteComment } from '../../firebase';
+import { upVoteReply, downVoteReply } from '../../firebase';
 import { onSnapshot, doc, query, collection } from 'firebase/firestore';
 import { db, auth } from '../../firebase';
 
@@ -18,15 +18,15 @@ export default function Reply({ commentId, data }) {
 
   // TO REMOVE - test function
   const test = () => {
-    console.log(replies);
+    console.log(data);
   };
 
   const upVote = () => {
-    upVoteComment(subName, postId, data.id, data.userId);
+    upVoteReply(subName, postId, commentId, data.id, data.userId);
   };
 
   const downVote = () => {
-    downVoteComment(subName, postId, data.id, data.userId);
+    downVoteReply(subName, postId, commentId, data.id, data.userId);
   };
 
   const toggleReplyForm = () => {
@@ -80,8 +80,7 @@ export default function Reply({ commentId, data }) {
         <div className="posted-interval">{timeInterval} ago</div>
       </div>
       <div className="reply-text">{data.text}</div>
-
-      <div className="karma-and-reply">
+      <div className="karma">
         <button onClick={upVote}>
           {' '}
           <i
@@ -103,9 +102,7 @@ export default function Reply({ commentId, data }) {
             }
           ></i>
         </button>
-        <button onClick={toggleReplyForm}>Reply</button>
-        {/* TO REMOVE */}
-        <button onClick={test}>Test</button>
+        <button onClick={test}>log props</button>
       </div>
     </div>
   );

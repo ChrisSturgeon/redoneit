@@ -215,14 +215,12 @@ export async function newURLPost(title, url, subName) {
     {
       comments: 0,
       downVotedBy: [],
-      downVotes: 0,
       karma: 0,
       posted: serverTimestamp(),
       subreddit: subName,
       title: title,
       type: 'link',
       upVotedBy: [],
-      upVotes: 0,
       url: url,
       user: userName.username,
       userId: currentUser,
@@ -240,14 +238,12 @@ export async function newTextPost(title, postText, subName) {
     {
       comments: 0,
       downVotedBy: [],
-      downVotes: 0,
       karma: 0,
       posted: serverTimestamp(),
       subreddit: subName,
       title: title,
       type: 'text',
       upVotedBy: [],
-      upVotes: 0,
       postText: postText,
       user: userName.username,
       userId: currentUser,
@@ -418,4 +414,106 @@ export async function submitComment(subreddit, postId, commentText) {
     user: userName.username,
     userId: currentUser,
   });
+}
+
+// Upvotes comment after checking user has not already upvoted.
+// If they have already upvoted, removes upvote
+export async function upVoteReply(
+  subreddit,
+  postId,
+  commentId,
+  replyId,
+  replyUserId
+) {
+  const currentUser = auth.currentUser.uid;
+  const commentUserRef = doc(db, 'users', `${replyUserId}`);
+  const replyRef = doc(
+    db,
+    'subreddits',
+    `${subreddit}`,
+    'posts',
+    `${postId}`,
+    'comments',
+    `${commentId}`,
+    'replies',
+    `${replyId}`
+  );
+
+  const docSnap = await getDoc(replyRef);
+  const replyData = docSnap.data();
+
+  // Reverse any previous downvote to to start afresh
+  if (replyData.downVotedBy.includes(currentUser)) {
+    await updateDoc(replyRef, {
+      karma: increment(1),
+      downVotedBy: arrayRemove(`${currentUser}`),
+    });
+    await updateDoc(commentUserRef, { karma: increment(1) });
+  }
+
+  // Upvote comment
+  if (replyData.upVotedBy.includes(currentUser)) {
+    await updateDoc(replyRef, {
+      karma: increment(-1),
+      upVotedBy: arrayRemove(`${currentUser}`),
+    });
+    await updateDoc(commentUserRef, { karma: increment(-1) });
+  } else {
+    await updateDoc(replyRef, {
+      karma: increment(1),
+      upVotedBy: arrayUnion(`${currentUser}`),
+    });
+    await updateDoc(commentUserRef, { karma: increment(1) });
+  }
+}
+
+// Downvotes comment after checking user has not already downvoted.
+// If they have already downvoted, removes downvote
+export async function downVoteReply(
+  subreddit,
+  postId,
+  commentId,
+  replyId,
+  replyUserId
+) {
+  const currentUser = auth.currentUser.uid;
+  const commentUserRef = doc(db, 'users', `${replyUserId}`);
+  const replyRef = doc(
+    db,
+    'subreddits',
+    `${subreddit}`,
+    'posts',
+    `${postId}`,
+    'comments',
+    `${commentId}`,
+    'replies',
+    `${replyId}`
+  );
+
+  const docSnap = await getDoc(replyRef);
+  const replyData = docSnap.data();
+
+  // Reverse any previous upvote to start afresh
+  if (replyData.upVotedBy.includes(currentUser)) {
+    await updateDoc(replyRef, {
+      karma: increment(-1),
+      upVotedBy: arrayRemove(`${currentUser}`),
+    });
+    await updateDoc(commentUserRef, { karma: increment(-1) });
+  }
+
+  // Downvote comment
+  if (replyData.downVotedBy.includes(currentUser)) {
+    await updateDoc(replyRef, {
+      karma: increment(1),
+      downVotedBy: arrayRemove(`${currentUser}`),
+    });
+    await updateDoc(commentUserRef, { karma: increment(1) });
+  } else {
+    await updateDoc(replyRef, {
+      karma: increment(-1),
+      downVotedBy: arrayUnion(`${currentUser}`),
+    });
+    await updateDoc(commentUserRef, { karma: increment(-1) });
+  }
 }

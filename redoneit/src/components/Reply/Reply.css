@@ -1,11 +1,12 @@
 .reply-main {
+  margin-top: 0.5em;
   width: 100%;
   border: 1px solid red;
   padding: 0 1em;
   margin-bottom: 1em;
 }
 
-.user-and-time {
+.reply-main .user-and-time {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -13,28 +14,28 @@
   margin-bottom: 5px;
 }
 
-.user-and-time .username {
+.reply-main .user-and-time .username {
   font-weight: 500;
 }
 
-.user-and-time .posted-interval {
+.reply-main .user-and-time .posted-interval {
   color: grey;
 }
 
-.reply-text {
+.reply-main .reply-text {
   margin-bottom: 5px;
 }
 
-.karma-and-reply {
+.reply-main .karma {
   padding: 0.5em;
   display: flex;
   gap: 5px;
 }
 
-.karma-and-reply > *:hover {
+.reply-main .karma > *:hover {
   background-color: red;
 }
 
-.reply-box {
+.reply-main .reply-box {
   margin-left: 11px;
 }
