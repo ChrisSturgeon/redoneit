@@ -73,17 +73,32 @@ export default function SubredditSidebar({ primaryColour, secondaryColour }) {
           </div>
         </div>
 
-        {/* <div>
-          {rules
-            ? rules.map((rule, index) => {
+        <div className="sidebar-rules">
+          <div
+            className="sidebar-rules-header"
+            style={{ backgroundColor: primaryColour }}
+          >
+            <h1>Rules</h1>
+          </div>
+          <div className="sidebar-rules-body">
+            {rules.map((rule, index) => {
+              if (index < rules.length - 1) {
+                return (
+                  <div key={index}>
+                    {index + 1}. {rule}
+                    <hr></hr>
+                  </div>
+                );
+              } else {
                 return (
                   <div key={index}>
                     {index + 1}. {rule}
                   </div>
                 );
-              })
-            : null}
-        </div> */}
+              }
+            })}
+          </div>
+        </div>
       </div>
     );
   }
