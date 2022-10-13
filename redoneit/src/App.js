@@ -8,23 +8,19 @@ import { auth, getUserName, db } from '../src/firebase';
 import { onSnapshot, doc } from 'firebase/firestore';
 
 // Components
-import NavBar from './components/NavBar';
-import Home from './components/Home';
-import Subreddit from './components/Subreddit';
-import Subreddits from './components/Subreddits';
-import PostForm from './components/postForm';
-import PostDetail from './components/PostDetail/PostDetail';
+import NavBar from './components/Navigation/Navbar/NavBar';
+import Home from './components/Pages/Home/Home';
+import Subreddit from './components/Pages/Subreddit/Subreddit';
+import AllSubreddits from './components/Pages/AllSubreddits/AllSubreddits';
+import NewPostForm from './components/Posts/NewPostForm/NewPostForm';
+import PostDetail from './components/Posts/PostDetail/PostDetail';
 
 function App() {
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState(null);
   const [userData, setUserData] = useState(null);
 
-  const testFunction = async () => {
-    const legs = await getUserName(userId);
-  };
-
-  // Monitors user authentication state
+  // Creates listener for users authentication state upon mount
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       const getBasicInfo = async () => {
@@ -53,17 +49,12 @@ function App() {
 
   return (
     <div>
-      <NavBar
-        userId={userId}
-        userName={username}
-        testFunction={testFunction}
-        userData={userData}
-      />
+      <NavBar userId={userId} userName={username} userData={userData} />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="r/" element={<Subreddits />}></Route>
+        <Route path="r/" element={<AllSubreddits />}></Route>
         <Route path="r/:subName" element={<Subreddit />}></Route>
-        <Route path="r/:subName/submit" element={<PostForm />}></Route>
+        <Route path="r/:subName/submit" element={<NewPostForm />}></Route>
         <Route path="r/:subName/post/:postId" element={<PostDetail />}></Route>
       </Routes>
     </div>

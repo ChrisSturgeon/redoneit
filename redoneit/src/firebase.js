@@ -1,20 +1,18 @@
 import { initializeApp } from 'firebase/app';
+
+// Firebase authentication imports
 import {
   getAuth,
   onAuthStateChanged,
-  signOut,
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRdirectResult,
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
 
+// Firestore imports
 import {
   getFirestore,
   collection,
   query,
-  where,
-  get,
   doc,
   getDoc,
   getDocs,
@@ -26,10 +24,9 @@ import {
   addDoc,
   serverTimestamp,
   onSnapshot,
-  connectFirestoreEmulator,
 } from 'firebase/firestore';
 
-// Your web app's Firebase configuration
+// Firebase configuration details
 const firebaseConfig = {
   apiKey: 'AIzaSyBsSKDADU0vsj2G9o86aWhdfK0IMfnY9vw',
   authDomain: 'redoneit-a0b8a.firebaseapp.com',
@@ -42,7 +39,6 @@ const firebaseConfig = {
 // Firebase constants
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-let user = auth.currentUser;
 export const provider = new GoogleAuthProvider();
 export const db = getFirestore(app);
 
@@ -56,6 +52,7 @@ export function authChange() {
   });
 }
 
+// Returns meta-data about signed in user
 export const getUserName = async (userId) => {
   const docRef = doc(db, 'users', `${userId}`);
   const docSnap = await getDoc(docRef);
@@ -68,6 +65,20 @@ export const getUserName = async (userId) => {
   }
 };
 
+// Returns signed in users username
+export const getUsersName = async (userId) => {
+  const docRef = doc(db, 'users', `${userId}`);
+  const docSnap = await getDoc(docRef);
+  const userData = docSnap.data();
+
+  if (docSnap.exists()) {
+    return userData.username;
+  } else {
+    console.log('No such document');
+  }
+};
+
+// Creates new profile for user
 async function createProfile(userId, username) {
   await setDoc(doc(db, 'users', `${userId}`), {
     uid: `${userId}`,
@@ -84,13 +95,15 @@ export async function registerNewUser(email, password, username) {
       const user = userCredential.user;
       createProfile(user.uid, username);
     })
+    // Error signing in
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
+      console.log(`An error has occured: ${error.code}`, error.message);
     });
 }
 
+// Upvotes post storing user's ID in array of upvoters,
+// increases karma of post by 1 and
+// karma of user who posted by 1.
 export async function upVotePost(subreddit, postId, postUser) {
   const currentUser = auth.currentUser.uid;
   const postUserRef = doc(db, 'users', `${postUser}`);
@@ -124,6 +137,9 @@ export async function upVotePost(subreddit, postId, postUser) {
   }
 }
 
+// Downvotes post storing user's ID in array of downvoters,
+// decreases karma of post by 1 and
+// karma of user who posted by 1.
 export async function downVotePost(subreddit, postId, postUser) {
   const currentUser = auth.currentUser.uid;
   const postUserRef = doc(db, 'users', `${postUser}`);
@@ -157,55 +173,7 @@ export async function downVotePost(subreddit, postId, postUser) {
   }
 }
 
-// Now redundant
-
-/* Increments or decrements post karma by 1. If user has
-already upvoted or downvoted,
-undos this. Stores record of their vote in both the
-post document and user documents arrays
-*/
-export async function postVote(subreddit, postUser, postId, direction) {
-  const currentUser = auth.currentUser.uid;
-  const currentUserRef = doc(db, 'users', `${currentUser}`);
-  const postUserRef = doc(db, 'users', `${postUser}`);
-  const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
-
-  const docSnap = await getDoc(postRef);
-  const postData = docSnap.data();
-
-  if (direction === 'upVote') {
-    if (!postData.upVotedBy.includes(currentUser)) {
-      await updateDoc(postUserRef, { karma: increment(1) });
-      await updateDoc(postRef, { karma: increment(1), upVotes: increment(1) });
-      await updateDoc(postRef, { upVotedBy: arrayUnion(`${currentUser}`) });
-      await updateDoc(currentUserRef, { upVoted: arrayUnion(`${postId}`) });
-    } else {
-      await updateDoc(postUserRef, { karma: increment(-1) });
-      await updateDoc(postRef, {
-        karma: increment(-1),
-        upVotes: increment(-1),
-      });
-      await updateDoc(postRef, { upVotedBy: arrayRemove(`${currentUser}`) });
-      await updateDoc(currentUserRef, { upVoted: arrayRemove(`${postId}`) });
-    }
-  } else if (direction === 'downVote') {
-    if (!postData.downVotedBy.includes(currentUser)) {
-      await updateDoc(postUserRef, { karma: increment(-1) });
-      await updateDoc(postRef, {
-        karma: increment(-1),
-        upVotes: increment(-1),
-      });
-      await updateDoc(postRef, { downVotedBy: arrayUnion(`${currentUser}`) });
-      await updateDoc(currentUserRef, { downVoted: arrayUnion(`${postId}`) });
-    } else {
-      await updateDoc(postUserRef, { karma: increment(1) });
-      await updateDoc(postRef, { karma: increment(1), upVotes: increment(1) });
-      await updateDoc(postRef, { downVotedBy: arrayRemove(`${currentUser}`) });
-      await updateDoc(currentUserRef, { downVoted: arrayRemove(`${postId}`) });
-    }
-  }
-}
-
+// Creates a new post in subreddits 'posts' collection, with type URL.
 export async function newURLPost(title, url, subName) {
   const currentUser = auth.currentUser.uid;
   const userName = await getUserName(currentUser);
@@ -228,6 +196,8 @@ export async function newURLPost(title, url, subName) {
   );
   console.log(docRef.id);
 }
+
+// Creates a new post in subreddits 'posts' collection, with type text.
 
 export async function newTextPost(title, postText, subName) {
   const currentUser = auth.currentUser.uid;
@@ -252,6 +222,7 @@ export async function newTextPost(title, postText, subName) {
   console.log(docRef.id);
 }
 
+// Returns an array of the signed-in users subscribed subreddits
 export async function getUserSubs() {
   const currentUser = auth.currentUser.uid;
   let subs = [];
@@ -262,18 +233,6 @@ export async function getUserSubs() {
   });
 
   return subs;
-}
-
-export async function getUserSubsTest() {
-  const currentUser = auth.currentUser.uid;
-  const subs = [];
-  const q = query(collection(db, 'users', `${currentUser}`, 'subscribed'));
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      subs.push(doc.data());
-    });
-  });
-  return unsubscribe;
 }
 
 // Un-favourites a subreddit in user's profile
@@ -392,6 +351,7 @@ export async function downVoteComment(
   }
 }
 
+// Stores comment in post's comment collection
 export async function submitComment(subreddit, postId, commentText) {
   const currentUser = auth.currentUser.uid;
   const userName = await getUserName(currentUser);
@@ -518,6 +478,7 @@ export async function downVoteReply(
   }
 }
 
+// Stores reply to comment in given comment's replies collection
 export async function commentReply(subreddit, postId, commentId, replyText) {
   const currentUser = auth.currentUser.uid;
   const userName = await getUserName(currentUser);
