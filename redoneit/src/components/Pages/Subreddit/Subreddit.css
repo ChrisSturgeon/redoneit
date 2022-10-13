@@ -16,6 +16,7 @@
 
 .subreddit-content {
   display: flex;
+  align-items: flex-start;
   gap: 1em;
   padding: 1em;
   width: 100%;
@@ -89,6 +90,6 @@
 
 @media only screen and (min-width: 1200px) {
   .subreddit-content {
-    max-width: 968px;
+    max-width: 1068px;
   }
 }

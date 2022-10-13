@@ -7,7 +7,7 @@
 .upper {
   width: 100%;
   min-height: 10vh;
-  background-color: #66cc79;
+  /* background-color: #66cc79; */
   z-index: -2;
 }
 
@@ -35,7 +35,7 @@
   align-items: center;
   font-size: 2.2rem;
   color: white;
-  background-color: #66cc79;
+  /* background-color: #66cc79; */
   border-radius: 50px;
   border: 6px solid white;
 }
@@ -67,7 +67,7 @@
 
 .subreddit-header button {
   padding: 0.6em 2.5em;
-  background-color: rgb(253, 104, 164);
+  /* background-color: rgb(253, 104, 164); */
   color: white;
   font-weight: 700;
   border: none;

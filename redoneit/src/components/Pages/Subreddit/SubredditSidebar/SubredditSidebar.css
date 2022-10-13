@@ -1,7 +1,64 @@
 .subreddit-sidebar {
-  background-color: rgb(0, 255, 255);
-  height: 50vh;
-  width: 300px;
+  min-width: 350px;
+  min-height: 100px;
+  background-color: white;
+  border: 1px solid var(--medium-grey);
+  border-radius: 4px;
+}
+
+.sidebar-about-header {
+  padding: 1em;
+}
+
+.sidebar-about-header h1 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+}
+
+.sidebar-about-body {
+  padding: 1em;
+}
+
+.sidebar-about-blurb {
+  margin-bottom: 0.8em;
+}
+
+.sidebar-about-created {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--dark-grey);
+  margin-bottom: 1em;
+}
+
+.sidebar-about-created i {
+  font-size: 1.1rem;
+}
+
+.sidebar-about hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-top: 1px solid var(--light-grey);
+  border-left: none;
+  box-shadow: none;
+}
+
+.sidebar-members-count div:first-of-type {
+  font-size: 1.4rem;
+}
+
+.sidebar-members-count div:nth-of-type(2) {
+  font-size: 0.8rem;
+  color: var(--dark-grey);
+}
+
+.sidebar-about button {
+  margin-top: 5px;
+  width: 100%;
+  padding: 0.5em;
+  border: none;
+  border-radius: 99px;
 }
 
 @media only screen and (max-width: 1000px) {

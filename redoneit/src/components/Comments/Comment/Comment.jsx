@@ -158,7 +158,9 @@ export default function Comment({ data }) {
           <button onClick={test}>Test</button>
         </div>
 
-        {replyForm ? <ReplyForm commentId={data.id} /> : null}
+        {replyForm ? (
+          <ReplyForm commentId={data.id} toggleReplyForm={toggleReplyForm} />
+        ) : null}
 
         <div>
           {replies

@@ -29,9 +29,11 @@ export default function SubsNav(props) {
 
   return (
     <div className="subs-nav">
-      <Link onClick={props.toggleSubsNav} className="all-subs-btn" to="r">
-        <span>View all subreddits</span>
-      </Link>
+      <div className="all-subs-link">
+        <Link onClick={props.toggleSubsNav} className="all-subs-btn" to="r">
+          View all subreddits
+        </Link>
+      </div>
       <h2>FAVOURITES</h2>
       {subsArr ? (
         <div>

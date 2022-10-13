@@ -174,7 +174,8 @@ export async function downVotePost(subreddit, postId, postUser) {
   }
 }
 
-// Creates a new post in subreddits 'posts' collection, with type URL.
+// Creates a new post in subreddits 'posts' collection with type URL,
+// returning the id of the new post so user can be forwarded to it.
 export async function newURLPost(title, url, subName) {
   const currentUser = auth.currentUser.uid;
   const userName = await getUserName(currentUser);
@@ -198,7 +199,8 @@ export async function newURLPost(title, url, subName) {
   return docRef.id;
 }
 
-// Creates a new post in subreddits 'posts' collection, with type text.
+// Creates a new post in subreddits 'posts' collection with type text,
+// returning the id of the new post so user can be forwarded to it.
 export async function newTextPost(title, postText, subName) {
   const currentUser = auth.currentUser.uid;
   const userName = await getUserName(currentUser);

@@ -1,7 +1,6 @@
 .reply-form-main {
   width: 100%;
   padding: 1em 2em;
-  border: 1px solid green;
   display: flex;
   flex-direction: column;
 }

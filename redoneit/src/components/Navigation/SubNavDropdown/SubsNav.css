@@ -4,9 +4,16 @@
   background-color: white;
 }
 
-.subs-nav .all-subs-btn {
-  background-color: pink;
-  width: 270px;
+.all-subs-link {
+  display: flex;
+  width: 100%;
+}
+
+.all-subs-link a {
+  text-align: center;
+  background-color: rgb(201, 201, 230);
+  width: inherit;
+  padding: 0.25em;
 }
 
 .subs-nav h2 {

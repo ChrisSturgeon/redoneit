@@ -2,13 +2,14 @@ import './ReplyForm.css';
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { commentReply } from '../../../firebase';
+import { auth, commentReply, getUsersName } from '../../../firebase';
 
 export default function ReplyForm({ commentId }) {
   const { subName, postId } = useParams();
   const [commentText, setCommentText] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [username, setUsername] = useState(null);
 
   const handleTextInput = (event) => {
     setCommentText(event.target.value);
@@ -30,11 +31,20 @@ export default function ReplyForm({ commentId }) {
     }
   }, [commentText]);
 
+  // Fetches user name upon render and stores in state
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const username = await getUsersName(auth.currentUser.uid);
+      setUsername(username);
+    };
+    fetchUserName();
+  }, []);
+
   return (
     <div className="reply-form-main">
       {!submitted ? (
         <form onSubmit={handleFormSubmit}>
-          <div>Replying as XXX</div>
+          <div>Replying as {username}</div>
           <textarea
             onChange={handleTextInput}
             value={commentText}

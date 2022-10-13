@@ -1,7 +1,7 @@
 import './Subreddit.css';
 
 import React, { useState, useEffect } from 'react';
-import { useParams, Route, Routes, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {
   onSnapshot,
   query,
@@ -19,6 +19,8 @@ export default function Subreddit() {
   const { subName } = useParams();
   const [overview, setOverview] = useState(null);
   const [posts, setPosts] = useState(null);
+  const [primaryColour, setPrimaryColour] = useState(null);
+  const [secondaryColour, setSecondaryColour] = useState(null);
 
   // On mount and url param change fetches subreddit overview data
   // and posts storing them to state
@@ -26,6 +28,8 @@ export default function Subreddit() {
     async function fetchSubData() {
       onSnapshot(doc(db, 'subreddits', `${subName}`), (doc) => {
         setOverview(doc.data());
+        setPrimaryColour(doc.data().primaryColour);
+        setSecondaryColour(doc.data().secondaryColour);
       });
     }
 
@@ -51,7 +55,11 @@ export default function Subreddit() {
   if (overview) {
     return (
       <div className="subreddit-main">
-        <SubredditHeader overview={overview} />
+        <SubredditHeader
+          overview={overview}
+          primaryColour={primaryColour}
+          secondaryColour={secondaryColour}
+        />
         <div className="subreddit-body">
           <div className="subreddit-content">
             <div className="subreddit-posts">
@@ -69,7 +77,10 @@ export default function Subreddit() {
                   })
                 : null}
             </div>
-            <SubredditSidebar />
+            <SubredditSidebar
+              primaryColour={primaryColour}
+              secondaryColour={secondaryColour}
+            />
           </div>
         </div>
       </div>
