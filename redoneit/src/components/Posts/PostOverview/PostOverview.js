@@ -1,6 +1,6 @@
 import './PostOverview.css';
 import { useState, useEffect } from 'react';
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { upVotePost, downVotePost, postVote } from '../../../firebase';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { auth } from '../../../firebase';

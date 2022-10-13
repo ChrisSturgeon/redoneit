@@ -10,6 +10,7 @@ import {
   orderBy,
 } from 'firebase/firestore';
 
+// Components
 import Comment from '../../Comments/Comment/Comment';
 import CommentForm from '../../Comments/CommentForm/CommentForm';
 
@@ -17,10 +18,6 @@ export default function PostDetail(props) {
   const { subName, postId } = useParams();
   const [overview, setOverview] = useState(null);
   const [comments, setComments] = useState(null);
-
-  const test = () => {
-    // Do something
-  };
 
   // Sets listener for postoverview information and stores to state
   useEffect(() => {
@@ -144,10 +141,7 @@ export default function PostDetail(props) {
 
           <CommentForm />
 
-          <button onClick={test}>Test</button>
-
           {/* Comments detail conditional */}
-
           {comments
             ? comments.map((comment) => {
                 return <Comment key={comment.id} data={comment} />;

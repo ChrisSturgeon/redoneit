@@ -1,5 +1,5 @@
 import './PostForm.css';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { newTextPost, newURLPost } from '../../../firebase';
 
@@ -14,6 +14,7 @@ export default function NewPostForm() {
   const [postText, setPostText] = useState('');
   const [linkBtnActive, setlinkBtnActive] = useState(null);
   const [textBtnActive, setTextBtnActive] = useState(null);
+  const navigate = useNavigate();
 
   const titleChange = (event) => {
     setTitle(event.target.value);
@@ -63,17 +64,19 @@ export default function NewPostForm() {
     setTextBtnActive(true);
   };
 
-  // Calls Firebase new post function with post-type state on for submit
-  const onFormSubmit = (event) => {
+  // Calls Firebase new post function with post-type
+  // state on submit, then forwards user back to newly created post
+  const onFormSubmit = async (event) => {
     event.preventDefault();
 
     if (postType === 'link') {
-      newURLPost(title, url, subName);
+      const newId = await newURLPost(title, url, subName);
+      navigate(`/r/${subName}/post/${newId}`);
     }
 
     if (postType === 'text') {
-      console.log(postText);
-      newTextPost(title, postText, subName);
+      const newId = await newTextPost(title, postText, subName);
+      navigate(`/r/${subName}/post/${newId}`);
     }
   };
 

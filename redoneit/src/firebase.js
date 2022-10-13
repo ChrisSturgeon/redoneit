@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { useNavigate } from 'react-router-dom';
 
 // Firebase authentication imports
 import {
@@ -194,11 +195,10 @@ export async function newURLPost(title, url, subName) {
       userId: currentUser,
     }
   );
-  console.log(docRef.id);
+  return docRef.id;
 }
 
 // Creates a new post in subreddits 'posts' collection, with type text.
-
 export async function newTextPost(title, postText, subName) {
   const currentUser = auth.currentUser.uid;
   const userName = await getUserName(currentUser);
@@ -219,7 +219,7 @@ export async function newTextPost(title, postText, subName) {
       userId: currentUser,
     }
   );
-  console.log(docRef.id);
+  return docRef.id;
 }
 
 // Returns an array of the signed-in users subscribed subreddits
@@ -352,6 +352,7 @@ export async function downVoteComment(
 }
 
 // Stores comment in post's comment collection
+// and increases post's comment count by 1.
 export async function submitComment(subreddit, postId, commentText) {
   const currentUser = auth.currentUser.uid;
   const userName = await getUserName(currentUser);
@@ -374,6 +375,9 @@ export async function submitComment(subreddit, postId, commentText) {
     user: userName.username,
     userId: currentUser,
   });
+
+  const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
+  await updateDoc(postRef, { comments: increment(1) });
 }
 
 // Upvotes comment after checking user has not already upvoted.
@@ -479,6 +483,7 @@ export async function downVoteReply(
 }
 
 // Stores reply to comment in given comment's replies collection
+// and increases post's comment count by 1
 export async function commentReply(subreddit, postId, commentId, replyText) {
   const currentUser = auth.currentUser.uid;
   const userName = await getUserName(currentUser);
@@ -504,4 +509,7 @@ export async function commentReply(subreddit, postId, commentId, replyText) {
       userId: currentUser,
     }
   );
+
+  const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
+  await updateDoc(postRef, { comments: increment(1) });
 }
