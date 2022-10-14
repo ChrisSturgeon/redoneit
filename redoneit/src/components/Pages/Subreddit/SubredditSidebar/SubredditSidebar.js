@@ -56,7 +56,8 @@ export default function SubredditSidebar({ primaryColour, secondaryColour }) {
           <div className="sidebar-about-body">
             <div className="sidebar-about-blurb">{about.blurb}</div>
             <div className="sidebar-about-created">
-              <i class="fa-solid fa-cake-candles"></i>Created {createdString}
+              <i className="fa-solid fa-cake-candles"></i>Created{' '}
+              {createdString}
             </div>
             <hr></hr>
             <div className="sidebar-members-count">

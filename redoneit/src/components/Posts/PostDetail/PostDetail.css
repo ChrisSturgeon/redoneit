@@ -30,6 +30,23 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.back-btn {
+  display: flex;
+  padding: 0.2em 0.5em;
+}
+
+.back-btn:hover {
+  border: 1px solid white;
+}
+
+.back-btn i,
+.back-btn {
+  color: white;
 }
 
 .post-detail-body {

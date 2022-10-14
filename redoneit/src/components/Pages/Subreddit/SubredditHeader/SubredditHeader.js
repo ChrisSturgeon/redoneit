@@ -1,11 +1,43 @@
 import './SubredditHeader.css';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { auth, db, joinSub, leaveSub } from '../../../../firebase';
+import {
+  onSnapshot,
+  doc,
+  collection,
+  query,
+  QuerySnapshot,
+} from 'firebase/firestore';
 
 export default function SubredditHeader({
   overview,
   primaryColour,
   secondaryColour,
 }) {
+  const { subName } = useParams();
+  const [isMember, setIsMember] = useState(null);
+  const [memberCount, setMemberCount] = useState(null);
+
+  // Test to check for collection
+  useEffect(() => {
+    const isSubscribed = async () => {
+      const currentUser = auth.currentUser.uid;
+      const queryRef = query(
+        collection(db, 'users', `${currentUser}`, 'subscribed')
+      );
+      onSnapshot(queryRef, (QuerySnapshot) => {
+        const data = QuerySnapshot.forEach((doc) => {
+          if (doc.id === subName) {
+            setIsMember(true);
+          } else {
+          }
+        });
+      });
+    };
+    isSubscribed();
+  }, [isMember, subName]);
+
   return (
     <div className="subreddit-header">
       <span className="upper" style={{ backgroundColor: primaryColour }}></span>
@@ -17,10 +49,27 @@ export default function SubredditHeader({
           <div className="text-info">
             <div className="display-name">{overview.displayName}</div>
             <div className="r-sub-name">r/{overview.subName}</div>
-            <div className="member-count">{overview.memberCount} members</div>
+            <div className="member-count">{memberCount} members</div>
           </div>
           <div className="join-box">
-            <button style={{ backgroundColor: secondaryColour }}>Join</button>
+            {isMember ? (
+              <button
+                onClick={async () => {
+                  await leaveSub(subName);
+                  setIsMember(false);
+                }}
+                style={{ backgroundColor: secondaryColour }}
+              >
+                Member!
+              </button>
+            ) : (
+              <button
+                onClick={() => joinSub(subName)}
+                style={{ backgroundColor: secondaryColour }}
+              >
+                Join
+              </button>
+            )}
           </div>
         </div>
       </div>

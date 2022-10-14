@@ -69,7 +69,8 @@ export default function PostDetail(props) {
         <div className="post-detail-header">
           {overview ? `${overview.title}` : null}
           <button className="back-btn" onClick={() => window.history.back()}>
-            <i className="fa-solid fa-xmark"></i>Back
+            <i className="fa-solid fa-xmark"></i>
+            <div>Back</div>
           </button>
         </div>
         <div className="post-detail-body">

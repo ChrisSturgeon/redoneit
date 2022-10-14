@@ -25,6 +25,7 @@ import {
   addDoc,
   serverTimestamp,
   onSnapshot,
+  deleteDoc,
 } from 'firebase/firestore';
 
 // Firebase configuration details
@@ -514,4 +515,34 @@ export async function commentReply(subreddit, postId, commentId, replyText) {
 
   const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
   await updateDoc(postRef, { comments: increment(1) });
+}
+
+// Adds user as member of subreddit and updates sub's member count by 1
+export async function joinSub(subreddit) {
+  const currentUser = auth.currentUser.uid;
+  const subRef = doc(db, 'subreddits', `${subreddit}`, 'sidebar', 'about');
+  await setDoc(
+    doc(db, 'users', `${currentUser}`, 'subscribed', `${subreddit}`),
+    {
+      favourite: false,
+      joined: new Date(),
+      subName: subreddit,
+    }
+  );
+  await updateDoc(subRef, {
+    memberCount: increment(1),
+  });
+}
+
+// Removes user as member of subreddit and decrements sub's member count by 1
+export async function leaveSub(subreddit) {
+  const currentUser = auth.currentUser.uid;
+  const subRef = doc(db, 'subreddits', `${subreddit}`, 'sidebar', 'about');
+
+  await deleteDoc(
+    doc(db, 'users', `${currentUser}`, 'subscribed', `${subreddit}`)
+  );
+  await updateDoc(subRef, {
+    memberCount: increment(-1),
+  });
 }
