@@ -73,7 +73,13 @@ export default function Subreddit() {
               </div>
               {posts
                 ? posts.map((post) => {
-                    return <PostOverview key={post.id} data={post} />;
+                    return (
+                      <PostOverview
+                        postId={post.id}
+                        subName={subName}
+                        key={post.id}
+                      />
+                    );
                   })
                 : null}
             </div>
