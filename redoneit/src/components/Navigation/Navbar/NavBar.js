@@ -16,25 +16,19 @@ import SignUpModal from '../../Modals/SignUpModal/SignUpModal';
 export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);
   const [subsOpen, setSubsOpen] = useState(false);
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const userId = props.userId;
 
   // Scrolls to top of page and locks body scroll
   //  register or login modals are open
   useEffect(() => {
-    if (loginModalOpen || registerModalOpen) {
+    if (props.loginModalOpen || registerModalOpen) {
       document.body.scrollTop = document.documentElement.scrollTop = 0;
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
-  }, [loginModalOpen, registerModalOpen]);
-
-  // Toggles login modal open/closed
-  const toggleLoginModal = () => {
-    setLoginModalOpen(!loginModalOpen);
-  };
+  }, [props.loginModalOpen, registerModalOpen]);
 
   // Toggles register modal open/closed
   const toggleRegisterModal = () => {
@@ -81,7 +75,7 @@ export default function NavBar(props) {
         <div className="main-nav">
           <ul>
             <li>
-              <button onClick={toggleLoginModal}>Test Modal</button>
+              <button onClick={props.toggleLoginModal}>Test Modal</button>
             </li>
             <li>
               <Link to="r">
@@ -102,7 +96,10 @@ export default function NavBar(props) {
                 </li>
                 <li>
                   <Link>
-                    <button onClick={toggleLoginModal} className="login-btn">
+                    <button
+                      onClick={props.toggleLoginModal}
+                      className="login-btn"
+                    >
                       Log In
                     </button>
                   </Link>
@@ -159,10 +156,10 @@ export default function NavBar(props) {
       </AnimatePresence>
 
       <AnimatePresence initial={false} wait={true}>
-        {loginModalOpen && (
+        {props.loginModalOpen && (
           <LoginModal
-            modalOpen={loginModalOpen}
-            handleClose={toggleLoginModal}
+            modalOpen={props.loginModalOpen}
+            handleClose={props.toggleLoginModal}
             toggleRegisterModal={toggleRegisterModal}
           />
         )}

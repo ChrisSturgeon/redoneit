@@ -15,7 +15,7 @@ import SubredditSidebar from './SubredditSidebar/SubredditSidebar';
 import PostOverview from '../../Posts/PostOverview/PostOverview';
 import { db } from '../../../firebase';
 
-export default function Subreddit() {
+export default function Subreddit({ userId, toggleLoginModal }) {
   const { subName } = useParams();
   const [overview, setOverview] = useState(null);
   const [posts, setPosts] = useState(null);
@@ -63,6 +63,8 @@ export default function Subreddit() {
           overview={overview}
           primaryColour={primaryColour}
           secondaryColour={secondaryColour}
+          userId={userId}
+          toggleLoginModal={toggleLoginModal}
         />
         <div className="subreddit-body">
           <div className="subreddit-content">
@@ -83,6 +85,8 @@ export default function Subreddit() {
                         postId={post.id}
                         subName={subName}
                         key={post.id}
+                        userId={userId}
+                        toggleLoginModal={toggleLoginModal}
                       />
                     );
                   })

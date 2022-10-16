@@ -14,29 +14,40 @@ export default function SubredditHeader({
   overview,
   primaryColour,
   secondaryColour,
+  userId,
+  toggleLoginModal,
 }) {
   const { subName } = useParams();
   const [isMember, setIsMember] = useState(null);
   const [memberCount, setMemberCount] = useState(null);
 
+  const joinSubreddit = async () => {
+    if (userId) {
+      await joinSub(subName);
+    } else {
+      toggleLoginModal();
+    }
+  };
+
   // Test to check for collection
   useEffect(() => {
     const isSubscribed = async () => {
-      const currentUser = auth.currentUser.uid;
-      const queryRef = query(
-        collection(db, 'users', `${currentUser}`, 'subscribed')
-      );
-      onSnapshot(queryRef, (QuerySnapshot) => {
-        const data = QuerySnapshot.forEach((doc) => {
-          if (doc.id === subName) {
-            setIsMember(true);
-          } else {
-          }
+      if (userId) {
+        const currentUser = auth.currentUser.uid;
+        const queryRef = query(
+          collection(db, 'users', `${currentUser}`, 'subscribed')
+        );
+        onSnapshot(queryRef, (QuerySnapshot) => {
+          const data = QuerySnapshot.forEach((doc) => {
+            if (doc.id === subName) {
+              setIsMember(true);
+            }
+          });
         });
-      });
+      }
     };
     isSubscribed();
-  }, [isMember, subName]);
+  }, [isMember, subName, userId]);
 
   return (
     <div className="subreddit-header">
@@ -64,7 +75,7 @@ export default function SubredditHeader({
               </button>
             ) : (
               <button
-                onClick={() => joinSub(subName)}
+                onClick={joinSubreddit}
                 style={{ backgroundColor: secondaryColour }}
               >
                 Join

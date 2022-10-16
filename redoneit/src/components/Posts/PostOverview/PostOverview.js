@@ -6,7 +6,13 @@ import { formatDistanceToNowStrict } from 'date-fns';
 import { db, auth } from '../../../firebase';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 
-export default function PostOverview({ postId, subName, homePost }) {
+export default function PostOverview({
+  postId,
+  subName,
+  homePost,
+  userId,
+  toggleLoginModal,
+}) {
   // const { subName } = useParams();
   const navigate = useNavigate();
   const [postData, setPostData] = useState(null);
@@ -46,16 +52,18 @@ export default function PostOverview({ postId, subName, homePost }) {
     };
 
     const hasVoted = () => {
-      if (postData.upVotedBy.includes(auth.currentUser.uid)) {
-        setHasUpvoted(true);
-      } else {
-        setHasUpvoted(false);
-      }
+      if (userId) {
+        if (postData.upVotedBy.includes(auth.currentUser.uid)) {
+          setHasUpvoted(true);
+        } else {
+          setHasUpvoted(false);
+        }
 
-      if (postData.downVotedBy.includes(auth.currentUser.uid)) {
-        setHasDownVoted(true);
-      } else {
-        setHasDownVoted(false);
+        if (postData.downVotedBy.includes(auth.currentUser.uid)) {
+          setHasDownVoted(true);
+        } else {
+          setHasDownVoted(false);
+        }
       }
     };
 
@@ -64,7 +72,23 @@ export default function PostOverview({ postId, subName, homePost }) {
       urlToString();
       hasVoted();
     }
-  }, [postData]);
+  }, [postData, userId]);
+
+  const upVoteThisPost = () => {
+    if (userId) {
+      upVotePost(subName, postId, postData.userId);
+    } else {
+      toggleLoginModal();
+    }
+  };
+
+  const downVoteThisPost = () => {
+    if (userId) {
+      downVotePost(subName, postId, postData.userId);
+    } else {
+      toggleLoginModal();
+    }
+  };
 
   // Redirects users to post page unless a hyperlink has been clicked
   const navigateToPost = (event) => {
@@ -77,7 +101,7 @@ export default function PostOverview({ postId, subName, homePost }) {
     return (
       <div key={postData.id} className="post-main">
         <div className="karma-box">
-          <button onClick={() => upVotePost(subName, postId, postData.userId)}>
+          <button onClick={upVoteThisPost}>
             <i
               className={
                 hasUpVoted
@@ -87,9 +111,7 @@ export default function PostOverview({ postId, subName, homePost }) {
             ></i>
           </button>
           <div>{postData.karma}</div>
-          <button
-            onClick={() => downVotePost(subName, postId, postData.userId)}
-          >
+          <button onClick={downVoteThisPost}>
             <i
               className={
                 hasDownVoted

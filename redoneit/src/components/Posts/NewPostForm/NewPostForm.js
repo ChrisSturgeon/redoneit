@@ -3,7 +3,7 @@ import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { newTextPost, newURLPost } from '../../../firebase';
 
-export default function NewPostForm() {
+export default function NewPostForm({ userId, toggleLoginModal }) {
   const { subName } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const [postType, setPostType] = useState(null);
@@ -68,15 +68,18 @@ export default function NewPostForm() {
   // state on submit, then forwards user back to newly created post
   const onFormSubmit = async (event) => {
     event.preventDefault();
+    if (userId) {
+      if (postType === 'link') {
+        const newId = await newURLPost(title, url, subName);
+        navigate(`/r/${subName}/post/${newId}`);
+      }
 
-    if (postType === 'link') {
-      const newId = await newURLPost(title, url, subName);
-      navigate(`/r/${subName}/post/${newId}`);
-    }
-
-    if (postType === 'text') {
-      const newId = await newTextPost(title, postText, subName);
-      navigate(`/r/${subName}/post/${newId}`);
+      if (postType === 'text') {
+        const newId = await newTextPost(title, postText, subName);
+        navigate(`/r/${subName}/post/${newId}`);
+      }
+    } else {
+      toggleLoginModal();
     }
   };
 
@@ -112,6 +115,7 @@ export default function NewPostForm() {
               id="titleInput"
               type="text"
               maxLength={300}
+              disabled={userId ? false : true}
             ></input>
             <div>{titleLength}/300</div>
           </div>
@@ -124,17 +128,22 @@ export default function NewPostForm() {
                 id="postURL"
                 type="text"
                 className={urlClass}
+                disabled={userId ? false : true}
               ></input>
             </>
           ) : (
             <>
               <label htmlFor="postText">Text</label>
-              <textarea onChange={postTextChange} id="postText"></textarea>
+              <textarea
+                onChange={postTextChange}
+                id="postText"
+                disabled={userId ? false : true}
+              ></textarea>
             </>
           )}
 
           <button type="submit" className="post-submit-btn">
-            Post
+            {userId ? 'Post' : 'Login to post'}
           </button>
         </form>
       </div>

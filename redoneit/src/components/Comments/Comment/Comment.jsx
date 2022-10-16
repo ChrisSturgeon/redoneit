@@ -13,7 +13,7 @@ import {
 import ReplyForm from '../ReplyForm/ReplyForm';
 import Reply from '../Reply/Reply';
 
-export default function Comment({ data }) {
+export default function Comment({ data, userId, toggleLoginModal }) {
   const { subName, postId } = useParams();
   const dateObj = new Date(data.posted.seconds * 1000);
   const timeInterval = formatDistanceToNowStrict(dateObj);
@@ -27,7 +27,6 @@ export default function Comment({ data }) {
   // Sets listener for comment's replies to ordered by descending karma
   useEffect(() => {
     async function getReplies() {
-      const currentUser = auth.currentUser.uid;
       const queryRef = query(
         collection(
           db,
@@ -60,15 +59,27 @@ export default function Comment({ data }) {
   };
 
   const upVote = () => {
-    upVoteComment(subName, postId, data.id, data.userId);
+    if (userId) {
+      upVoteComment(subName, postId, data.id, data.userId);
+    } else {
+      toggleLoginModal();
+    }
   };
 
   const downVote = () => {
-    downVoteComment(subName, postId, data.id, data.userId);
+    if (userId) {
+      downVoteComment(subName, postId, data.id, data.userId);
+    } else {
+      toggleLoginModal();
+    }
   };
 
   const toggleReplyForm = () => {
-    setReplyForm(!replyForm);
+    if (userId) {
+      setReplyForm(!replyForm);
+    } else {
+      toggleLoginModal();
+    }
   };
 
   // Listener for real-time karma updates
@@ -95,20 +106,22 @@ export default function Comment({ data }) {
   // this comment and stores this in state as boolean to colour
   // up/down arrow buttons accordingly
   useEffect(() => {
-    if (data.upVotedBy.includes(auth.currentUser.uid)) {
-      setHasUpvoted(true);
-      setKarmaClass('hasUpVoted');
-    } else {
-      setHasUpvoted(false);
-    }
+    if (userId) {
+      if (data.upVotedBy.includes(auth.currentUser.uid)) {
+        setHasUpvoted(true);
+        setKarmaClass('hasUpVoted');
+      } else {
+        setHasUpvoted(false);
+      }
 
-    if (data.downVotedBy.includes(auth.currentUser.uid)) {
-      setHasDownVoted(true);
-      setKarmaClass('hasDownVoted');
-    } else {
-      setHasDownVoted(false);
+      if (data.downVotedBy.includes(auth.currentUser.uid)) {
+        setHasDownVoted(true);
+        setKarmaClass('hasDownVoted');
+      } else {
+        setHasDownVoted(false);
+      }
     }
-  }, [data.upVotedBy, data.downVotedBy]);
+  }, [userId, data.upVotedBy, data.downVotedBy]);
 
   return (
     <div key={data.id} className="comment-main">
@@ -166,7 +179,13 @@ export default function Comment({ data }) {
           {replies
             ? replies.map((reply) => {
                 return (
-                  <Reply key={reply.id} commentId={data.id} data={reply} />
+                  <Reply
+                    key={reply.id}
+                    commentId={data.id}
+                    data={reply}
+                    userId={userId}
+                    toggleLoginModal={toggleLoginModal}
+                  />
                 );
               })
             : null}

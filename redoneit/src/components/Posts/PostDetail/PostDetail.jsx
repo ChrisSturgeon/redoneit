@@ -14,7 +14,7 @@ import {
 import Comment from '../../Comments/Comment/Comment';
 import CommentForm from '../../Comments/CommentForm/CommentForm';
 
-export default function PostDetail(props) {
+export default function PostDetail({ userId, username, toggleLoginModal }) {
   const { subName, postId } = useParams();
   const [overview, setOverview] = useState(null);
   const [comments, setComments] = useState(null);
@@ -35,7 +35,6 @@ export default function PostDetail(props) {
   // Sets listener for post's comments to ordered by descending karma
   useEffect(() => {
     async function getComments() {
-      const currentUser = auth.currentUser.uid;
       const queryRef = query(
         collection(
           db,
@@ -58,10 +57,7 @@ export default function PostDetail(props) {
       });
     }
     getComments();
-  }, []);
-
-  // Ensure top of content is displayed on page load
-  // document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }, [userId]);
 
   return (
     <div className="post-detail-main">
@@ -140,12 +136,23 @@ export default function PostDetail(props) {
             }
           })()}
 
-          <CommentForm />
+          <CommentForm
+            userId={userId}
+            username={username}
+            toggleLoginModal={toggleLoginModal}
+          />
 
           {/* Comments detail conditional */}
           {comments
             ? comments.map((comment) => {
-                return <Comment key={comment.id} data={comment} />;
+                return (
+                  <Comment
+                    key={comment.id}
+                    data={comment}
+                    userId={userId}
+                    toggleLoginModal={toggleLoginModal}
+                  />
+                );
               })
             : null}
         </div>

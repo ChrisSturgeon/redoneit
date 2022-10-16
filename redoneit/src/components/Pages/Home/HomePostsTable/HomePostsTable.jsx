@@ -11,6 +11,7 @@ export default function HomePostsTable(props) {
       {shuffledPosts.map((post) => {
         return (
           <PostOverview
+            key={post.id}
             postId={post.id}
             subName={post.subreddit}
             homePost={true}

@@ -56,6 +56,11 @@ export function authChange() {
   });
 }
 
+export async function getUsersId() {
+  const userId = await auth.currentUser.uid;
+  return userId;
+}
+
 // Returns meta-data about signed in user
 export const getUserName = async (userId) => {
   const docRef = doc(db, 'users', `${userId}`);
@@ -595,6 +600,7 @@ export async function getHomePosts() {
   return homePosts;
 }
 
+// Returns a randomised array for use with displaying posts on the homepage
 export function shuffleArray(array) {
   let currentIndex = array.length,
     randomIndex;

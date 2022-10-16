@@ -6,12 +6,11 @@ import { upVoteReply, downVoteReply } from '../../../firebase';
 import { onSnapshot, doc } from 'firebase/firestore';
 import { db, auth } from '../../../firebase';
 
-export default function Reply({ commentId, data }) {
+export default function Reply({ commentId, data, userId, toggleLoginModal }) {
   const { subName, postId } = useParams();
   const dateObj = new Date(data.posted.seconds * 1000);
   const timeInterval = formatDistanceToNowStrict(dateObj);
   const [postKarma, setPostKarma] = useState(null);
-  const [replies, setReplies] = useState(null);
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
   const [karmaClass, setKarmaClass] = useState(null);
@@ -23,11 +22,19 @@ export default function Reply({ commentId, data }) {
   };
 
   const upVote = () => {
-    upVoteReply(subName, postId, commentId, data.id, data.userId);
+    if (userId) {
+      upVoteReply(subName, postId, commentId, data.id, data.userId);
+    } else {
+      toggleLoginModal();
+    }
   };
 
   const downVote = () => {
-    downVoteReply(subName, postId, commentId, data.id, data.userId);
+    if (userId) {
+      downVoteReply(subName, postId, commentId, data.id, data.userId);
+    } else {
+      toggleLoginModal();
+    }
   };
 
   const toggleReplyForm = () => {
@@ -60,20 +67,22 @@ export default function Reply({ commentId, data }) {
   // this comment and stores this in state as boolean to colour
   // up/down arrow buttons accordingly
   useEffect(() => {
-    if (data.upVotedBy.includes(auth.currentUser.uid)) {
-      setHasUpvoted(true);
-      setKarmaClass('hasUpVoted');
-    } else {
-      setHasUpvoted(false);
-    }
+    if (userId) {
+      if (data.upVotedBy.includes(auth.currentUser.uid)) {
+        setHasUpvoted(true);
+        setKarmaClass('hasUpVoted');
+      } else {
+        setHasUpvoted(false);
+      }
 
-    if (data.downVotedBy.includes(auth.currentUser.uid)) {
-      setHasDownVoted(true);
-      setKarmaClass('hasDownVoted');
-    } else {
-      setHasDownVoted(false);
+      if (data.downVotedBy.includes(auth.currentUser.uid)) {
+        setHasDownVoted(true);
+        setKarmaClass('hasDownVoted');
+      } else {
+        setHasDownVoted(false);
+      }
     }
-  }, [data.upVotedBy, data.downVotedBy]);
+  }, [userId, data.upVotedBy, data.downVotedBy]);
 
   return (
     <div key={data.id} className="reply-main">

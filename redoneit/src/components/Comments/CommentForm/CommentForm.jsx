@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { submitComment, auth, getUsersName } from '../../../firebase';
 
-export default function CommentForm() {
+export default function CommentForm({ userId, username, toggleLoginModal }) {
   const { subName, postId } = useParams();
   const [commentText, setCommentText] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [username, setUsername] = useState(null);
+  // const [username, setUsername] = useState(null);
 
   const handleTextInput = (event) => {
     setCommentText(event.target.value);
@@ -33,13 +33,13 @@ export default function CommentForm() {
   }, [commentText]);
 
   // Fetches user name upon render and stores in state
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const username = await getUsersName(auth.currentUser.uid);
-      setUsername(username);
-    };
-    fetchUserName();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUserName = async () => {
+  //     const username = await getUsersName(auth.currentUser.uid);
+  //     setUsername(username);
+  //   };
+  //   fetchUserName();
+  // }, []);
 
   document.body.scrollTop = document.documentElement.scrollTop = 0;
 
@@ -53,9 +53,14 @@ export default function CommentForm() {
             value={commentText}
             placeholder="What are your thoughts?"
           ></textarea>
-          <button disabled={!isFormValid} type="submit">
-            Comment
-          </button>
+
+          {userId ? (
+            <button disabled={!isFormValid} type="submit">
+              Comment
+            </button>
+          ) : (
+            <button onClick={() => toggleLoginModal()}>Login to comment</button>
+          )}
         </form>
       ) : (
         <div>
