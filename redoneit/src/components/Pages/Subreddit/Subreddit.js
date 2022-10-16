@@ -52,6 +52,10 @@ export default function Subreddit() {
     postsSub();
   }, [subName]);
 
+  const testFunction = () => {
+    console.log(posts);
+  };
+
   if (overview) {
     return (
       <div className="subreddit-main">
@@ -70,6 +74,7 @@ export default function Subreddit() {
                 <Link to="submit?type=link">
                   <i className="fa-solid fa-link"></i>
                 </Link>
+                <button onClick={() => testFunction()}>Test</button>
               </div>
               {posts
                 ? posts.map((post) => {

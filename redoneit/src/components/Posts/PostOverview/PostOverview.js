@@ -6,7 +6,7 @@ import { formatDistanceToNowStrict } from 'date-fns';
 import { db, auth } from '../../../firebase';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 
-export default function PostOverview({ postId, subName }) {
+export default function PostOverview({ postId, subName, homePost }) {
   // const { subName } = useParams();
   const navigate = useNavigate();
   const [postData, setPostData] = useState(null);
@@ -102,7 +102,8 @@ export default function PostOverview({ postId, subName }) {
 
         <div onClick={navigateToPost} className="details-box">
           <div className="user-time">
-            Posted by u/{postData.user} {timeInterval} ago
+            Posted by u/{postData.user} {timeInterval} ago{' '}
+            {homePost ? `${postData.subreddit}` : null}
           </div>
           <div className="post-title">{postData.title}</div>
 

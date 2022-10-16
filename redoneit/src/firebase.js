@@ -26,6 +26,8 @@ import {
   serverTimestamp,
   onSnapshot,
   deleteDoc,
+  orderBy,
+  limit,
 } from 'firebase/firestore';
 
 // Firebase configuration details
@@ -545,4 +547,70 @@ export async function leaveSub(subreddit) {
   await updateDoc(subRef, {
     memberCount: increment(-1),
   });
+}
+
+export async function getUserSubscriptions() {
+  const currentUser = auth.currentUser.uid;
+  let userSubs = [];
+  const subsRef = query(
+    collection(db, 'users', `${currentUser}`, 'subscribed')
+  );
+
+  const querySnapShot = await getDocs(subsRef);
+  querySnapShot.forEach((doc) => {
+    userSubs.push(doc.id);
+  });
+
+  return userSubs;
+}
+
+export async function getHomePosts() {
+  const currentUser = auth.currentUser.uid;
+  let userSubs = [];
+  let homePosts = [];
+
+  const subsRef = query(
+    collection(db, 'users', `${currentUser}`, 'subscribed')
+  );
+
+  const querySnapShot = await getDocs(subsRef);
+  querySnapShot.forEach((doc) => {
+    userSubs.push(doc.id);
+  });
+
+  userSubs.forEach((subName) => {
+    const queryRef = query(
+      collection(db, 'subreddits', `${subName}`, 'posts'),
+      orderBy('karma', 'desc'),
+      limit(3)
+    );
+    onSnapshot(queryRef, (querySnapShot) => {
+      querySnapShot.forEach((doc) => {
+        const postData = doc.data();
+        postData.id = doc.id;
+        homePosts.push(postData);
+      });
+    });
+  });
+  return homePosts;
+}
+
+export function shuffleArray(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
 }
