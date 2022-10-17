@@ -3,10 +3,8 @@
   min-height: 94vh;
   padding: 1em;
   display: grid;
+  justify-items: center;
   grid-template-columns: 100% 303px;
-  /* flex-direction: column;
-  align-items: center;
-  justify-content: center; */
   background-color: var(--home-bg-grey);
 }
 
@@ -21,4 +19,23 @@
   gap: 1em;
   padding: 1em;
   width: 100%;
+}
+
+.new-post-home {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+  margin-bottom: 1em;
+  background-color: white;
+  border: 1.25px solid var(--medium-grey);
+  border-radius: 4px;
+  padding: 0.5em;
+}
+
+@media only screen and (min-width: 1200px) {
+  .home-content {
+    max-width: 1068px;
+  }
 }

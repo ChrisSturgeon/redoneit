@@ -49,7 +49,7 @@ export default function SignUpForm(props) {
     <div className="register-step">
       <div
         className="step-art"
-        style={{ backgroundImage: `url(${stepArt})` }}
+        style={{ backgroundImage: `url(${stepArt})`, backgroundSize: 'cover' }}
       ></div>
       <div className="register-step-content">
         <div className="register-step-header">

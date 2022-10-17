@@ -155,7 +155,10 @@ export default function PostOverview({
               <i className=" fa-regular fa-message"></i> {postData.comments}{' '}
               comments
             </div>
-            <div className="share-box">share</div>
+            <div className="share-box">
+              <i className="fa-solid fa-share"></i>
+              <div>share</div>
+            </div>
           </div>
         </div>
       </div>

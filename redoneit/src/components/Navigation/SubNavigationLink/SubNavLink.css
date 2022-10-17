@@ -24,3 +24,7 @@
   font-size: 1.3rem;
   color: var(--accent-blue);
 }
+
+.star-btn i {
+  color: grey;
+}

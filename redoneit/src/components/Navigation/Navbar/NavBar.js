@@ -1,6 +1,6 @@
 import './NavBar.css';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import navLogo from '../../../imgs/navLogo.png';
 
@@ -54,25 +54,34 @@ export default function NavBar(props) {
   return (
     <div>
       <nav className={expanded ? 'no-shadow' : null}>
-        <Link
-          onClick={() => {
-            if (subsOpen) {
-              toggleSubsNav();
-            }
-          }}
-          className="home-nav-link"
-          to="/"
-        >
-          <img className="nav-logo" src={navLogo} alt="reddit-logo" />
-          <div className="reddit-text">reddit</div>
-        </Link>
-        <div className="desktop-subs-nav">
-          <button onClick={toggleSubsNav} className="subs-btn">
-            Show subs
-          </button>
-          {subsOpen && userId ? (
-            <SubsNav toggleSubsNav={toggleSubsNav} />
-          ) : null}
+        <div className="home-subs-nav">
+          <Link
+            onClick={() => {
+              if (subsOpen) {
+                toggleSubsNav();
+              }
+            }}
+            className="home-nav-link"
+            to="/"
+          >
+            <img className="nav-logo" src={navLogo} alt="reddit-logo" />
+            <div className="reddit-text">reddit</div>
+          </Link>
+          <div className="desktop-subs-nav">
+            <button
+              onClick={toggleSubsNav}
+              className={subsOpen ? 'subs-btn open' : 'subs-btn'}
+            >
+              <div className="subs-btn-text">
+                <i className="fa-solid fa-house"></i>
+                <div>My subreddits</div>
+                <i className="fa-solid fa-angle-down"></i>
+              </div>
+            </button>
+            {subsOpen && userId ? (
+              <SubsNav toggleSubsNav={toggleSubsNav} />
+            ) : null}
+          </div>
         </div>
         <div className="main-nav">
           <ul>

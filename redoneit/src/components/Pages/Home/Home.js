@@ -1,5 +1,6 @@
 import './Home.css';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { db, getUserSubscriptions } from '../../../firebase';
 import { query, collection, getDocs, orderBy, limit } from 'firebase/firestore';
 import HomePostsTable from './HomePostsTable/HomePostsTable';
@@ -49,7 +50,17 @@ export default function Home({ userId, toggleLoginModal }) {
     <div className="home-main">
       <div className="home-content">
         <div className="home-posts">
-          <div>Create post button here</div>
+          {userId ? (
+            <div className="new-post-home">
+              <Link to="r/home/submit?type=text" className="new-post-link">
+                <input type="text" placeholder="Create Post"></input>
+              </Link>
+              <Link to="r/home/submit?type=link">
+                <i className="fa-solid fa-link"></i>
+              </Link>
+            </div>
+          ) : null}
+
           {homePosts ? (
             <HomePostsTable
               userId={userId}

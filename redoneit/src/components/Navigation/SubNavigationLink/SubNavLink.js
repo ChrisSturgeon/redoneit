@@ -16,7 +16,10 @@ export default function SubNavLink(props) {
             unFavouriteSub(props.subName);
           }}
         >
-          <i className="fa-solid fa-star"></i>
+          <i
+            className="fa-solid fa-star"
+            style={{ color: 'var(--accent-blue)' }}
+          ></i>
         </button>
       ) : (
         <button

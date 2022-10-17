@@ -47,7 +47,7 @@ export default function LoginForm(props) {
     <div className="login-step">
       <div
         className="step-art"
-        style={{ backgroundImage: `url(${stepArt})` }}
+        style={{ backgroundImage: `url(${stepArt})`, backgroundSize: 'cover' }}
       ></div>
       <div className="login-step-content">
         <div className="step-header">

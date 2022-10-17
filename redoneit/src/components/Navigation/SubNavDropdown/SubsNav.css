@@ -2,18 +2,24 @@
   position: fixed;
   z-index: 99;
   background-color: white;
+  border-right: 1px solid var(--medium-grey);
+  border-bottom: 1px solid var(--medium-grey);
+  border-left: 1px solid var(--medium-grey);
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .all-subs-link {
-  display: flex;
+  padding: 0.5em 1em;
   width: 100%;
 }
 
+.all-subs-link:hover {
+  background-color: var(--hover-grey);
+}
+
 .all-subs-link a {
-  text-align: center;
-  background-color: rgb(201, 201, 230);
   width: inherit;
-  padding: 0.25em;
 }
 
 .subs-nav h2 {
