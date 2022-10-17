@@ -2,13 +2,7 @@ import './SubredditHeader.css';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { auth, db, joinSub, leaveSub } from '../../../../firebase';
-import {
-  onSnapshot,
-  doc,
-  collection,
-  query,
-  QuerySnapshot,
-} from 'firebase/firestore';
+import { onSnapshot, collection, query } from 'firebase/firestore';
 
 export default function SubredditHeader({
   overview,

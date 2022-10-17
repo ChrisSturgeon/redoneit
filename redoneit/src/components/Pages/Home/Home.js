@@ -1,6 +1,5 @@
 import './Home.css';
 import React, { useEffect, useState } from 'react';
-
 import { db, getUserSubscriptions } from '../../../firebase';
 import { query, collection, getDocs, orderBy, limit } from 'firebase/firestore';
 import HomePostsTable from './HomePostsTable/HomePostsTable';
@@ -9,6 +8,9 @@ export default function Home({ userId }) {
   const [userSubscriptions, setUserSubscriptions] = useState(null);
   const [homePosts, setHomePosts] = useState([]);
 
+  // On mount if user is logged in fetches which subreddits they're
+  // subscribed to, and sets these into state as array
+  // for use in fetching relevant top posts for each
   useEffect(() => {
     const getMySubscriptions = async () => {
       if (userId) {
@@ -19,6 +21,8 @@ export default function Home({ userId }) {
     getMySubscriptions();
   }, [userId]);
 
+  // If user is logged in, fetches the three highest-karma posts for each
+  // of their subscribed subreddits, and stores these as array in state
   useEffect(() => {
     const getHomePosts = async () => {
       if (userSubscriptions) {
@@ -40,14 +44,9 @@ export default function Home({ userId }) {
     getHomePosts();
   }, [userSubscriptions]);
 
-  const testFunction = async () => {
-    console.log(homePosts);
-  };
-
   return (
     <div className="main">
       <div>I'm the home page</div>
-      <button onClick={testFunction}>Test</button>
       {homePosts ? <HomePostsTable posts={homePosts} /> : null}
     </div>
   );

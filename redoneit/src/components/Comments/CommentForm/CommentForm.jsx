@@ -1,20 +1,20 @@
 import './CommentForm.css';
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { submitComment, auth, getUsersName } from '../../../firebase';
+import { submitComment } from '../../../firebase';
 
 export default function CommentForm({ userId, username, toggleLoginModal }) {
   const { subName, postId } = useParams();
   const [commentText, setCommentText] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  // const [username, setUsername] = useState(null);
 
+  // Updates state value of 'post' text
   const handleTextInput = (event) => {
     setCommentText(event.target.value);
   };
 
+  // Checks comment field has text and calls firebase submit comment function with value
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     if (commentText.length > 0) {
@@ -32,15 +32,7 @@ export default function CommentForm({ userId, username, toggleLoginModal }) {
     }
   }, [commentText]);
 
-  // Fetches user name upon render and stores in state
-  // useEffect(() => {
-  //   const fetchUserName = async () => {
-  //     const username = await getUsersName(auth.currentUser.uid);
-  //     setUsername(username);
-  //   };
-  //   fetchUserName();
-  // }, []);
-
+  // Scrolls to top of page
   document.body.scrollTop = document.documentElement.scrollTop = 0;
 
   return (
@@ -53,7 +45,6 @@ export default function CommentForm({ userId, username, toggleLoginModal }) {
             value={commentText}
             placeholder="What are your thoughts?"
           ></textarea>
-
           {userId ? (
             <button disabled={!isFormValid} type="submit">
               Comment

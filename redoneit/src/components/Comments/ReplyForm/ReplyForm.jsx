@@ -1,44 +1,38 @@
 import './ReplyForm.css';
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { auth, commentReply, getUsersName } from '../../../firebase';
+import { commentReply } from '../../../firebase';
 
-export default function ReplyForm({ commentId }) {
+export default function ReplyForm({ commentId, username }) {
   const { subName, postId } = useParams();
-  const [commentText, setCommentText] = useState('');
+  const [replyText, setReplyText] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [username, setUsername] = useState(null);
 
+  // Updates 'reply text' state for use on textarea change
   const handleTextInput = (event) => {
-    setCommentText(event.target.value);
+    setReplyText(event.target.value);
   };
 
+  // Checks if reply text is present and calls firebase set reply
+  // function with state, clearing form afterwards
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    if (commentText.length > 0) {
-      await commentReply(subName, postId, commentId, commentText);
-      setCommentText('');
+    if (replyText.length > 0) {
+      await commentReply(subName, postId, commentId, replyText);
+      setReplyText('');
       setIsFormValid(false);
       setSubmitted(true);
     }
   };
 
+  // Runs after reply text is entered to check
+  // text is present, enabling submit button if so.
   useEffect(() => {
-    if (commentText.length > 0) {
+    if (replyText.length > 0) {
       setIsFormValid(true);
     }
-  }, [commentText]);
-
-  // Fetches user name upon render and stores in state
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const username = await getUsersName(auth.currentUser.uid);
-      setUsername(username);
-    };
-    fetchUserName();
-  }, []);
+  }, [replyText]);
 
   return (
     <div className="reply-form-main">
@@ -47,7 +41,7 @@ export default function ReplyForm({ commentId }) {
           <div>Replying as {username}</div>
           <textarea
             onChange={handleTextInput}
-            value={commentText}
+            value={replyText}
             placeholder="Type here"
           ></textarea>
           <button disabled={!isFormValid} type="submit">

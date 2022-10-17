@@ -16,56 +16,23 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   const [textBtnActive, setTextBtnActive] = useState(null);
   const navigate = useNavigate();
 
+  // Updates 'title' state for use on input change
   const titleChange = (event) => {
     setTitle(event.target.value);
   };
 
-  // Updates title length counter in input bar
-  useEffect(() => {
-    setTitleLength(title.length);
-  }, [title]);
-
+  // Updates 'URL' state for use on input change
   const urlChange = (event) => {
     setUrl(event.target.value);
   };
-
-  // Sets post-type state from URL search params
-  // and activates relevant form render and styling
-  useEffect(() => {
-    setPostType(searchParams.get('type'));
-    searchParams.get('type') === 'text'
-      ? setTextBtnActive(true)
-      : setlinkBtnActive(true);
-  }, [searchParams]);
-
-  useEffect(() => {
-    if (url) {
-      if (url.startsWith('https://')) {
-        setURLClass('url-valid');
-      } else {
-        setURLClass('url-invalid');
-      }
-    }
-  }, [url]);
-
+  // Updates 'post text' state for use on input change
   const postTextChange = (event) => {
     setPostText(event.target.value);
   };
 
-  const selectLinkPost = () => {
-    setSearchParams('type=link');
-    setlinkBtnActive(true);
-    setTextBtnActive(false);
-  };
-
-  const selectTextPost = () => {
-    setSearchParams('type=text');
-    setlinkBtnActive(false);
-    setTextBtnActive(true);
-  };
-
   // Calls Firebase new post function with post-type
-  // state on submit, then forwards user back to newly created post
+  // state on submit, then auto-forwards
+  // user to their newly created post
   const onFormSubmit = async (event) => {
     event.preventDefault();
     if (userId) {
@@ -82,6 +49,47 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
       toggleLoginModal();
     }
   };
+
+  // Switches the type of new post form to 'link'
+  const selectLinkPost = () => {
+    setSearchParams('type=link');
+    setlinkBtnActive(true);
+    setTextBtnActive(false);
+  };
+
+  // Switches the type of new post form to 'text'
+  const selectTextPost = () => {
+    setSearchParams('type=text');
+    setlinkBtnActive(false);
+    setTextBtnActive(true);
+  };
+
+  // Updates title length counter in title input bar to show
+  // user how close to the 300 character limit they are
+  useEffect(() => {
+    setTitleLength(title.length);
+  }, [title]);
+
+  // Sets post-type state from URL search params
+  // and then activates relevant form render and styling
+  useEffect(() => {
+    setPostType(searchParams.get('type'));
+    searchParams.get('type') === 'text'
+      ? setTextBtnActive(true)
+      : setlinkBtnActive(true);
+  }, [searchParams]);
+
+  // Checks to see if URL input field starts with 'https://'
+  // and sets validity state accordingly
+  useEffect(() => {
+    if (url) {
+      if (url.startsWith('https://')) {
+        setURLClass('url-valid');
+      } else {
+        setURLClass('url-invalid');
+      }
+    }
+  }, [url]);
 
   return (
     <div className="post-form-main">

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { format } from 'date-fns';
 import { db } from '../../../../firebase';
 import './SubredditSidebar.css';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
-import { format } from 'date-fns';
 
 export default function SubredditSidebar({ primaryColour, secondaryColour }) {
   const { subName } = useParams();

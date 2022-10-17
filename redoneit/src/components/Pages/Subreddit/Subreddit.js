@@ -9,11 +9,12 @@ import {
   doc,
   orderBy,
 } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
+// Component imports
 import SubredditHeader from './SubredditHeader/SubredditHeader';
 import SubredditSidebar from './SubredditSidebar/SubredditSidebar';
 import PostOverview from '../../Posts/PostOverview/PostOverview';
-import { db } from '../../../firebase';
 
 export default function Subreddit({ userId, toggleLoginModal }) {
   const { subName } = useParams();
@@ -52,10 +53,6 @@ export default function Subreddit({ userId, toggleLoginModal }) {
     postsSub();
   }, [subName]);
 
-  const testFunction = () => {
-    console.log(posts);
-  };
-
   if (overview) {
     return (
       <div className="subreddit-main">
@@ -76,7 +73,6 @@ export default function Subreddit({ userId, toggleLoginModal }) {
                 <Link to="submit?type=link">
                   <i className="fa-solid fa-link"></i>
                 </Link>
-                <button onClick={() => testFunction()}>Test</button>
               </div>
               {posts
                 ? posts.map((post) => {

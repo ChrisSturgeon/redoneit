@@ -1,9 +1,8 @@
 import './SignUpForm.css';
+import React, { useState } from 'react';
 import stepArt from '../../../imgs/loginDecoration.png';
 import { signInWithRedirect } from 'firebase/auth';
 import { auth, provider, registerNewUser } from '../../../firebase';
-
-import React, { useState } from 'react';
 
 export default function SignUpForm(props) {
   const [userName, setUserName] = useState();
@@ -11,35 +10,35 @@ export default function SignUpForm(props) {
   const [password1, setPassword1] = useState();
   const [password2, setPassword2] = useState();
 
+  // Updates 'username' state for use on input change
   const handleUserNameChange = (event) => {
     setUserName(event.target.value);
   };
 
+  // Updates 'email' state for use on input change
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
 
+  // Updates 'password1' state for use on input change
   const handlePassword1Change = (event) => {
     setPassword1(event.target.value);
   };
 
+  // Updates 'password2' state for use on input change
   const handlePassword2Change = (event) => {
     setPassword2(event.target.value);
   };
 
+  // Calls Firebase auth Google Sign in function
   const signGoogleUserIn = () => {
     signInWithRedirect(auth, provider);
   };
 
-  // // Locks home screen scroll when register modal open
-  // props.registerOpen
-  //   ? (document.body.style.overflow = 'hidden')
-  //   : (document.body.style.overflow = 'auto');
-
-  // Validates registration inputs and then creates new Firebase user
+  // Validates the two password are identical and then
+  // calls creates new Firebase user function
   const onSubmit = (event) => {
     event.preventDefault();
-
     if (password1 === password2) {
       registerNewUser(email, password1, userName);
     }

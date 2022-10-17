@@ -10,7 +10,7 @@ import {
   orderBy,
 } from 'firebase/firestore';
 
-// Components
+// Component imports
 import Comment from '../../Comments/Comment/Comment';
 import CommentForm from '../../Comments/CommentForm/CommentForm';
 
@@ -151,6 +151,7 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
                     data={comment}
                     userId={userId}
                     toggleLoginModal={toggleLoginModal}
+                    username={username}
                   />
                 );
               })

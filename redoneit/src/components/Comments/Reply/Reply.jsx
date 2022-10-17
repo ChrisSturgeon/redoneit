@@ -14,13 +14,9 @@ export default function Reply({ commentId, data, userId, toggleLoginModal }) {
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
   const [karmaClass, setKarmaClass] = useState(null);
-  const [replyForm, setReplyForm] = useState(null);
 
-  // TO REMOVE - test function
-  const test = () => {
-    console.log(karmaClass);
-  };
-
+  // Calls firebase upvote function with comment
+  // details if user is logged in, or opens login modal
   const upVote = () => {
     if (userId) {
       upVoteReply(subName, postId, commentId, data.id, data.userId);
@@ -29,16 +25,14 @@ export default function Reply({ commentId, data, userId, toggleLoginModal }) {
     }
   };
 
+  // Calls firebase downvote function with comment
+  // details if user is logged in, or opens login modal
   const downVote = () => {
     if (userId) {
       downVoteReply(subName, postId, commentId, data.id, data.userId);
     } else {
       toggleLoginModal();
     }
-  };
-
-  const toggleReplyForm = () => {
-    setReplyForm(!replyForm);
   };
 
   // Listener for real-time karma updates

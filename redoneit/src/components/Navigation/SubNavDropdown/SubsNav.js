@@ -1,15 +1,15 @@
 import './SubsNav.css';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import SubNavLink from '../SubNavigationLink/SubNavLink';
 import { onSnapshot, query, collection } from 'firebase/firestore';
 import { db, auth } from '../../../firebase';
+import SubNavLink from '../SubNavigationLink/SubNavLink';
 
 export default function SubsNav(props) {
   const [subsArr, setSubsArr] = useState(null);
 
   // On mount establishes listener for users
-  // subreddit subscriptions and sets to state
+  // subreddit subscriptions and sets to these state as array
   useEffect(() => {
     async function userSubs() {
       const currentUser = auth.currentUser.uid;

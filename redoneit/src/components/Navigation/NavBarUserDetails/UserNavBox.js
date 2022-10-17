@@ -7,7 +7,7 @@ export default function UserNavBox(props) {
   const [userKarma, setUserKarma] = useState();
   const [userName, setUsername] = useState();
 
-  // Creates realtime listener to update user karma upon mount
+  // On mount sets listener to update user's karma in realtime
   useEffect(() => {
     async function karmaSub() {
       onSnapshot(doc(db, 'users', `${props.userId}`), (doc) => {

@@ -1,5 +1,4 @@
 import { initializeApp } from 'firebase/app';
-import { useNavigate } from 'react-router-dom';
 
 // Firebase authentication imports
 import {
@@ -56,11 +55,6 @@ export function authChange() {
   });
 }
 
-export async function getUsersId() {
-  const userId = await auth.currentUser.uid;
-  return userId;
-}
-
 // Returns meta-data about signed in user
 export const getUserName = async (userId) => {
   const docRef = doc(db, 'users', `${userId}`);
@@ -87,7 +81,7 @@ export const getUsersName = async (userId) => {
   }
 };
 
-// Creates new profile for user
+// Creates new profile for user in Firestore
 async function createProfile(userId, username) {
   await setDoc(doc(db, 'users', `${userId}`), {
     uid: `${userId}`,

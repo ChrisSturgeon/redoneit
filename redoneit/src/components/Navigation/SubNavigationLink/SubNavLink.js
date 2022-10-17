@@ -1,6 +1,5 @@
 import './SubNavLink.css';
 import { favouriteSub, unFavouriteSub } from '../../../firebase';
-
 import { Link } from 'react-router-dom';
 
 export default function SubNavLink(props) {

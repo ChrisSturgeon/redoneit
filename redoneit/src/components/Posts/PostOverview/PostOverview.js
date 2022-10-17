@@ -1,10 +1,10 @@
 import './PostOverview.css';
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { upVotePost, downVotePost, postVote } from '../../../firebase';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { db, auth } from '../../../firebase';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 export default function PostOverview({
   postId,
@@ -13,7 +13,6 @@ export default function PostOverview({
   userId,
   toggleLoginModal,
 }) {
-  // const { subName } = useParams();
   const navigate = useNavigate();
   const [postData, setPostData] = useState(null);
   const [timeInterval, setTimeInterval] = useState(null);
@@ -21,6 +20,33 @@ export default function PostOverview({
 
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
+
+  // If user is logged in calls firebase upvote post function
+  //  with post details, or opens login modal
+  const upVoteThisPost = () => {
+    if (userId) {
+      upVotePost(subName, postId, postData.userId);
+    } else {
+      toggleLoginModal();
+    }
+  };
+
+  // If user is logged in calls firebase downvote post function
+  //  with post details, or opens login modal
+  const downVoteThisPost = () => {
+    if (userId) {
+      downVotePost(subName, postId, postData.userId);
+    } else {
+      toggleLoginModal();
+    }
+  };
+
+  // Redirects users to post page unless a hyperlink has been clicked
+  const navigateToPost = (event) => {
+    if (event.target.tagName !== 'A') {
+      navigate(`/r/${subName}/post/${postId}`);
+    }
+  };
 
   // Create listener for post data and store to state
   useEffect(() => {
@@ -51,6 +77,8 @@ export default function PostOverview({
       }
     };
 
+    // Checks if user has already up/down voted post, and
+    // sets state accordingly for use in colour-rendering buttons
     const hasVoted = () => {
       if (userId) {
         if (postData.upVotedBy.includes(auth.currentUser.uid)) {
@@ -73,29 +101,6 @@ export default function PostOverview({
       hasVoted();
     }
   }, [postData, userId]);
-
-  const upVoteThisPost = () => {
-    if (userId) {
-      upVotePost(subName, postId, postData.userId);
-    } else {
-      toggleLoginModal();
-    }
-  };
-
-  const downVoteThisPost = () => {
-    if (userId) {
-      downVotePost(subName, postId, postData.userId);
-    } else {
-      toggleLoginModal();
-    }
-  };
-
-  // Redirects users to post page unless a hyperlink has been clicked
-  const navigateToPost = (event) => {
-    if (event.target.tagName !== 'A') {
-      navigate(`/r/${subName}/post/${postId}`);
-    }
-  };
 
   if (postData) {
     return (
@@ -155,15 +160,5 @@ export default function PostOverview({
         </div>
       </div>
     );
-  } else {
-    return <div>No data</div>;
   }
-
-  // if (postData) {
-  //   return (
-  //     <div>
-  //       {postData.karma} {timeInterval} {urlString} {hasUpVoted ? 'yes' : 'no'}
-  //     </div>
-  //   );
-  // }
 }

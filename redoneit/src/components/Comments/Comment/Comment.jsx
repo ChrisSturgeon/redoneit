@@ -1,7 +1,7 @@
 import './Comment.css';
 import { useEffect, useState } from 'react';
-import { formatDistanceToNowStrict } from 'date-fns';
 import { useParams } from 'react-router-dom';
+import { formatDistanceToNowStrict } from 'date-fns';
 import { db, auth, upVoteComment, downVoteComment } from '../../../firebase';
 import {
   onSnapshot,
@@ -10,10 +10,12 @@ import {
   collection,
   orderBy,
 } from 'firebase/firestore';
+
+// Component imports
 import ReplyForm from '../ReplyForm/ReplyForm';
 import Reply from '../Reply/Reply';
 
-export default function Comment({ data, userId, toggleLoginModal }) {
+export default function Comment({ data, userId, toggleLoginModal, username }) {
   const { subName, postId } = useParams();
   const dateObj = new Date(data.posted.seconds * 1000);
   const timeInterval = formatDistanceToNowStrict(dateObj);
@@ -24,7 +26,36 @@ export default function Comment({ data, userId, toggleLoginModal }) {
   const [karmaClass, setKarmaClass] = useState(null);
   const [replyForm, setReplyForm] = useState(null);
 
-  // Sets listener for comment's replies to ordered by descending karma
+  // Calls upvote comment firebase function with post
+  // details if user is logged in, or opens login modal
+  const upVote = () => {
+    if (userId) {
+      upVoteComment(subName, postId, data.id, data.userId);
+    } else {
+      toggleLoginModal();
+    }
+  };
+
+  // Calls downvote comment firebase function with post
+  // details if user is logged in, or opens login modal
+  const downVote = () => {
+    if (userId) {
+      downVoteComment(subName, postId, data.id, data.userId);
+    } else {
+      toggleLoginModal();
+    }
+  };
+
+  // Opens closes the this comment's reply form
+  const toggleReplyForm = () => {
+    if (userId) {
+      setReplyForm(!replyForm);
+    } else {
+      toggleLoginModal();
+    }
+  };
+
+  // On mount sets sets listener for this comment's replies, ordered by descending karma score
   useEffect(() => {
     async function getReplies() {
       const queryRef = query(
@@ -53,35 +84,6 @@ export default function Comment({ data, userId, toggleLoginModal }) {
     getReplies();
   }, []);
 
-  // TO REMOVE - test function
-  const test = () => {
-    console.log(replies);
-  };
-
-  const upVote = () => {
-    if (userId) {
-      upVoteComment(subName, postId, data.id, data.userId);
-    } else {
-      toggleLoginModal();
-    }
-  };
-
-  const downVote = () => {
-    if (userId) {
-      downVoteComment(subName, postId, data.id, data.userId);
-    } else {
-      toggleLoginModal();
-    }
-  };
-
-  const toggleReplyForm = () => {
-    if (userId) {
-      setReplyForm(!replyForm);
-    } else {
-      toggleLoginModal();
-    }
-  };
-
   // Listener for real-time karma updates
   useEffect(() => {
     async function getKarma() {
@@ -103,8 +105,8 @@ export default function Comment({ data, userId, toggleLoginModal }) {
   });
 
   // Checks if user has previously upvoted or downvoted
-  // this comment and stores this in state as boolean to colour
-  // up/down arrow buttons accordingly
+  // this comment and stores this in state as boolean for use
+  // with rendering up/down vote arrow buttons as orange or blue to colour
   useEffect(() => {
     if (userId) {
       if (data.upVotedBy.includes(auth.currentUser.uid)) {
@@ -167,12 +169,14 @@ export default function Comment({ data, userId, toggleLoginModal }) {
             <i className=" fa-regular fa-message"></i>
             <div>reply</div>
           </button>
-          {/* TO REMOVE */}
-          <button onClick={test}>Test</button>
         </div>
 
         {replyForm ? (
-          <ReplyForm commentId={data.id} toggleReplyForm={toggleReplyForm} />
+          <ReplyForm
+            commentId={data.id}
+            toggleReplyForm={toggleReplyForm}
+            username={username}
+          />
         ) : null}
 
         <div>
