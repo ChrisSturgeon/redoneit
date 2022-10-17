@@ -2,23 +2,29 @@ import React from 'react';
 import { shuffleArray } from '../../../../firebase';
 import PostOverview from '../../../Posts/PostOverview/PostOverview';
 
-export default function HomePostsTable(props) {
+export default function HomePostsTable({ userId, posts, toggleLoginModal }) {
   // Calls helper function to shuffle users/guests 'top' posts
   // into random order for rendering
-  const shuffledPosts = shuffleArray(props.posts);
+  const shuffledPosts = shuffleArray(posts);
 
-  return (
-    <div>
-      {shuffledPosts.map((post) => {
-        return (
-          <PostOverview
-            key={post.id}
-            postId={post.id}
-            subName={post.subreddit}
-            homePost={true}
-          />
-        );
-      })}
-    </div>
-  );
+  if (posts) {
+    return (
+      <div>
+        {shuffledPosts.map((post) => {
+          return (
+            <PostOverview
+              key={post.id}
+              postId={post.id}
+              subName={post.subreddit}
+              homePost={true}
+              userId={userId}
+              toggleLoginModal={toggleLoginModal}
+            />
+          );
+        })}
+      </div>
+    );
+  } else {
+    return <div>LOADING</div>;
+  }
 }

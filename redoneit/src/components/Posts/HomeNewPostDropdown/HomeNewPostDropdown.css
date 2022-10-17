@@ -1,0 +1,30 @@
+.home-newpost-form {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.home-newpost-form button,
+.home-newpost-form select {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.home-newpost-form label {
+  font-size: 1rem;
+}
+
+.home-newpost-form button {
+  padding: 0.35em;
+  font-weight: 500;
+  color: white;
+  background-color: var(--accent-blue);
+  border: none;
+  border-radius: 99px;
+}
+
+.home-newpost-form button:hover {
+  background-color: var(--accent-blue-hover);
+}

@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { db, getUserSubscriptions } from '../../../firebase';
 import { query, collection, getDocs, orderBy, limit } from 'firebase/firestore';
 import HomePostsTable from './HomePostsTable/HomePostsTable';
+import HomeSidebar from './HomeSidebar/HomeSideBar';
 
-export default function Home({ userId }) {
+export default function Home({ userId, toggleLoginModal }) {
   const [userSubscriptions, setUserSubscriptions] = useState(null);
   const [homePosts, setHomePosts] = useState([]);
 
@@ -45,9 +46,23 @@ export default function Home({ userId }) {
   }, [userSubscriptions]);
 
   return (
-    <div className="main">
-      <div>I'm the home page</div>
-      {homePosts ? <HomePostsTable posts={homePosts} /> : null}
+    <div className="home-main">
+      <div className="home-content">
+        <div className="home-posts">
+          <div>Create post button here</div>
+          {homePosts ? (
+            <HomePostsTable
+              userId={userId}
+              posts={homePosts}
+              toggleLoginModal={toggleLoginModal}
+            />
+          ) : (
+            <div>LOAFING</div>
+          )}
+        </div>
+
+        <div>{userId ? <HomeSidebar userId={userId} /> : null}</div>
+      </div>
     </div>
   );
 }

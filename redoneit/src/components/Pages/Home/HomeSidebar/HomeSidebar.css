@@ -1,0 +1,154 @@
+.home-sidebar {
+  width: 303px;
+  min-height: 100px;
+  background-color: white;
+}
+
+/* .sidebar-about,
+.sidebar-rules {
+  background-color: white;
+  border: 1px solid var(--medium-grey);
+  border-radius: 4px;
+  margin-bottom: 3em;
+} */
+
+.home-sidebar-banner {
+  min-height: 34px;
+}
+
+.home-sidebar-content {
+  padding: 0 1em;
+  padding-bottom: 1em;
+  position: relative;
+}
+
+.home-sidebar-title {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  bottom: 15px;
+}
+
+.snoo-home {
+  height: 75px;
+}
+
+.sidebar-title-text {
+  position: relative;
+  top: 40px;
+  font-weight: 500;
+}
+
+.home-sidebar-blurb {
+  font-size: 0.9rem;
+}
+
+.home-sidebar-content hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-top: 1px solid var(--light-grey);
+  border-left: none;
+}
+
+.create-buttons button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 99px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.home-sidebar-post {
+  color: white;
+  background-color: var(--accent-blue);
+  border: 1px solid white;
+}
+
+.home-sidebar-community {
+  color: var(--accent-blue);
+  border: 1px solid var(--accent-blue);
+  background-color: transparent;
+}
+
+/* TO change  */
+
+.sidebar-about-header,
+.sidebar-rules-header {
+  padding: 1em;
+  border-radius: 4px;
+}
+
+.sidebar-about-header h1,
+.sidebar-rules-header h1 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+}
+
+.sidebar-about-body {
+  padding: 1em;
+}
+
+.sidebar-about-blurb {
+  margin-bottom: 0.8em;
+}
+
+.sidebar-about-created {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--dark-grey);
+  margin-bottom: 1em;
+}
+
+.sidebar-about-created i {
+  font-size: 1.1rem;
+}
+
+.sidebar-about hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-top: 1px solid var(--light-grey);
+  border-left: none;
+}
+
+.sidebar-members-count div:first-of-type {
+  font-size: 1.4rem;
+}
+
+.sidebar-members-count div:nth-of-type(2) {
+  font-size: 0.8rem;
+  color: var(--dark-grey);
+}
+
+.sidebar-about button {
+  margin-top: 5px;
+  width: 100%;
+  padding: 0.5em;
+  border: none;
+  border-radius: 99px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.sidebar-rules-body {
+  padding: 1em;
+}
+
+.sidebar-rules-body hr {
+  border-top: 1px solid var(--light-grey);
+  border-left: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.rule hr {
+}
+
+@media only screen and (max-width: 1000px) {
+  .home-sidebar {
+    display: none;
+  }
+}

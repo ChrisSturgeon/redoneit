@@ -21,6 +21,18 @@ nav {
   color: var(--main-black);
   font-size: 1.75rem;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.nav-logo {
+  height: 30px;
+}
+
+.home-nav-link .reddit-text {
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 
 .subs-btn {

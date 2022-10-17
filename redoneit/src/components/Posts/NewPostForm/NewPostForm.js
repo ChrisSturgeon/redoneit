@@ -2,6 +2,7 @@ import './PostForm.css';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { newTextPost, newURLPost } from '../../../firebase';
+import HomeNewPostDropdown from '../HomeNewPostDropdown/HomeNewPostDropdown';
 
 export default function NewPostForm({ userId, toggleLoginModal }) {
   const { subName } = useParams();
@@ -15,6 +16,13 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   const [linkBtnActive, setlinkBtnActive] = useState(null);
   const [textBtnActive, setTextBtnActive] = useState(null);
   const navigate = useNavigate();
+  const [fromHomeSub, setFromHomeSub] = useState(false);
+
+  // Sets fromHomeSub state with given argument for use in
+  // dropdown menu when creating a new post via the homepage link
+  const dropDownSelect = (subreddit) => {
+    setFromHomeSub(subreddit);
+  };
 
   // Updates 'title' state for use on input change
   const titleChange = (event) => {
@@ -35,15 +43,26 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   // user to their newly created post
   const onFormSubmit = async (event) => {
     event.preventDefault();
-    if (userId) {
+    if (userId && fromHomeSub === null) {
       if (postType === 'link') {
         const newId = await newURLPost(title, url, subName);
         navigate(`/r/${subName}/post/${newId}`);
       }
-
       if (postType === 'text') {
         const newId = await newTextPost(title, postText, subName);
         navigate(`/r/${subName}/post/${newId}`);
+      }
+    } else if (userId && fromHomeSub) {
+      if (postType === 'link') {
+        console.log('home post link');
+        const newId = await newURLPost(title, url, fromHomeSub);
+        navigate(`/r/${fromHomeSub}/post/${newId}`);
+      }
+
+      if (postType === 'text') {
+        console.log('home post text');
+        const newId = await newTextPost(title, postText, fromHomeSub);
+        navigate(`/r/${fromHomeSub}/post/${newId}`);
       }
     } else {
       toggleLoginModal();
@@ -94,8 +113,24 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   return (
     <div className="post-form-main">
       <div className="post-form-content">
-        <h1>Create a post in r/{subName}</h1>
+        <h1>
+          {subName !== 'home'
+            ? `Create a post in r/${subName}`
+            : 'Create a post'}
+        </h1>
         <hr></hr>
+        {subName === 'home' && fromHomeSub === false ? (
+          <HomeNewPostDropdown
+            userId={userId}
+            dropDownSelect={dropDownSelect}
+          />
+        ) : null}
+        {fromHomeSub ? (
+          <div>
+            Making a post in {fromHomeSub}
+            <button onClick={() => setFromHomeSub(null)}>Change</button>
+          </div>
+        ) : null}
         <div className="post-type">
           <button
             onClick={selectTextPost}

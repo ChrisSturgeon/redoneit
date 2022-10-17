@@ -2,6 +2,7 @@ import './NavBar.css';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import navLogo from '../../../imgs/navLogo.png';
 
 // User authentication and datta
 import { signOut } from 'firebase/auth';
@@ -62,7 +63,8 @@ export default function NavBar(props) {
           className="home-nav-link"
           to="/"
         >
-          Reddit
+          <img className="nav-logo" src={navLogo} alt="reddit-logo" />
+          <div className="reddit-text">reddit</div>
         </Link>
         <div className="desktop-subs-nav">
           <button onClick={toggleSubsNav} className="subs-btn">

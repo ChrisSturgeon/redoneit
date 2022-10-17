@@ -63,7 +63,10 @@ function App() {
         toggleLoginModal={toggleLoginModal}
       />
       <Routes>
-        <Route path="/" element={<Home userId={userId} />}></Route>
+        <Route
+          path="/"
+          element={<Home userId={userId} toggleLoginModal={toggleLoginModal} />}
+        ></Route>
         <Route path="r/" element={<AllSubreddits />}></Route>
         <Route
           path="r/:subName"
