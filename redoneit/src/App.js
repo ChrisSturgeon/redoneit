@@ -14,6 +14,7 @@ import Subreddit from './components/Pages/Subreddit/Subreddit';
 import AllSubreddits from './components/Pages/AllSubreddits/AllSubreddits';
 import NewPostForm from './components/Posts/NewPostForm/NewPostForm';
 import PostDetail from './components/Posts/PostDetail/PostDetail';
+import CreateSub from './components/Pages/CreateSub/CreateSub';
 
 function App() {
   const [userId, setUserId] = useState(false);
@@ -90,6 +91,7 @@ function App() {
             />
           }
         ></Route>
+        <Route path="/createsub" element={<CreateSub />}></Route>
       </Routes>
     </div>
   );

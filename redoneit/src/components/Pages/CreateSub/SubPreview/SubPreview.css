@@ -1,0 +1,108 @@
+.sub-preview-main {
+  max-width: 500px;
+  width: 100%;
+  min-height: 300px;
+  background-color: var(--home-bg-grey);
+  border: 1px solid var(--medium-grey);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-header {
+  width: 100%;
+  min-height: 100px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-header .top {
+  min-height: 50px;
+}
+
+.preview-header .bottom {
+  padding: 0 15%;
+  display: flex;
+}
+
+.header-content {
+  display: flex;
+  padding: 5px;
+  gap: 10px;
+}
+
+.r-logo {
+  font-size: 1.5rem;
+  padding: 10px 17px;
+  border: 6px solid white;
+  border-radius: 1000px;
+  color: white;
+  font-weight: 500;
+  position: relative;
+  bottom: 12px;
+}
+
+.titles .name {
+  font-weight: 500;
+}
+
+.titles .url,
+.titles .members {
+  font-size: 0.7rem;
+}
+
+.titles .url {
+  color: var(--dark-grey);
+}
+
+.preview-join {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  color: white;
+  padding: 3px 12px;
+  border: none;
+  border-radius: 99px;
+}
+
+.preview-posts {
+  background-color: white;
+  border-radius: 3px;
+  height: 20px;
+  width: 50%;
+  margin-top: 20px;
+  margin-left: 5%;
+}
+
+.preview-sidebar {
+  height: 100px;
+  background-color: white;
+  border-radius: 3px;
+  width: 35%;
+  position: relative;
+  left: 60%;
+  bottom: 100px;
+}
+
+.preview-sidebar .sidebar-top {
+  height: 20px;
+  width: 100%;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.preview-sidebar .sidebar-button {
+  width: 80%;
+  height: 15px;
+  background-color: pink;
+  border-radius: 99px;
+  position: relative;
+  left: 10%;
+  top: 55%;
+}
+
+@media only screen and (max-width: 500px) {
+  .preview-header .bottom {
+    padding: 0;
+  }
+}

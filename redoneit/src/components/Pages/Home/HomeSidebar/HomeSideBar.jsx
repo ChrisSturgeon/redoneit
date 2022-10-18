@@ -33,7 +33,9 @@ export default function HomeSidebar({ userId }) {
           <Link to="r/home/submit?type=text">
             <button className="home-sidebar-post">Create Post</button>
           </Link>
-          <button className="home-sidebar-community">Create Community</button>
+          <Link to="/createsub">
+            <button className="home-sidebar-community">Create Community</button>
+          </Link>
         </div>
       </div>
     </div>

@@ -1,0 +1,99 @@
+.create-sub-content {
+  margin-top: 6vh;
+  min-height: 94vh;
+  display: flex;
+  justify-content: center;
+  background-color: var(--home-bg-grey);
+  padding: 0 1em;
+}
+
+.create-sub-body {
+  padding: 1em;
+  background-color: white;
+  width: 100%;
+  max-width: 768px;
+}
+
+.create-sub-body h1 {
+  margin-bottom: 1em;
+}
+
+.create-sub-body form {
+  display: flex;
+
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.create-sub-body form input,
+.create-sub-body #displayName,
+.create-sub-body textarea {
+  font-size: 1rem;
+  border: 1px solid var(--main-grey);
+  background-color: var(--light-grey);
+  border-radius: 4px;
+}
+
+#displayName,
+.url-input input,
+#blurb,
+.rules-inputs input {
+  padding: 0.75em;
+  width: 100%;
+  max-width: 100%;
+}
+
+.url-input input {
+  padding-left: 1.4em;
+}
+
+.url-input .r-detail {
+  height: 0px;
+  position: relative;
+  top: 13px;
+  left: 10px;
+}
+
+.colour-inputs {
+  display: flex;
+  justify-content: space-around;
+}
+
+.primary-colour-picker,
+.secondary-colour-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.create-sub-body textarea {
+  min-height: 150px;
+}
+
+.rules-inputs {
+  width: 100%;
+}
+.rules-inputs input {
+  width: 100%;
+}
+.new-rule {
+  display: flex;
+  justify-content: center;
+}
+
+.new-rule-btn {
+  margin-top: 10px;
+  width: 50%;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0.5em;
+  border-radius: 99px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  background-color: var(--accent-blue);
+  color: white;
+  margin-bottom: 2em;
+}
