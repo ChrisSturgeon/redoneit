@@ -105,4 +105,22 @@
   .preview-header .bottom {
     padding: 0;
   }
+
+  .r-logo {
+    font-size: 0.8rem;
+    padding: 10px 14px;
+  }
+
+  .name {
+    font-size: 0.8rem;
+  }
+
+  .titles .url,
+  .titles .members {
+    font-size: 0.6rem;
+  }
+
+  .preview-join {
+    font-size: 0.6rem;
+  }
 }

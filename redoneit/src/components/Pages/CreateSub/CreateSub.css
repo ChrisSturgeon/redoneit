@@ -20,7 +20,6 @@
 
 .create-sub-body form {
   display: flex;
-
   flex-direction: column;
   gap: 10px;
   width: 100%;
@@ -37,7 +36,6 @@
 
 #displayName,
 .url-input input,
-#blurb,
 .rules-inputs input {
   padding: 0.75em;
   width: 100%;
@@ -57,19 +55,57 @@
 
 .colour-inputs {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .primary-colour-picker,
 .secondary-colour-picker {
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 0.5em;
 }
 
 .create-sub-body textarea {
-  min-height: 150px;
+  min-height: 100px;
+  padding-right: 2em;
+  resize: none;
+  padding-top: 0.75em;
+  padding-right: 6em;
+  padding-bottom: 0.75em;
+  padding-left: 0.75em;
+  width: 100%;
+  max-width: 100%;
+}
+
+.create-sub-body span {
+  display: flex;
+  gap: 5px;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+.sub-input {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.input-counter {
+  width: 0;
+  position: relative;
+  right: 60px;
+}
+
+.input-counter-large {
+  width: 0px;
+  position: relative;
+  right: 60px;
+}
+
+.input-counter-mobile {
+  display: none;
 }
 
 .rules-inputs {
@@ -83,17 +119,93 @@
   justify-content: center;
 }
 
+.create-sub-body .create-button,
 .new-rule-btn {
   margin-top: 10px;
-  width: 50%;
+  min-width: 20%;
   margin-right: auto;
   margin-left: auto;
-  padding: 0.5em;
+  padding: 0.5em 2em;
   border-radius: 99px;
   font-size: 1rem;
   font-weight: 500;
-  border: none;
+}
+
+.create-sub-body .create-button {
+  border: 1px solid var(--accent-blue);
   background-color: var(--accent-blue);
   color: white;
+  margin-bottom: 1em;
+}
+
+.create-sub-body .create-button:hover {
+  color: var(--accent-blue);
+  background-color: white;
+  border: 1px solid var(--accent-blue);
+}
+
+.new-rule-btn {
+  border: 1px solid var(--accent-blue);
+  background-color: white;
+  color: var(--accent-blue);
   margin-bottom: 2em;
+}
+
+.new-rule-btn:hover {
+  color: white;
+  background-color: var(--accent-blue);
+  border: 1px solid white;
+}
+
+#primary-colour,
+#secondary-colour {
+  width: 75px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.preview-port {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+fieldset {
+  padding: 1em;
+  border: 0.5px solid var(--medium-grey);
+  border-radius: 4px;
+}
+
+legend {
+  padding: 5px;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 500px) {
+  .create-sub-content {
+    padding: 0;
+  }
+
+  .create-sub-body textarea {
+    min-height: 200px;
+    padding: 1em;
+  }
+
+  .input-counter-large {
+    display: none;
+  }
+
+  .input-counter-mobile {
+    display: inline-block;
+  }
+
+  .input-counter {
+    right: 45px;
+  }
+
+  #primary-colour,
+  #secondary-colour {
+    width: 50px;
+    height: 35px;
+  }
 }

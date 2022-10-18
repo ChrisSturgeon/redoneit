@@ -5,14 +5,16 @@ import SubPreview from './SubPreview/SubPreview';
 
 export default function CreateSub() {
   const [displayName, setDisplayName] = useState('');
+  const [displayNameCounter, setDisplayNameCounter] = useState(0);
   const [URL, setURL] = useState('');
+  const [URLCounter, setURLCounter] = useState(0);
   const [blurb, setBlurb] = useState('');
   const [blurbCharacterCount, setBlurbCharacterCount] = useState(0);
   const [primaryColour, setPrimaryColour] = useState('#93d687');
   const [secondaryColour, setSecondaryColor] = useState('#ca87d6');
 
   // Rules state
-  const [ruleCount, setRuleCount] = useState(1);
+  const [ruleDisplayCount, setRuleDisplayCount] = useState(1);
   const [rule1, setRule1] = useState('');
   const [rule2, setRule2] = useState('');
   const [rule3, setRule3] = useState('');
@@ -26,7 +28,7 @@ export default function CreateSub() {
 
   const incrementRuleCount = (event) => {
     event.preventDefault();
-    setRuleCount((prevCount) => prevCount + 1);
+    setRuleDisplayCount((prevCount) => prevCount + 1);
   };
 
   // Updates displayName state for use on input change
@@ -54,6 +56,16 @@ export default function CreateSub() {
     setSecondaryColor(event.target.value);
   };
 
+  // Updates display name character count on input change
+  useEffect(() => {
+    setDisplayNameCounter(displayName.length);
+  }, [displayName]);
+
+  // Updates display name character count on input change
+  useEffect(() => {
+    setURLCounter(URL.length);
+  }, [URL]);
+
   // Updates blurb character count on input change
   useEffect(() => {
     setBlurbCharacterCount(blurb.length);
@@ -64,36 +76,58 @@ export default function CreateSub() {
       <div className="create-sub-body">
         <h1>Create a new subreddit</h1>
         <form>
-          <label htmlFor="displayName">Display name</label>
-          <input
-            onChange={handleDisplayNameChange}
-            value={displayName}
-            id="displayName"
-          ></input>
-          <label htmlFor="URL">URL</label>
-          <div className="url-input">
-            <div className="r-detail">r/</div>
-            <input onChange={handleURLChange} value={URL} id="URL"></input>
-          </div>
-          <label htmlFor="blurb">
-            {!blurbCharacterCount > 0
-              ? `Subreddit description (max 250 characters)`
-              : `Subreddit description  (${blurbCharacterCount}/250 chars.)`}
-          </label>
-          <textarea
-            onChange={handleBlurbChange}
-            id="blurb"
-            maxLength={250}
-            value={blurb}
-          ></textarea>
-          <div className="rules-inputs">
+          <fieldset>
+            <legend>General</legend>
+            <label htmlFor="displayName">Name</label>
+            <div className="sub-input">
+              <input
+                onChange={handleDisplayNameChange}
+                value={displayName}
+                id="displayName"
+                maxLength={25}
+              ></input>
+              <div className="input-counter">{displayNameCounter}/25</div>
+            </div>
+            <label htmlFor="URL">URL</label>
+            <div className="url-input">
+              <div className="r-detail">r/</div>
+              <div className="sub-input">
+                <input
+                  onChange={handleURLChange}
+                  value={URL}
+                  id="URL"
+                  maxLength={25}
+                ></input>
+                <div className="input-counter">{URLCounter}/25</div>
+              </div>
+            </div>
+            <span>
+              <label htmlFor="blurb">Subreddit description</label>
+              <div className="input-counter-mobile">
+                ({blurbCharacterCount}/250 chars)
+              </div>
+            </span>
+            <div className="sub-input">
+              <textarea
+                onChange={handleBlurbChange}
+                id="blurb"
+                maxLength={250}
+                value={blurb}
+              ></textarea>
+              <div className="input-counter-large">
+                {blurbCharacterCount}/250
+              </div>
+            </div>
+          </fieldset>
+          <fieldset className="rules-inputs">
+            <legend>Rules</legend>
             <label>Rule 1</label>
             <input
               value={rule1}
               maxLength={100}
               onChange={(event) => setRule1(event.target.value)}
             ></input>
-            {ruleCount > 1 ? (
+            {ruleDisplayCount > 1 ? (
               <>
                 <label>Rule 2</label>
                 <input
@@ -103,7 +137,7 @@ export default function CreateSub() {
                 ></input>
               </>
             ) : null}
-            {ruleCount > 2 ? (
+            {ruleDisplayCount > 2 ? (
               <>
                 <label>Rule 3</label>
                 <input
@@ -113,7 +147,7 @@ export default function CreateSub() {
                 ></input>
               </>
             ) : null}
-            {ruleCount > 3 ? (
+            {ruleDisplayCount > 3 ? (
               <>
                 <label>Rule 4</label>
                 <input
@@ -123,7 +157,7 @@ export default function CreateSub() {
                 ></input>
               </>
             ) : null}
-            {ruleCount > 4 ? (
+            {ruleDisplayCount > 4 ? (
               <>
                 <label>Rule 5</label>
                 <input
@@ -133,7 +167,7 @@ export default function CreateSub() {
                 ></input>
               </>
             ) : null}
-            {ruleCount > 5 ? (
+            {ruleDisplayCount > 5 ? (
               <>
                 <label>Rule 6</label>
                 <input
@@ -143,7 +177,7 @@ export default function CreateSub() {
                 ></input>
               </>
             ) : null}
-            {ruleCount > 6 ? (
+            {ruleDisplayCount > 6 ? (
               <>
                 <label>Rule 7</label>
                 <input
@@ -153,7 +187,7 @@ export default function CreateSub() {
                 ></input>
               </>
             ) : null}
-            {ruleCount > 7 ? (
+            {ruleDisplayCount > 7 ? (
               <>
                 <label>Rule 8</label>
                 <input
@@ -163,7 +197,7 @@ export default function CreateSub() {
                 ></input>
               </>
             ) : null}
-            {ruleCount > 8 ? (
+            {ruleDisplayCount > 8 ? (
               <>
                 <label>Rule 9</label>
                 <input
@@ -173,7 +207,7 @@ export default function CreateSub() {
                 ></input>
               </>
             ) : null}
-            {ruleCount > 9 ? (
+            {ruleDisplayCount > 9 ? (
               <>
                 <label>Rule 10</label>
                 <input
@@ -183,41 +217,49 @@ export default function CreateSub() {
                 ></input>
               </>
             ) : null}
-            {ruleCount < 10 ? (
+            {ruleDisplayCount < 10 ? (
               <div className="new-rule">
                 <button className="new-rule-btn" onClick={incrementRuleCount}>
                   Add another
                 </button>
               </div>
             ) : null}
-          </div>
-          <div className="colour-inputs">
-            <div className="primary-colour-picker">
-              <label htmlFor="primary-colour">Primary Colour</label>
-              <input
-                id="primary-colour"
-                type="color"
-                value={primaryColour}
-                onChange={handlePrimaryColourChange}
-              ></input>
+          </fieldset>
+          <fieldset>
+            <legend>Colours</legend>
+            <div className="colour-inputs">
+              <div className="primary-colour-picker">
+                <label htmlFor="primary-colour">Primary</label>
+                <input
+                  id="primary-colour"
+                  type="color"
+                  value={primaryColour}
+                  onChange={handlePrimaryColourChange}
+                ></input>
+              </div>
+              <div className="secondary-colour-picker">
+                <label htmlFor="secondary-colour">Secondary</label>
+                <input
+                  id="secondary-colour"
+                  type="color"
+                  value={secondaryColour}
+                  onChange={handleSecondaryColourChange}
+                ></input>
+              </div>
             </div>
-            <div className="secondary-colour-picker">
-              <label htmlFor="secondary-colour">Secondary Colour</label>
-              <input
-                id="secondary-colour"
-                type="color"
-                value={secondaryColour}
-                onChange={handleSecondaryColourChange}
-              ></input>
+            <div className="preview-port">
+              <SubPreview
+                primary={primaryColour}
+                secondary={secondaryColour}
+                displayName={displayName}
+                URL={URL}
+              />
             </div>
-          </div>
+          </fieldset>
+          <button type="submit" className="create-button">
+            Create subreddit
+          </button>
         </form>
-        <SubPreview
-          primary={primaryColour}
-          secondary={secondaryColour}
-          displayName={displayName}
-          URL={URL}
-        />
       </div>
     </div>
   );
