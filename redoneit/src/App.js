@@ -91,7 +91,10 @@ function App() {
             />
           }
         ></Route>
-        <Route path="/createsub" element={<CreateSub />}></Route>
+        <Route
+          path="/createsub"
+          element={<CreateSub userId={userId} />}
+        ></Route>
       </Routes>
     </div>
   );

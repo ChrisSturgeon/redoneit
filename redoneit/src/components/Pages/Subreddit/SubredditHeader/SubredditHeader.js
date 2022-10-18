@@ -54,7 +54,7 @@ export default function SubredditHeader({
           <div className="text-info">
             <div className="display-name">{overview.displayName}</div>
             <div className="r-sub-name">r/{overview.subName}</div>
-            <div className="member-count">{memberCount} members</div>
+            <div className="member-count">{overview.memberCount} members</div>
           </div>
           <div className="join-box">
             {isMember ? (

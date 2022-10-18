@@ -84,18 +84,23 @@ export default function SubredditSidebar({ primaryColour, secondaryColour }) {
           <div className="sidebar-rules-body">
             {rules.map((rule, index) => {
               if (index < rules.length - 1) {
-                return (
-                  <div key={index}>
-                    {index + 1}. {rule}
-                    <hr></hr>
-                  </div>
-                );
+                if (rule.length > 0) {
+                  return (
+                    <div key={index}>
+                      {index + 1}. {rule}
+                      <hr></hr>
+                    </div>
+                  );
+                }
               } else {
-                return (
-                  <div key={index}>
-                    {index + 1}. {rule}
-                  </div>
-                );
+                if (rule.length > 0) {
+                  return (
+                    <div key={index}>
+                      {index + 1}. {rule}
+                      <hr></hr>
+                    </div>
+                  );
+                }
               }
             })}
           </div>

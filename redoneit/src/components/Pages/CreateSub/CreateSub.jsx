@@ -2,8 +2,9 @@ import './CreateSub.css';
 import React, { useEffect, useState } from 'react';
 import { set } from 'date-fns';
 import SubPreview from './SubPreview/SubPreview';
+import { createSub } from '../../../firebase';
 
-export default function CreateSub() {
+export default function CreateSub({ userId }) {
   const [displayName, setDisplayName] = useState('');
   const [displayNameCounter, setDisplayNameCounter] = useState(0);
   const [URL, setURL] = useState('');
@@ -56,6 +57,20 @@ export default function CreateSub() {
     setSecondaryColor(event.target.value);
   };
 
+  // Creates new subreddit with inputs
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await createSub(
+      userId,
+      URL,
+      displayName,
+      primaryColour,
+      secondaryColour,
+      blurb,
+      [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10]
+    );
+  };
+
   // Updates display name character count on input change
   useEffect(() => {
     setDisplayNameCounter(displayName.length);
@@ -75,7 +90,7 @@ export default function CreateSub() {
     <div className="create-sub-content">
       <div className="create-sub-body">
         <h1>Create a new subreddit</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <fieldset>
             <legend>General</legend>
             <label htmlFor="displayName">Name</label>

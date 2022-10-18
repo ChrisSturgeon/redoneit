@@ -614,3 +614,33 @@ export function shuffleArray(array) {
 
   return array;
 }
+
+export async function createSub(
+  userId,
+  URL,
+  displayName,
+  primaryColour,
+  secondaryColour,
+  blurb,
+  rules
+) {
+  await setDoc(doc(db, 'subreddits', `${URL}`), {
+    subName: URL,
+    displayName: displayName,
+    primaryColour: primaryColour,
+    secondaryColour: secondaryColour,
+  });
+
+  const aboutRef = doc(db, 'subreddits', `${URL}`, 'sidebar', 'about');
+  await setDoc(aboutRef, {
+    blurb: blurb,
+    created: new Date(),
+    createdBy: userId,
+    memberCount: 0,
+  });
+
+  const rulesRef = doc(db, 'subreddits', `${URL}`, 'sidebar', 'rules');
+  await setDoc(rulesRef, {
+    rulesArr: rules,
+  });
+}
