@@ -74,37 +74,39 @@ export default function SubredditSidebar({ primaryColour, secondaryColour }) {
           </div>
         </div>
 
-        <div className="sidebar-rules">
-          <div
-            className="sidebar-rules-header"
-            style={{ backgroundColor: primaryColour }}
-          >
-            <h1>Rules</h1>
-          </div>
-          <div className="sidebar-rules-body">
-            {rules.map((rule, index) => {
-              if (index < rules.length - 1) {
-                if (rule.length > 0) {
-                  return (
-                    <div key={index}>
-                      {index + 1}. {rule}
-                      <hr></hr>
-                    </div>
-                  );
+        {rules[0].length > 0 ? (
+          <div className="sidebar-rules">
+            <div
+              className="sidebar-rules-header"
+              style={{ backgroundColor: primaryColour }}
+            >
+              <h1>Rules</h1>
+            </div>
+            <div className="sidebar-rules-body">
+              {rules.map((rule, index) => {
+                if (index < rules.length - 1) {
+                  if (rule.length > 0) {
+                    return (
+                      <div key={index}>
+                        {index + 1}. {rule}
+                        <hr></hr>
+                      </div>
+                    );
+                  }
+                } else {
+                  if (rule.length > 0) {
+                    return (
+                      <div key={index}>
+                        {index + 1}. {rule}
+                        <hr></hr>
+                      </div>
+                    );
+                  }
                 }
-              } else {
-                if (rule.length > 0) {
-                  return (
-                    <div key={index}>
-                      {index + 1}. {rule}
-                      <hr></hr>
-                    </div>
-                  );
-                }
-              }
-            })}
+              })}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     );
   }

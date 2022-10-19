@@ -78,8 +78,8 @@ export default function NavBar(props) {
                 <i className="fa-solid fa-angle-down"></i>
               </div>
             </button>
-            {subsOpen && userId ? (
-              <SubsNav toggleSubsNav={toggleSubsNav} />
+            {userId ? (
+              <SubsNav subsOpen={subsOpen} toggleSubsNav={toggleSubsNav} />
             ) : null}
           </div>
         </div>

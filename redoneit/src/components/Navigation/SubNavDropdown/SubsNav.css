@@ -6,20 +6,23 @@
   border-bottom: 1px solid var(--medium-grey);
   border-left: 1px solid var(--medium-grey);
   max-height: 500px;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
-.all-subs-link {
-  padding: 0.5em 1em;
+.subs-nav-upper {
   width: 100%;
 }
 
-.all-subs-link:hover {
-  background-color: var(--hover-grey);
+.subs-nav-upper a {
+  display: inline-block;
+  width: 100%;
+  padding: 0.25em 1em;
+  text-decoration: none;
+  color: black;
 }
 
-.all-subs-link a {
-  width: inherit;
+.subs-nav-upper a:hover {
+  background-color: var(--hover-grey);
 }
 
 .subs-nav h2 {
