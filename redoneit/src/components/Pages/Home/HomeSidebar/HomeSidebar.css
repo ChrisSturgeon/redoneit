@@ -2,18 +2,12 @@
   width: 303px;
   min-height: 100px;
   background-color: white;
-}
-
-/* .sidebar-about,
-.sidebar-rules {
-  background-color: white;
-  border: 1px solid var(--medium-grey);
   border-radius: 4px;
-  margin-bottom: 3em;
-} */
+}
 
 .home-sidebar-banner {
   min-height: 34px;
+  border-top-right-radius: 4px;
 }
 
 .home-sidebar-content {

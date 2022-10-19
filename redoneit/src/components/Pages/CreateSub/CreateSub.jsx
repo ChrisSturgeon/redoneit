@@ -1,8 +1,9 @@
 import './CreateSub.css';
 import React, { useEffect, useState } from 'react';
-import { set } from 'date-fns';
 import SubPreview from './SubPreview/SubPreview';
 import { createSub } from '../../../firebase';
+
+import { motion } from 'framer-motion';
 
 export default function CreateSub({ userId }) {
   const [displayName, setDisplayName] = useState('');
@@ -13,6 +14,30 @@ export default function CreateSub({ userId }) {
   const [blurbCharacterCount, setBlurbCharacterCount] = useState(0);
   const [primaryColour, setPrimaryColour] = useState('#93d687');
   const [secondaryColour, setSecondaryColor] = useState('#ca87d6');
+
+  const flip = {
+    hidden: {
+      transform: 'rotateX(90deg)',
+      opacity: 1,
+      transition: {
+        delay: 0,
+      },
+    },
+    visible: {
+      transform: ' rotateX(0deg)',
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+      },
+    },
+    exit: {
+      transform: 'scale(0) rotateX(360deg)',
+      opacity: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
 
   // Rules state
   const [ruleDisplayCount, setRuleDisplayCount] = useState(1);
@@ -60,6 +85,7 @@ export default function CreateSub({ userId }) {
   // Creates new subreddit with inputs
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     await createSub(
       userId,
       URL,
@@ -92,7 +118,7 @@ export default function CreateSub({ userId }) {
         <h1>Create a new subreddit</h1>
         <form onSubmit={handleSubmit}>
           <fieldset>
-            <legend>General</legend>
+            <legend>About</legend>
             <label htmlFor="displayName">Name</label>
             <div className="sub-input">
               <input
@@ -135,7 +161,7 @@ export default function CreateSub({ userId }) {
             </div>
           </fieldset>
           <fieldset className="rules-inputs">
-            <legend>Rules</legend>
+            <legend>Community Rules</legend>
             <label>Rule 1</label>
             <input
               value={rule1}
@@ -143,100 +169,105 @@ export default function CreateSub({ userId }) {
               onChange={(event) => setRule1(event.target.value)}
             ></input>
             {ruleDisplayCount > 1 ? (
-              <>
+              <motion.div variants={flip} initial="hidden" animate="visible">
                 <label>Rule 2</label>
                 <input
                   value={rule2}
                   maxLength={100}
                   onChange={(event) => setRule2(event.target.value)}
                 ></input>
-              </>
+              </motion.div>
             ) : null}
             {ruleDisplayCount > 2 ? (
-              <>
+              <motion.div variants={flip} initial="hidden" animate="visible">
                 <label>Rule 3</label>
                 <input
                   value={rule3}
                   maxLength={100}
                   onChange={(event) => setRule3(event.target.value)}
                 ></input>
-              </>
+              </motion.div>
             ) : null}
             {ruleDisplayCount > 3 ? (
-              <>
+              <motion.div variants={flip} initial="hidden" animate="visible">
                 <label>Rule 4</label>
                 <input
                   value={rule4}
                   maxLength={100}
                   onChange={(event) => setRule4(event.target.value)}
                 ></input>
-              </>
+              </motion.div>
             ) : null}
             {ruleDisplayCount > 4 ? (
-              <>
+              <motion.div variants={flip} initial="hidden" animate="visible">
                 <label>Rule 5</label>
                 <input
                   value={rule5}
                   maxLength={100}
                   onChange={(event) => setRule5(event.target.value)}
                 ></input>
-              </>
+              </motion.div>
             ) : null}
             {ruleDisplayCount > 5 ? (
-              <>
+              <motion.div variants={flip} initial="hidden" animate="visible">
                 <label>Rule 6</label>
                 <input
                   value={rule6}
                   maxLength={100}
                   onChange={(event) => setRule6(event.target.value)}
                 ></input>
-              </>
+              </motion.div>
             ) : null}
             {ruleDisplayCount > 6 ? (
-              <>
+              <motion.div variants={flip} initial="hidden" animate="visible">
                 <label>Rule 7</label>
                 <input
                   value={rule7}
                   maxLength={100}
                   onChange={(event) => setRule7(event.target.value)}
                 ></input>
-              </>
+              </motion.div>
             ) : null}
             {ruleDisplayCount > 7 ? (
-              <>
+              <motion.div variants={flip} initial="hidden" animate="visible">
                 <label>Rule 8</label>
                 <input
                   value={rule8}
                   maxLength={100}
                   onChange={(event) => setRule8(event.target.value)}
                 ></input>
-              </>
+              </motion.div>
             ) : null}
             {ruleDisplayCount > 8 ? (
-              <>
+              <motion.div variants={flip} initial="hidden" animate="visible">
                 <label>Rule 9</label>
                 <input
                   value={rule9}
                   maxLength={100}
                   onChange={(event) => setRule9(event.target.value)}
                 ></input>
-              </>
+              </motion.div>
             ) : null}
             {ruleDisplayCount > 9 ? (
-              <>
+              <motion.div variants={flip} initial="hidden" animate="visible">
                 <label>Rule 10</label>
                 <input
                   value={rule10}
                   maxLength={100}
                   onChange={(event) => setRule10(event.target.value)}
                 ></input>
-              </>
+              </motion.div>
             ) : null}
             {ruleDisplayCount < 10 ? (
               <div className="new-rule">
-                <button className="new-rule-btn" onClick={incrementRuleCount}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.8 }}
+                  className="new-rule-btn"
+                  onClick={incrementRuleCount}
+                >
                   Add another
-                </button>
+                </motion.button>
               </div>
             ) : null}
           </fieldset>
