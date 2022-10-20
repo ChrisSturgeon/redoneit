@@ -1,19 +1,29 @@
 import './CreateSub.css';
 import React, { useEffect, useState } from 'react';
 import SubPreview from './SubPreview/SubPreview';
-import { createSub } from '../../../firebase';
+import Error from './Error/Error';
+import {
+  createSub,
+  isOriginalName,
+  isOriginalURL,
+  joinSub,
+} from '../../../firebase';
 
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateSub({ userId }) {
   const [displayName, setDisplayName] = useState('');
   const [displayNameCounter, setDisplayNameCounter] = useState(0);
+  const [nameError, setNameError] = useState(false);
   const [URL, setURL] = useState('');
   const [URLCounter, setURLCounter] = useState(0);
+  const [URLError, setURLError] = useState(false);
   const [blurb, setBlurb] = useState('');
   const [blurbCharacterCount, setBlurbCharacterCount] = useState(0);
   const [primaryColour, setPrimaryColour] = useState('#93d687');
   const [secondaryColour, setSecondaryColor] = useState('#ca87d6');
+  const navigate = useNavigate();
 
   const flip = {
     hidden: {
@@ -86,6 +96,18 @@ export default function CreateSub({ userId }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const originalName = await isOriginalName(displayName);
+    if (!originalName) {
+      setNameError(true);
+      return;
+    }
+
+    const originalURL = await isOriginalURL(URL);
+    if (!originalURL) {
+      setURLError(true);
+      return;
+    }
+
     await createSub(
       userId,
       URL,
@@ -95,6 +117,9 @@ export default function CreateSub({ userId }) {
       blurb,
       [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10]
     );
+
+    await joinSub(URL);
+    navigate(`/r/${URL}`);
   };
 
   // Updates display name character count on input change
@@ -120,6 +145,9 @@ export default function CreateSub({ userId }) {
           <fieldset>
             <legend>About</legend>
             <label htmlFor="displayName">Name</label>
+            {nameError && displayName.length > 0 ? (
+              <Error type={'name'} />
+            ) : null}
             <div className="sub-input">
               <input
                 onChange={handleDisplayNameChange}
@@ -130,6 +158,7 @@ export default function CreateSub({ userId }) {
               <div className="input-counter">{displayNameCounter}/25</div>
             </div>
             <label htmlFor="URL">URL</label>
+            {URLError && URL.length > 0 ? <Error type={'URL'} /> : null}
             <div className="url-input">
               <div className="r-detail">r/</div>
               <div className="sub-input">

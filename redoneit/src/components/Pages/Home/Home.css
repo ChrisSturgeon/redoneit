@@ -39,3 +39,19 @@
     max-width: 1068px;
   }
 }
+
+@media only screen and (max-width: 600px) {
+  .home-main {
+    padding: 0;
+  }
+
+  .home-content {
+    padding: 0;
+    flex-direction: column;
+  }
+
+  .new-post-home {
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+}

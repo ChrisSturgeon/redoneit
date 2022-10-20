@@ -92,3 +92,10 @@
 .share-box:hover {
   background-color: var(--hover-grey);
 }
+
+@media only screen and (max-width: 600px) {
+  .post-main {
+    margin-bottom: 3px;
+    border-radius: 0;
+  }
+}

@@ -13,12 +13,17 @@ import UserNavBox from '../NavBarUserDetails/UserNavBox';
 import SubsNav from '../SubNavDropdown/SubsNav';
 import LoginModal from '../../Modals/LoginModal/LoginModal';
 import SignUpModal from '../../Modals/SignUpModal/SignUpModal';
+import MobileBackdrop from '../MobileBackdrop/MobileBackdrop';
+
+const windowPosition = window.scrollY;
 
 export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);
   const [subsOpen, setSubsOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const userId = props.userId;
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [windowPosition, setWindowPosition] = useState(0);
 
   // Scrolls to top of page and locks body scroll
   //  register or login modals are open
@@ -51,6 +56,30 @@ export default function NavBar(props) {
     setSubsOpen(!subsOpen);
   };
 
+  // Opens/close the mobile navigation bar
+  const toggleMobileNav = async () => {
+    if (mobileNavOpen) {
+      await setMobileNavOpen(false);
+      window.scrollTo(0, windowPosition);
+    } else {
+      setWindowPosition(window.scrollY);
+      setMobileNavOpen(true);
+    }
+  };
+
+  // Prevents scroll underneath modal when open, storing
+  // scrolled-to position in state and returning to it when
+  // modal is closed
+  useEffect(() => {
+    if (mobileNavOpen) {
+      setTimeout(() => {
+        document.body.style.position = 'fixed';
+      }, 400);
+    } else {
+      document.body.style.position = '';
+    }
+  }, [windowPosition, mobileNavOpen]);
+
   return (
     <div>
       <nav className={expanded ? 'no-shadow' : null}>
@@ -67,6 +96,8 @@ export default function NavBar(props) {
             <img className="nav-logo" src={navLogo} alt="reddit-logo" />
             <div className="reddit-text">reddit</div>
           </Link>
+          <button onClick={toggleMobileNav}>Hi</button>
+          <div>{windowPosition}</div>
           <div className="desktop-subs-nav">
             <button
               onClick={toggleSubsNav}
@@ -174,6 +205,10 @@ export default function NavBar(props) {
             toggleRegisterModal={toggleRegisterModal}
           />
         )}
+      </AnimatePresence>
+
+      <AnimatePresence initial={false} wait={true}>
+        {mobileNavOpen && <MobileBackdrop onClick={toggleMobileNav} />}
       </AnimatePresence>
     </div>
   );

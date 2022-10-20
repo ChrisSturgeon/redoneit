@@ -27,6 +27,7 @@ import {
   deleteDoc,
   orderBy,
   limit,
+  where,
 } from 'firebase/firestore';
 
 // Firebase configuration details
@@ -625,7 +626,7 @@ export async function createSub(
   rules
 ) {
   await setDoc(doc(db, 'subreddits', `${URL}`), {
-    subName: URL,
+    subName: displayName,
     displayName: displayName,
     primaryColour: primaryColour,
     secondaryColour: secondaryColour,
@@ -643,4 +644,34 @@ export async function createSub(
   await setDoc(rulesRef, {
     rulesArr: rules,
   });
+}
+
+export async function isOriginalURL(URL) {
+  const subRef = doc(db, 'subreddits', `${URL}`);
+  const sub = await getDoc(subRef);
+
+  if (sub.exists()) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export async function isOriginalName(name) {
+  const nameQuery = query(
+    collection(db, 'subreddits'),
+    where('subName', '==', `${name}`)
+  );
+
+  let resultArr = [];
+  const result = await getDocs(nameQuery);
+  result.forEach((doc) => {
+    resultArr.push(doc.data());
+  });
+
+  if (resultArr.length > 0) {
+    return false;
+  } else {
+    return true;
+  }
 }
