@@ -4,23 +4,26 @@ import { Link } from 'react-router-dom';
 
 const dropIn = {
   hidden: {
-    y: '-100vh',
+    y: '50px',
+    x: '-100vw',
     opacity: '0',
   },
   visible: {
-    y: '0',
+    y: '50px',
+    x: '0',
     opacity: '1',
     transition: {
-      duration: '0.4',
+      duration: '0.3',
       // type: 'spring',
       // damping: 25,
       // stiffness: 500,
     },
   },
   exit: {
-    y: '-100vh',
+    y: '50px',
+    x: '-100vw',
     transition: {
-      duration: '0.4',
+      duration: '0.3',
     },
   },
 };

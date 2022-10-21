@@ -14,8 +14,7 @@ import SubsNav from '../SubNavDropdown/SubsNav';
 import LoginModal from '../../Modals/LoginModal/LoginModal';
 import SignUpModal from '../../Modals/SignUpModal/SignUpModal';
 import MobileBackdrop from '../MobileBackdrop/MobileBackdrop';
-
-const windowPosition = window.scrollY;
+import Hamburger from '../Hamburger/Hamburger';
 
 export default function NavBar(props) {
   const [expanded, setExpanded] = useState(false);
@@ -39,11 +38,6 @@ export default function NavBar(props) {
   // Toggles register modal open/closed
   const toggleRegisterModal = () => {
     setRegisterModalOpen(!registerModalOpen);
-  };
-
-  // Toggles mobile menu display
-  const toggleMenu = () => {
-    setExpanded(!expanded);
   };
 
   // Signs out current user
@@ -82,7 +76,7 @@ export default function NavBar(props) {
 
   return (
     <div>
-      <nav className={expanded ? 'no-shadow' : null}>
+      <nav>
         <div className="home-subs-nav">
           <Link
             onClick={() => {
@@ -96,8 +90,6 @@ export default function NavBar(props) {
             <img className="nav-logo" src={navLogo} alt="reddit-logo" />
             <div className="reddit-text">reddit</div>
           </Link>
-          <button onClick={toggleMobileNav}>Hi</button>
-          <div>{windowPosition}</div>
           <div className="desktop-subs-nav">
             <button
               onClick={toggleSubsNav}
@@ -161,32 +153,11 @@ export default function NavBar(props) {
             ) : null}
           </ul>
         </div>
-        <button className="hamburger-btn" onClick={toggleMenu}>
-          {expanded ? (
-            <i className="fa-solid fa-xmark"></i>
-          ) : (
-            <i className="fa-solid fa-bars"></i>
-          )}
-        </button>
+        <Hamburger onClick={toggleMobileNav} />
+        {/* <button className="hamburger-btn" onClick={toggleMobileNav}>
+          <i className="fa-solid fa-bars"></i>
+        </button> */}
       </nav>
-      <div className={expanded ? 'overlay-open' : 'overlay-closed'}>
-        <ul className={expanded ? 'overlay-menu-open' : 'overlay-menu-closed'}>
-          <li className={expanded ? 'open' : 'closed'}>
-            <Link to="/" onClick={toggleMenu}>
-              Home
-            </Link>
-          </li>
-          <li className={expanded ? 'open' : 'closed'}>
-            <Link to="r" onClick={toggleMenu}>
-              All Subreddits
-            </Link>
-          </li>
-          <li className={expanded ? 'open' : 'closed'}>Link 3</li>
-          <li className={expanded ? 'open' : 'closed'}>Link 4</li>
-          <li className={expanded ? 'open' : 'closed'}>Link 5</li>
-          <li className={expanded ? 'open' : 'closed'}>Link 6</li>
-        </ul>
-      </div>
 
       <AnimatePresence initial={false} wait={true}>
         {registerModalOpen && (

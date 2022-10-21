@@ -1,6 +1,6 @@
 nav {
   padding: 0 20px;
-  min-height: 6vh;
+  height: 50px;
   background: var(--main-white);
   display: flex;
   justify-content: space-between;
@@ -142,11 +142,8 @@ ul {
   border: 1px solid var(--accent-blue-hover);
 }
 
-.hamburger-btn {
+.hamburger-button {
   display: none;
-  z-index: 99;
-  background-color: transparent;
-  border: none;
 }
 
 .overlay-closed,
@@ -237,7 +234,7 @@ i {
     display: none;
   }
 
-  .hamburger-btn {
+  .hamburger-button {
     display: block;
   }
 
