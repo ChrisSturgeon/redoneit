@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function SubNavLink(props) {
   return (
-    <div className="sub-nav-link-main">
+    <div className={props.mobile ? 'sub-nav-link-mobile' : 'sub-nav-link-main'}>
       <Link onClick={props.toggleSubsNav} to={props.linkString}>
         {props.subName}
       </Link>

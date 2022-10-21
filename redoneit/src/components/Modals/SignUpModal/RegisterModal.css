@@ -119,3 +119,17 @@ input:focus {
   border: 1px solid var(--dark-grey);
   background-color: transparent;
 }
+
+@media screen and (max-width: 614px) {
+  .register-step-content {
+    background-color: red;
+  }
+
+  .register-step-content .step-body {
+    background-color: red;
+  }
+
+  .step-body-left {
+    width: 100%;
+  }
+}

@@ -241,6 +241,14 @@ i {
   .desktop-subs-nav {
     display: none;
   }
+
+  nav {
+    background-color: var(--mobile-blue);
+  }
+
+  .reddit-text {
+    color: white;
+  }
 }
 
 @media screen and (min-width: 769px) {

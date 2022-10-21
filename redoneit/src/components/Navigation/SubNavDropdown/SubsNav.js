@@ -7,30 +7,9 @@ import SubNavLink from '../SubNavigationLink/SubNavLink';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function SubsNav(props) {
-  const [subsArr, setSubsArr] = useState(null);
-
-  // On mount establishes listener for users
-  // subreddit subscriptions and sets to these state as array
-  useEffect(() => {
-    async function userSubs() {
-      const currentUser = auth.currentUser.uid;
-      const queryRef = query(
-        collection(db, 'users', `${currentUser}`, 'subscribed')
-      );
-      onSnapshot(queryRef, (QuerySnapshot) => {
-        const subs = [];
-        QuerySnapshot.forEach((doc) => {
-          subs.push(doc.data());
-        });
-        setSubsArr(subs);
-      });
-    }
-    userSubs();
-  }, []);
-
   return (
     <AnimatePresence mode="wait">
-      {subsArr && props.subsOpen ? (
+      {props.subsArr && props.subsOpen ? (
         <motion.div
           initial={{
             height: 0,
@@ -77,9 +56,9 @@ export default function SubsNav(props) {
           </div>
 
           <h2>FAVOURITES</h2>
-          {subsArr ? (
+          {props.subsArr ? (
             <div>
-              {subsArr.map((sub) => {
+              {props.subsArr.map((sub) => {
                 const linkString = `r/${sub.subName}`;
                 if (sub.favourite) {
                   return (
@@ -100,9 +79,9 @@ export default function SubsNav(props) {
 
           <h2>YOUR COMMUNITIES</h2>
 
-          {subsArr ? (
+          {props.subsArr ? (
             <div>
-              {subsArr.map((sub) => {
+              {props.subsArr.map((sub) => {
                 const linkString = `r/${sub.subName}`;
                 return (
                   <SubNavLink

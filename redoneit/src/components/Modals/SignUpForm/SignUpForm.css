@@ -30,10 +30,9 @@ h1 {
 }
 
 .register-step-content {
-  min-width: 600px;
   display: flex;
   flex-direction: column;
-  padding: 3em;
+  padding: 1em;
   gap: 15px;
 }
 
@@ -46,13 +45,16 @@ h1 {
 
 .step-body {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   gap: 50px;
 }
 
 .step-body-left,
 .step-body-right {
-  width: 50%;
+  width: minmax(100%, 500px);
+  /* max-width: 400px; */
+  /* width: 100%; */
 }
 
 .oAuth-btn {
@@ -107,4 +109,14 @@ label {
   outline: none;
   border: 1px solid var(--dark-grey);
   background-color: transparent;
+}
+
+@media screen and (max-width: 614px) {
+  .step-body {
+    gap: 1em;
+  }
+  .step-body-left,
+  .step-body-right {
+    width: 100%;
+  }
 }

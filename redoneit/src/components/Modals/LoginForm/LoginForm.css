@@ -12,7 +12,6 @@
 }
 
 .close-btn {
-  left: 70px;
   padding: 0px;
   align-self: flex-end;
 }
@@ -24,11 +23,6 @@
   box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
 }
 
-.step-art {
-  width: 100px;
-  border-radius: 5px;
-}
-
 .close-btn i {
   font-size: 1.25rem;
 }
@@ -38,10 +32,10 @@ h1 {
 }
 
 .login-step-content {
-  min-width: 600px;
   display: flex;
   flex-direction: column;
-  padding: 3em;
+  padding: 1em;
+
   gap: 15px;
 }
 
@@ -55,10 +49,6 @@ h1 {
   border: none;
   background-color: transparent;
   color: var(--dark-grey);
-}
-
-.login-step-body {
-  width: 50%;
 }
 
 .oAuth-btn {
@@ -101,6 +91,11 @@ label {
   padding: 0.75em;
 }
 
+.login-form .login-btn {
+  background-color: var(--accent-blue);
+  border: none;
+}
+
 .login-step-content input {
   padding: 0.75em;
   font-size: 1rem;
@@ -120,11 +115,39 @@ label {
 }
 
 .user-management div:first-of-type {
-  margin-bottom: 1.2em;
 }
 
 .user-management a {
   color: var(--accent-blue);
   font-weight: 700;
   text-decoration: none;
+}
+
+.switch-to-register {
+  margin-top: 0.5em;
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.user-management button {
+  margin-left: 0.5em;
+  border: none;
+  background-color: var(--mobile-orange);
+  border-radius: 99px;
+  padding: 0.25em 1em;
+  color: white;
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+@media screen and (max-width: 769px) {
+  .step-art {
+    display: none;
+  }
+
+  .login-form .login-btn {
+    background-color: var(--mobile-orange);
+    border: none;
+  }
 }

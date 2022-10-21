@@ -6,7 +6,8 @@ import navLogo from '../../../imgs/navLogo.png';
 
 // User authentication and datta
 import { signOut } from 'firebase/auth';
-import { auth } from '../../../firebase';
+import { auth, db } from '../../../firebase';
+import { onSnapshot, query, collection } from 'firebase/firestore';
 
 // Components
 import UserNavBox from '../NavBarUserDetails/UserNavBox';
@@ -17,12 +18,37 @@ import MobileBackdrop from '../MobileBackdrop/MobileBackdrop';
 import Hamburger from '../Hamburger/Hamburger';
 
 export default function NavBar(props) {
-  const [expanded, setExpanded] = useState(false);
   const [subsOpen, setSubsOpen] = useState(false);
+  const [subsArr, setSubsArr] = useState(null);
+  const [hasFavourites, setHasFavourites] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const userId = props.userId;
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [windowPosition, setWindowPosition] = useState(0);
+
+  // On mount establishes listener for users
+  // subreddit subscriptions and sets to these state as array
+  useEffect(() => {
+    async function userSubs() {
+      const currentUser = auth.currentUser.uid;
+      const queryRef = query(
+        collection(db, 'users', `${currentUser}`, 'subscribed')
+      );
+      onSnapshot(queryRef, (QuerySnapshot) => {
+        const subs = [];
+        QuerySnapshot.forEach((doc) => {
+          subs.push(doc.data());
+          if (doc.data().favourite) {
+            setHasFavourites(true);
+          }
+        });
+        setSubsArr(subs);
+      });
+    }
+    if (userId) {
+      userSubs();
+    }
+  }, [userId]);
 
   // Scrolls to top of page and locks body scroll
   //  register or login modals are open
@@ -102,7 +128,11 @@ export default function NavBar(props) {
               </div>
             </button>
             {userId ? (
-              <SubsNav subsOpen={subsOpen} toggleSubsNav={toggleSubsNav} />
+              <SubsNav
+                subsOpen={subsOpen}
+                toggleSubsNav={toggleSubsNav}
+                subsArr={subsArr}
+              />
             ) : null}
           </div>
         </div>
@@ -153,10 +183,10 @@ export default function NavBar(props) {
             ) : null}
           </ul>
         </div>
-        <Hamburger onClick={toggleMobileNav} />
-        {/* <button className="hamburger-btn" onClick={toggleMobileNav}>
-          <i className="fa-solid fa-bars"></i>
-        </button> */}
+        <Hamburger
+          mobileNavOpen={mobileNavOpen}
+          toggleMobileNav={toggleMobileNav}
+        />
       </nav>
 
       <AnimatePresence initial={false} wait={true}>
@@ -179,7 +209,18 @@ export default function NavBar(props) {
       </AnimatePresence>
 
       <AnimatePresence initial={false} wait={true}>
-        {mobileNavOpen && <MobileBackdrop onClick={toggleMobileNav} />}
+        {mobileNavOpen && (
+          <MobileBackdrop
+            userId={userId}
+            toggleMobileNav={toggleMobileNav}
+            subsArr={subsArr}
+            hasFavourites={hasFavourites}
+            userName={props.userName}
+            signOut={signOutUser}
+            userData={props.userData}
+            toggleLoginModal={props.toggleLoginModal}
+          />
+        )}
       </AnimatePresence>
     </div>
   );

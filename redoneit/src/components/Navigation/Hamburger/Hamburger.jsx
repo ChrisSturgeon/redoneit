@@ -1,5 +1,5 @@
 import './Hamburger.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
 const path01Variants = {
@@ -13,40 +13,40 @@ const path02Variants = {
   closed: { d: 'M0 14.5L15 14.5' },
 };
 
-export default function Hamburger({ onClick }) {
-  const [isOpen, setOpen] = useState(false);
+export default function Hamburger({ mobileNavOpen, toggleMobileNav }) {
   const path01Controls = useAnimation();
   const path02Controls = useAnimation();
 
-  const clicked = async () => {
-    onClick();
-    setOpen(!isOpen);
-    if (!isOpen) {
-      await path02Controls.start(path02Variants.moving);
-      path01Controls.start(path01Variants.open);
-      path02Controls.start(path02Variants.open);
-    } else {
-      path01Controls.start(path01Variants.closed);
-      await path02Controls.start(path02Variants.moving);
-      path02Controls.start(path02Variants.closed);
-    }
-  };
+  useEffect(() => {
+    const clicked = async () => {
+      if (mobileNavOpen) {
+        await path02Controls.start(path02Variants.moving);
+        path01Controls.start(path01Variants.open);
+        path02Controls.start(path02Variants.open);
+      } else {
+        path01Controls.start(path01Variants.closed);
+        await path02Controls.start(path02Variants.moving);
+        path02Controls.start(path02Variants.closed);
+      }
+    };
+    clicked();
+  }, [path01Controls, path02Controls, mobileNavOpen]);
 
   return (
-    <button className="hamburger-button" onClick={clicked}>
+    <button className="hamburger-button" onClick={toggleMobileNav}>
       <svg width="30" height="30" viewBox="0 0 24 24">
         <motion.path
           {...path01Variants.closed}
           animate={path01Controls}
-          transition={{ duration: 0.3 }}
-          stroke="#000000"
+          transition={{ duration: 0.2 }}
+          stroke="#FFFFFF"
           strokeWidth="2.5px"
         />
         <motion.path
           {...path02Variants.closed}
           animate={path02Controls}
-          transition={{ duration: 0.3 }}
-          stroke="#000000"
+          transition={{ duration: 0.2 }}
+          stroke="#FFFFFF"
           strokeWidth="2.5px"
         />
       </svg>
