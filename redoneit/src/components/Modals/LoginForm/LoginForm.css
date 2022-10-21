@@ -34,8 +34,7 @@ h1 {
 .login-step-content {
   display: flex;
   flex-direction: column;
-  padding: 1em;
-
+  padding: 3em;
   gap: 15px;
 }
 
@@ -133,7 +132,7 @@ label {
 .user-management button {
   margin-left: 0.5em;
   border: none;
-  background-color: var(--mobile-orange);
+  background-color: var(--accent-blue);
   border-radius: 99px;
   padding: 0.25em 1em;
   color: white;
@@ -149,5 +148,13 @@ label {
   .login-form .login-btn {
     background-color: var(--mobile-orange);
     border: none;
+  }
+
+  .user-management button {
+    background-color: var(--mobile-orange);
+  }
+
+  .login-step-content {
+    padding: 1.5em;
   }
 }

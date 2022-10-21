@@ -119,10 +119,7 @@ input:focus {
   font-size: 0.8rem;
 }
 
-.user-management button {
-  border: none;
-  background-color: red;
-}
+
 
 .user-management div:first-of-type {
   margin-bottom: 1.2em;

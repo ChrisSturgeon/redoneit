@@ -1,0 +1,20 @@
+.sub-slider {
+  width: 100%;
+  background-color: red;
+  display: flex;
+}
+
+.sub-slider .slider-btn {
+  width: 100%;
+  border-radius: 0;
+  color: var(--dark-grey);
+  font-size: 1.1rem;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.6s;
+  transition: color 0.6s;
+}
+
+.slider-btn.active {
+  border-bottom: 2px solid var(--accent-blue);
+  color: var(--accent-blue);
+}

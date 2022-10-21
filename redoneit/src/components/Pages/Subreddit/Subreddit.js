@@ -16,12 +16,43 @@ import SubredditHeader from './SubredditHeader/SubredditHeader';
 import SubredditSidebar from './SubredditSidebar/SubredditSidebar';
 import PostOverview from '../../Posts/PostOverview/PostOverview';
 
+const isMobileUser = () => window.innerWidth <= 768;
+
 export default function Subreddit({ userId, toggleLoginModal }) {
   const { subName } = useParams();
   const [overview, setOverview] = useState(null);
   const [posts, setPosts] = useState(null);
   const [primaryColour, setPrimaryColour] = useState(null);
   const [secondaryColour, setSecondaryColour] = useState(null);
+  const [isMobile, setIsMobileUser] = useState(isMobileUser());
+  const [displayPosts, setDisplayPosts] = useState(true);
+  const [displaySidebar, setDisplaySidebar] = useState(false);
+
+  const showPosts = () => {
+    if (!displayPosts) {
+      setDisplayPosts(true);
+      setDisplaySidebar(false);
+    }
+  };
+
+  const showSidebar = () => {
+    if (!displaySidebar) {
+      setDisplayPosts(false);
+      setDisplaySidebar(true);
+    }
+  };
+
+  useEffect(() => {
+    const onResize = () => {
+      setIsMobileUser(isMobileUser);
+    };
+
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, [isMobile]);
 
   // On mount and url param change fetches subreddit overview data
   // and posts storing them to state
@@ -62,36 +93,51 @@ export default function Subreddit({ userId, toggleLoginModal }) {
           secondaryColour={secondaryColour}
           userId={userId}
           toggleLoginModal={toggleLoginModal}
+          isMobile={isMobile}
+          showPosts={showPosts}
+          showSidebar={showSidebar}
         />
         <div className="subreddit-body">
           <div className="subreddit-content">
-            <div className="subreddit-posts">
-              <div className="new-post">
-                <Link to="submit?type=text" className="new-post-link">
-                  <input type="text" placeholder="Create Post"></input>
-                </Link>
-                <Link to="submit?type=link">
-                  <i className="fa-solid fa-link"></i>
-                </Link>
+            {displayPosts ? (
+              <div className="subreddit-posts">
+                <div className="new-post">
+                  <Link to="submit?type=text" className="new-post-link">
+                    <input type="text" placeholder="Create Post"></input>
+                  </Link>
+                  <Link to="submit?type=link">
+                    <i className="fa-solid fa-link"></i>
+                  </Link>
+                </div>
+                {posts
+                  ? posts.map((post) => {
+                      return (
+                        <PostOverview
+                          postId={post.id}
+                          subName={subName}
+                          key={post.id}
+                          userId={userId}
+                          toggleLoginModal={toggleLoginModal}
+                        />
+                      );
+                    })
+                  : null}
               </div>
-              {posts
-                ? posts.map((post) => {
-                    return (
-                      <PostOverview
-                        postId={post.id}
-                        subName={subName}
-                        key={post.id}
-                        userId={userId}
-                        toggleLoginModal={toggleLoginModal}
-                      />
-                    );
-                  })
-                : null}
-            </div>
-            <SubredditSidebar
-              primaryColour={primaryColour}
-              secondaryColour={secondaryColour}
-            />
+            ) : null}
+
+            {displaySidebar ? (
+              <SubredditSidebar
+                primaryColour={primaryColour}
+                secondaryColour={secondaryColour}
+              />
+            ) : null}
+
+            {!isMobile ? (
+              <SubredditSidebar
+                primaryColour={primaryColour}
+                secondaryColour={secondaryColour}
+              />
+            ) : null}
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { auth, db, joinSub, leaveSub } from '../../../../firebase';
 import { onSnapshot, collection, query } from 'firebase/firestore';
+import Slider from './Slider/Slider';
 
 export default function SubredditHeader({
   overview,
@@ -10,6 +11,9 @@ export default function SubredditHeader({
   secondaryColour,
   userId,
   toggleLoginModal,
+  isMobile,
+  showPosts,
+  showSidebar,
 }) {
   const { subName } = useParams();
   const [isMember, setIsMember] = useState(null);
@@ -48,9 +52,11 @@ export default function SubredditHeader({
       <span className="upper" style={{ backgroundColor: primaryColour }}></span>
       <div className="lower">
         <div className="details-box">
-          <span style={{ backgroundColor: primaryColour }} className="logo">
-            R
-          </span>
+          <div className="logo-box">
+            <span style={{ backgroundColor: primaryColour }} className="logo">
+              R
+            </span>
+          </div>
           <div className="text-info">
             <div className="display-name">{overview.displayName}</div>
             <div className="r-sub-name">r/{overview.subName}</div>
@@ -77,6 +83,11 @@ export default function SubredditHeader({
             )}
           </div>
         </div>
+        {isMobile && (
+          <div>
+            <Slider showPosts={showPosts} showSidebar={showSidebar} />
+          </div>
+        )}
       </div>
     </div>
   );

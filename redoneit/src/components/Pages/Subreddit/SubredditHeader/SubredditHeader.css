@@ -24,11 +24,15 @@
   gap: 1em;
 }
 
+.logo-box {
+  display: flex;
+  position: relative;
+  bottom: 27px;
+}
+
 .subreddit-header .logo {
   height: 75px;
   width: 75px;
-  position: relative;
-  bottom: 27px;
   display: flex;
   justify-content: center;
   z-index: -1;
@@ -67,10 +71,34 @@
 
 .subreddit-header button {
   padding: 0.6em 2.5em;
-  /* background-color: rgb(253, 104, 164); */
   color: white;
   font-weight: 700;
   border: none;
   border-radius: 100px;
   letter-spacing: 0.3px;
+}
+
+@media screen and (max-width: 679px) {
+  .lower .details-box {
+    flex-direction: column;
+  }
+
+  .logo-box {
+    /* position: absolute; */
+    width: 100%;
+    justify-content: center;
+  }
+
+  .subreddit-header .logo {
+    position: relative;
+    height: 75px;
+    width: 75px;
+    display: flex;
+    justify-content: center;
+    z-index: -1;
+  }
+
+  .text-info {
+    margin-top: -40px;
+  }
 }
