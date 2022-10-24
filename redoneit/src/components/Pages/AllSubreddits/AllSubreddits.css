@@ -1,5 +1,12 @@
-.main {
+.all-subs-body {
   margin-top: 6vh;
-  height: 200vh;
+  min-height: 94vh;
   padding: 1em;
+  background-color: var(--home-bg-grey);
+  display: flex;
+  justify-content: center;
+}
+
+.all-subs-table {
+  background-color: white;
 }

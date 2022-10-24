@@ -175,21 +175,6 @@ export default function MobileBackdrop({
                 guestSubs={guestSubs}
                 toggleMobileNav={toggleMobileNav}
               />
-
-              {/* {subsArr.map((sub) => {
-                const linkString = `r/${sub}`;
-                return (
-                  <div
-                    onClick={() => {
-                      navigate(linkString);
-                      // toggleSubsNav();
-                    }}
-                    key={sub}
-                  >
-                    {sub}
-                  </div>
-                );
-              })} */}
             </div>
           )}
         </div>

@@ -709,5 +709,44 @@ export async function isOriginalName(name) {
 }
 
 export async function getDefaultHomePosts() {
-  console.log('Fetching posts...');
+  const defaultSubs = ['technology', 'dogs', 'askreddit', 'learnprogramming'];
+
+  defaultSubs.forEach(async (subName) => {
+    const queryRef = query(
+      collection(db, 'subreddits', `${subName}`, 'posts'),
+      orderBy('karma', 'desc'),
+      limit(3)
+    );
+    const querySnapshot = await getDocs(queryRef);
+    querySnapshot.forEach((doc) => {
+      const postData = doc.data();
+      postData.id = doc.id;
+      defaultSubs((prevPosts) => prevPosts.concat(postData));
+    });
+  });
+}
+
+export async function getAllSubs() {
+  let subs = [];
+  const subsRef = query(collection(db, 'subreddits'));
+  const querySnapShot = await getDocs(subsRef);
+
+  querySnapShot.forEach(async (sub) => {
+    let data = sub.data();
+    const subRef = doc(db, 'subreddits', `${data.subName}`, 'sidebar', 'about');
+    const aboutData = await getDoc(subRef);
+    data.about = aboutData.data();
+    subs.push(data);
+  });
+
+  return subs;
+}
+
+export async function getSubsNames() {
+  let subs = [];
+  const subsRef = query(collection(db, 'subreddits'));
+  const querySnapShot = await getDocs(subsRef);
+
+  querySnapShot.forEach((sub) => subs.push(sub.data()));
+  return subs;
 }
