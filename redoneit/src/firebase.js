@@ -82,14 +82,6 @@ export const getUsersName = async (userId) => {
   }
 };
 
-// Creates new profile for user in Firestore
-async function createProfile(userId, username) {
-  await setDoc(doc(db, 'users', `${userId}`), {
-    uid: `${userId}`,
-    username: `${username}`,
-  });
-}
-
 // Creates new user in firestore authentication
 // and creates user collection doc with username and id
 export async function registerNewUser(email, password, username) {
@@ -103,6 +95,46 @@ export async function registerNewUser(email, password, username) {
     .catch((error) => {
       console.log(`An error has occured: ${error.code}`, error.message);
     });
+}
+
+// Creates new profile for user in Firestore
+async function createProfile(userId, username) {
+  await setDoc(doc(db, 'users', `${userId}`), {
+    uid: `${userId}`,
+    username: `${username}`,
+    karma: 0,
+  });
+
+  // Subscribe new user to default subreddits
+  const technologyRef = doc(
+    db,
+    'users',
+    `${userId}`,
+    'subscribed',
+    'technology'
+  );
+  await setDoc(technologyRef, {
+    joined: new Date(),
+    subName: 'technology',
+  });
+
+  const dogsRef = doc(db, 'users', `${userId}`, 'subscribed', 'dogs');
+  await setDoc(dogsRef, {
+    joined: new Date(),
+    subName: 'dogs',
+  });
+
+  const learnProgrammingRef = doc(
+    db,
+    'users',
+    `${userId}`,
+    'subscribed',
+    'learnprogramming'
+  );
+  await setDoc(learnProgrammingRef, {
+    joined: new Date(),
+    subName: 'learnprogramming',
+  });
 }
 
 // Upvotes post storing user's ID in array of upvoters,
@@ -674,4 +706,8 @@ export async function isOriginalName(name) {
   } else {
     return true;
   }
+}
+
+export async function getDefaultHomePosts() {
+  console.log('Fetching posts...');
 }

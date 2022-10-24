@@ -30,24 +30,33 @@ export default function NavBar(props) {
   // subreddit subscriptions and sets to these state as array
   useEffect(() => {
     async function userSubs() {
-      const currentUser = auth.currentUser.uid;
-      const queryRef = query(
-        collection(db, 'users', `${currentUser}`, 'subscribed')
-      );
-      onSnapshot(queryRef, (QuerySnapshot) => {
-        const subs = [];
-        QuerySnapshot.forEach((doc) => {
-          subs.push(doc.data());
-          if (doc.data().favourite) {
-            setHasFavourites(true);
-          }
+      if (userId) {
+        const queryRef = query(
+          collection(db, 'users', `${userId}`, 'subscribed')
+        );
+        onSnapshot(queryRef, (QuerySnapshot) => {
+          const subs = [];
+          QuerySnapshot.forEach((doc) => {
+            subs.push(doc.data());
+            if (doc.data().favourite) {
+              setHasFavourites(true);
+            }
+          });
+          setSubsArr(subs);
         });
-        setSubsArr(subs);
-      });
+      } else if (userId === false) {
+        const defaultSubs = [
+          'askreddit',
+          'dogs',
+          'learnprogramming',
+          'technology',
+        ];
+        setSubsArr(defaultSubs);
+        setHasFavourites(false);
+      }
     }
-    if (userId) {
-      userSubs();
-    }
+
+    userSubs();
   }, [userId]);
 
   // Scrolls to top of page and locks body scroll
@@ -116,6 +125,7 @@ export default function NavBar(props) {
             <img className="nav-logo" src={navLogo} alt="reddit-logo" />
             <div className="reddit-text">reddit</div>
           </Link>
+
           <div className="desktop-subs-nav">
             <button
               onClick={toggleSubsNav}
@@ -127,13 +137,14 @@ export default function NavBar(props) {
                 <i className="fa-solid fa-angle-down"></i>
               </div>
             </button>
-            {userId ? (
-              <SubsNav
-                subsOpen={subsOpen}
-                toggleSubsNav={toggleSubsNav}
-                subsArr={subsArr}
-              />
-            ) : null}
+
+            <SubsNav
+              subsOpen={subsOpen}
+              toggleSubsNav={toggleSubsNav}
+              subsArr={subsArr}
+              hasFavourites={hasFavourites}
+              userId={userId}
+            />
           </div>
         </div>
         <div className="main-nav">

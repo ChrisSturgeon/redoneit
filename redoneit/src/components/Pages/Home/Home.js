@@ -1,7 +1,11 @@
 import './Home.css';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { db, getUserSubscriptions } from '../../../firebase';
+import {
+  db,
+  getDefaultHomePosts,
+  getUserSubscriptions,
+} from '../../../firebase';
 import { query, collection, getDocs, orderBy, limit } from 'firebase/firestore';
 import HomePostsTable from './HomePostsTable/HomePostsTable';
 import HomeSidebar from './HomeSidebar/HomeSideBar';
@@ -28,17 +32,28 @@ export default function Home({ userId, toggleLoginModal }) {
   useEffect(() => {
     const getMySubscriptions = async () => {
       if (userId) {
+        setHomePosts((prevPosts) => []);
         const userSubscriptions = await getUserSubscriptions();
         setUserSubscriptions(userSubscriptions);
+      } else if (userId === false) {
+        const defaultSubs = [
+          'technology',
+          'dogs',
+          'askreddit',
+          'learnprogramming',
+        ];
+        setUserSubscriptions(defaultSubs);
       }
     };
     getMySubscriptions();
   }, [userId]);
 
   // If user is logged in, fetches the three highest-karma posts for each
-  // of their subscribed subreddits, and stores these as array in state
+  // of their subscribed subreddits, and stores these as array in state.
+  // Or uses set of deafult subs if no user logged in
   useEffect(() => {
     const getHomePosts = async () => {
+      await setHomePosts((prevPosts) => []);
       if (userSubscriptions) {
         userSubscriptions.forEach(async (subName) => {
           const queryRef = query(
@@ -46,6 +61,7 @@ export default function Home({ userId, toggleLoginModal }) {
             orderBy('karma', 'desc'),
             limit(3)
           );
+
           const querySnapshot = await getDocs(queryRef);
           querySnapshot.forEach((doc) => {
             const postData = doc.data();
@@ -80,14 +96,12 @@ export default function Home({ userId, toggleLoginModal }) {
               toggleLoginModal={toggleLoginModal}
               sharePost={sharePost}
             />
-          ) : (
-            <div>LOAFING</div>
-          )}
+          ) : null}
         </div>
 
         <CopiedMessage isVisible={copiedMessage} backgroundColour="#2985d5" />
 
-        <div>{userId ? <HomeSidebar userId={userId} /> : null}</div>
+        <div>{homePosts ? <HomeSidebar userId={userId} /> : null}</div>
       </div>
     </div>
   );

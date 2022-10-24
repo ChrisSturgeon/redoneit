@@ -1,12 +1,14 @@
 import './SubsNav.css';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { onSnapshot, query, collection } from 'firebase/firestore';
 import { db, auth } from '../../../firebase';
 import SubNavLink from '../SubNavigationLink/SubNavLink';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function SubsNav(props) {
+  const navigate = useNavigate();
+
   return (
     <AnimatePresence mode="wait">
       {props.subsArr && props.subsOpen ? (
@@ -55,46 +57,68 @@ export default function SubsNav(props) {
             </Link>
           </div>
 
-          <h2>FAVOURITES</h2>
-          {props.subsArr ? (
-            <div>
+          {props.userId ? (
+            <>
+              <h2>FAVOURITES</h2>
+              {props.hasFavourites ? (
+                <div>
+                  {props.subsArr.map((sub) => {
+                    const linkString = `r/${sub.subName}`;
+                    if (sub.favourite) {
+                      return (
+                        <SubNavLink
+                          key={sub.subName}
+                          subName={sub.subName}
+                          linkString={linkString}
+                          favourite={sub.favourite}
+                          toggleSubsNav={props.toggleSubsNav}
+                        />
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                </div>
+              ) : (
+                <div>No favourites yet</div>
+              )}
+              <h2>YOUR COMMUNITIES</h2>
+              {props.subsArr ? (
+                <div>
+                  {props.subsArr.map((sub) => {
+                    const linkString = `r/${sub.subName}`;
+                    return (
+                      <SubNavLink
+                        key={sub.subName}
+                        subName={sub.subName}
+                        toggleSubsNav={props.toggleSubsNav}
+                        linkString={linkString}
+                        favourite={sub.favourite}
+                      />
+                    );
+                  })}
+                </div>
+              ) : null}
+            </>
+          ) : (
+            <div className="guest-subs">
+              <h2>Default subs</h2>
               {props.subsArr.map((sub) => {
-                const linkString = `r/${sub.subName}`;
-                if (sub.favourite) {
-                  return (
-                    <SubNavLink
-                      key={sub.subName}
-                      subName={sub.subName}
-                      linkString={linkString}
-                      favourite={sub.favourite}
-                      toggleSubsNav={props.toggleSubsNav}
-                    />
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </div>
-          ) : null}
-
-          <h2>YOUR COMMUNITIES</h2>
-
-          {props.subsArr ? (
-            <div>
-              {props.subsArr.map((sub) => {
-                const linkString = `r/${sub.subName}`;
+                const linkString = `r/${sub}`;
                 return (
-                  <SubNavLink
-                    key={sub.subName}
-                    subName={sub.subName}
-                    toggleSubsNav={props.toggleSubsNav}
-                    linkString={linkString}
-                    favourite={sub.favourite}
-                  />
+                  <div
+                    onClick={() => {
+                      navigate(linkString);
+                      props.toggleSubsNav();
+                    }}
+                    key={sub}
+                  >
+                    {sub}
+                  </div>
                 );
               })}
             </div>
-          ) : null}
+          )}
         </motion.div>
       ) : null}
     </AnimatePresence>

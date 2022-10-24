@@ -31,3 +31,17 @@
   padding: 0.25em 1em;
   font-weight: 400;
 }
+
+.guest-subs {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.guest-subs div {
+  padding: 0.25em 1em;
+}
+
+.guest-subs div:hover {
+  background-color: var(--hover-grey);
+}

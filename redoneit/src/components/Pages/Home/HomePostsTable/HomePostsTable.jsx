@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { shuffleArray } from '../../../../firebase';
 import PostOverview from '../../../Posts/PostOverview/PostOverview';
 
@@ -11,6 +11,10 @@ export default function HomePostsTable({
   // Calls helper function to shuffle users/guests 'top' posts
   // into random order for rendering
   const shuffledPosts = shuffleArray(posts);
+
+  useEffect(() => {
+    console.log('new table');
+  }, [posts]);
 
   if (posts) {
     return (

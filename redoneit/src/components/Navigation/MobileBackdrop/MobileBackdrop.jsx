@@ -1,9 +1,10 @@
 import './MobileBackdrop.css';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MobileSubs from './MobileSubs/MobileSubs';
 import { useState } from 'react';
 import { async } from '@firebase/util';
+import MobileGuestSubs from './MobileGuestSubs/MobileGuestSubs';
 
 const slideRight = {
   hidden: {
@@ -43,6 +44,8 @@ export default function MobileBackdrop({
 }) {
   const [favouritesOpen, setfavouritesOpen] = useState(false);
   const [subsOpen, setSubsOpen] = useState(false);
+  const navigate = useNavigate();
+  const [guestSubs, setGuestSubs] = useState(userId);
 
   // Toggles favourites tray
   const toggleFavouritesOpen = () => {
@@ -52,6 +55,10 @@ export default function MobileBackdrop({
   // Toggles subsopen tray
   const toggleSubsOpen = () => {
     setSubsOpen(!subsOpen);
+  };
+
+  const toggleGuestSubs = () => {
+    setGuestSubs(!guestSubs);
   };
 
   const triggerLoginModal = () => {
@@ -99,48 +106,92 @@ export default function MobileBackdrop({
             <i className="fa-solid fa-list"></i>
             <div>All Communities</div>
           </Link>
-          <button className="mobile-subs-btn" onClick={toggleFavouritesOpen}>
-            <div className="mobile-subs-btn-left">
-              <i className="fa-solid fa-star"></i>
-              <div>Favourite Communities</div>
-            </div>
-            <i
-              className={
-                favouritesOpen
-                  ? 'fa-solid fa-angle-down open'
-                  : 'fa-solid fa-angle-down'
-              }
-            ></i>
-          </button>
 
-          <MobileSubs
-            favourite={true}
-            subsArr={subsArr}
-            favouritesOpen={favouritesOpen}
-            subsOpen={subsOpen}
-            toggleMobileNav={toggleMobileNav}
-            hasFavourites={hasFavourites}
-          ></MobileSubs>
-          <button className="mobile-subs-btn" onClick={toggleSubsOpen}>
-            <div className="mobile-subs-btn-left">
-              <i className="fa-solid fa-people-group"></i>
-              <div>Your Communities</div>
+          {userId ? (
+            <>
+              <button
+                className="mobile-subs-btn"
+                onClick={toggleFavouritesOpen}
+              >
+                <div className="mobile-subs-btn-left">
+                  <i className="fa-solid fa-star"></i>
+                  <div>Favourite Communities</div>
+                </div>
+                <i
+                  className={
+                    favouritesOpen
+                      ? 'fa-solid fa-angle-down open'
+                      : 'fa-solid fa-angle-down'
+                  }
+                ></i>
+              </button>
+              <MobileSubs
+                favourite={true}
+                subsArr={subsArr}
+                favouritesOpen={favouritesOpen}
+                subsOpen={subsOpen}
+                toggleMobileNav={toggleMobileNav}
+                hasFavourites={hasFavourites}
+              ></MobileSubs>
+              <button className="mobile-subs-btn" onClick={toggleSubsOpen}>
+                <div className="mobile-subs-btn-left">
+                  <i className="fa-solid fa-people-group"></i>
+                  <div>Your Communities</div>
+                </div>
+                <i
+                  className={
+                    subsOpen
+                      ? 'fa-solid fa-angle-down open'
+                      : 'fa-solid fa-angle-down'
+                  }
+                ></i>
+              </button>
+              <MobileSubs
+                favourite={false}
+                subsArr={subsArr}
+                favouritesOpen={favouritesOpen}
+                subsOpen={subsOpen}
+                toggleMobileNav={toggleMobileNav}
+              ></MobileSubs>
+            </>
+          ) : (
+            <div className="mobile-guest-subs">
+              <button className="mobile-subs-btn" onClick={toggleGuestSubs}>
+                <div className="mobile-subs-btn-left">
+                  <i className="fa-solid fa-people-group"></i>
+                  <div>Default Communities</div>
+                </div>
+                <i
+                  className={
+                    guestSubs
+                      ? 'fa-solid fa-angle-down open'
+                      : 'fa-solid fa-angle-down'
+                  }
+                ></i>
+              </button>
+
+              <MobileGuestSubs
+                subsArr={subsArr}
+                guestSubs={guestSubs}
+                toggleMobileNav={toggleMobileNav}
+              />
+
+              {/* {subsArr.map((sub) => {
+                const linkString = `r/${sub}`;
+                return (
+                  <div
+                    onClick={() => {
+                      navigate(linkString);
+                      // toggleSubsNav();
+                    }}
+                    key={sub}
+                  >
+                    {sub}
+                  </div>
+                );
+              })} */}
             </div>
-            <i
-              className={
-                subsOpen
-                  ? 'fa-solid fa-angle-down open'
-                  : 'fa-solid fa-angle-down'
-              }
-            ></i>
-          </button>
-          <MobileSubs
-            favourite={false}
-            subsArr={subsArr}
-            favouritesOpen={favouritesOpen}
-            subsOpen={subsOpen}
-            toggleMobileNav={toggleMobileNav}
-          ></MobileSubs>
+          )}
         </div>
         <div className="mobile-menu-lower">
           {userName ? (
