@@ -13,12 +13,12 @@ export default function PostOverview({
   userId,
   toggleLoginModal,
   sharePost,
+  shareHomePost,
 }) {
   const navigate = useNavigate();
   const [postData, setPostData] = useState(null);
   const [timeInterval, setTimeInterval] = useState(null);
   const [urlString, setUrlString] = useState(null);
-
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
 
@@ -161,7 +161,7 @@ export default function PostOverview({
               className="share-btn"
               onClick={(event) => {
                 event.stopPropagation();
-                sharePost(postId);
+                sharePost(postId, subName);
               }}
             >
               <i className="fa-solid fa-share"></i>

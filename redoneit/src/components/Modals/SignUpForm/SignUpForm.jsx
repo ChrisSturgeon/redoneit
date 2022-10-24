@@ -9,6 +9,7 @@ export default function SignUpForm(props) {
   const [email, setEmail] = useState();
   const [password1, setPassword1] = useState();
   const [password2, setPassword2] = useState();
+  const [waiting, setWaiting] = useState(false);
 
   // Updates 'username' state for use on input change
   const handleUserNameChange = (event) => {
@@ -37,12 +38,13 @@ export default function SignUpForm(props) {
 
   // Validates the two password are identical and then
   // calls creates new Firebase user function
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
+    setWaiting(true);
     if (password1 === password2) {
-      registerNewUser(email, password1, userName);
+      await registerNewUser(email, password1, userName);
     }
-    props.toggleRegister();
+    props.handleClose();
   };
 
   return (
@@ -93,8 +95,8 @@ export default function SignUpForm(props) {
                 id="password2"
                 type="password"
               ></input>
-              <button className="login-btn" type="submit">
-                Register
+              <button className="register-btn" type="submit">
+                {waiting ? <div className="lds-dual-ring"></div> : 'Register'}
               </button>
             </form>
           </div>

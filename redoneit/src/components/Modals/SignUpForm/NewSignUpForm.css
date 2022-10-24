@@ -1,0 +1,7 @@
+.sign-up-step {
+  background-color: white;
+  min-height: 200vh;
+  min-width: 200px;
+  overflow: scroll;
+  z-index: 200;
+}

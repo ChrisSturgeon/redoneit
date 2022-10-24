@@ -26,6 +26,26 @@
   z-index: 2;
 }
 
+.post-details-main {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  border: 1px solid var(--medium-grey);
+
+  margin-bottom: 1em;
+}
+
+.post-details-overview {
+  padding: 1em;
+  width: 100%;
+}
+
+.post-details-overview .comments-share-box {
+  display: flex;
+  gap: 1em;
+  margin-top: 5px;
+}
+
 .back-btn {
   display: flex;
   align-items: center;

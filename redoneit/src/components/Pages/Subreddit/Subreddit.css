@@ -79,7 +79,6 @@
   display: block;
   width: 64px;
   height: 64px;
-  margin: 8px;
   border-radius: 50%;
   border: 6px solid var(--accent-blue);
   border-color: var(--accent-blue) transparent var(--accent-blue) transparent;
@@ -97,5 +96,11 @@
 @media only screen and (min-width: 1200px) {
   .subreddit-content {
     max-width: 1068px;
+  }
+}
+
+@media screen and (max-width: 679px) {
+  .subreddit-content {
+    justify-content: center;
   }
 }

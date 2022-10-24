@@ -2,7 +2,12 @@ import React from 'react';
 import { shuffleArray } from '../../../../firebase';
 import PostOverview from '../../../Posts/PostOverview/PostOverview';
 
-export default function HomePostsTable({ userId, posts, toggleLoginModal }) {
+export default function HomePostsTable({
+  userId,
+  posts,
+  toggleLoginModal,
+  sharePost,
+}) {
   // Calls helper function to shuffle users/guests 'top' posts
   // into random order for rendering
   const shuffledPosts = shuffleArray(posts);
@@ -19,6 +24,7 @@ export default function HomePostsTable({ userId, posts, toggleLoginModal }) {
               homePost={true}
               userId={userId}
               toggleLoginModal={toggleLoginModal}
+              sharePost={sharePost}
             />
           );
         })}

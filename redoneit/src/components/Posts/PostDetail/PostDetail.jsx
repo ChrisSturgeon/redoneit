@@ -1,7 +1,7 @@
 import './PostDetail.css';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { auth, db, downVotePost, upVotePost } from '../../../firebase';
+import { db, downVotePost, upVotePost } from '../../../firebase';
 import {
   onSnapshot,
   doc,
@@ -13,11 +13,23 @@ import {
 // Component imports
 import Comment from '../../Comments/Comment/Comment';
 import CommentForm from '../../Comments/CommentForm/CommentForm';
+import CopiedMessage from '../../Pages/Subreddit/CopiedMessage/CopiedMessage';
 
 export default function PostDetail({ userId, username, toggleLoginModal }) {
   const { subName, postId } = useParams();
   const [overview, setOverview] = useState(null);
   const [comments, setComments] = useState(null);
+  const [copiedMessage, setCopiedMessage] = useState(false);
+
+  const sharePost = async (postId) => {
+    navigator.clipboard.writeText(
+      `http://localhost:3000/r/${subName}/post/${postId}`
+    );
+    setCopiedMessage(!copiedMessage);
+    setTimeout(() => {
+      setCopiedMessage(false);
+    }, 2000);
+  };
 
   // Sets listener for postoverview information and stores to state
   useEffect(() => {
@@ -78,7 +90,7 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
                 urlString = overview.url.split('').slice(12, 60).join('');
               }
               return (
-                <div key={overview.id} className="post-main">
+                <div key={overview.id} className="post-details-main">
                   <div className="karma-box">
                     <button
                       onClick={() =>
@@ -100,7 +112,7 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
                       <i className="fa-sharp fa-solid fa-arrow-down"></i>
                     </button>
                   </div>
-                  <div className="details-box">
+                  <div className="post-details-overview">
                     <div className="user-time">Posted by u/{overview.user}</div>
                     <div className="post-title">{overview.title}</div>
                     {(() => {
@@ -126,7 +138,16 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
                         <i className=" fa-regular fa-message"></i>{' '}
                         {overview.comments} comments
                       </div>
-                      <div className="share-box">share</div>
+                      <button
+                        className="share-btn"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          sharePost(postId);
+                        }}
+                      >
+                        <i className="fa-solid fa-share"></i>
+                        Share
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -141,6 +162,8 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
             username={username}
             toggleLoginModal={toggleLoginModal}
           />
+
+          <CopiedMessage isVisible={copiedMessage} backgroundColour="#2985d5" />
 
           {/* Comments detail conditional */}
           {comments

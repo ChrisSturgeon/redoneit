@@ -32,7 +32,7 @@ export default function Subreddit({ userId, toggleLoginModal }) {
 
   const sharePost = async (postId) => {
     navigator.clipboard.writeText(
-      `http://localhost:3000/r/learnprogramming/post/${postId}`
+      `http://localhost:3000/r/${subName}/post/${postId}`
     );
     setCopiedMessage(!copiedMessage);
     setTimeout(() => {
@@ -57,6 +57,10 @@ export default function Subreddit({ userId, toggleLoginModal }) {
   useEffect(() => {
     const onResize = () => {
       setIsMobileUser(isMobileUser);
+      if (window.innerWidth >= 768) {
+        setDisplaySidebar(false);
+        setDisplayPosts(true);
+      }
     };
 
     window.addEventListener('resize', onResize);

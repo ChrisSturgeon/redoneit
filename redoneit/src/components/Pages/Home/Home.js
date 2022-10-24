@@ -5,10 +5,22 @@ import { db, getUserSubscriptions } from '../../../firebase';
 import { query, collection, getDocs, orderBy, limit } from 'firebase/firestore';
 import HomePostsTable from './HomePostsTable/HomePostsTable';
 import HomeSidebar from './HomeSidebar/HomeSideBar';
+import CopiedMessage from '../Subreddit/CopiedMessage/CopiedMessage';
 
 export default function Home({ userId, toggleLoginModal }) {
   const [userSubscriptions, setUserSubscriptions] = useState(null);
   const [homePosts, setHomePosts] = useState([]);
+  const [copiedMessage, setCopiedMessage] = useState(false);
+
+  const sharePost = async (postId, subName) => {
+    navigator.clipboard.writeText(
+      `http://localhost:3000/r/${subName}/post/${postId}`
+    );
+    setCopiedMessage(!copiedMessage);
+    setTimeout(() => {
+      setCopiedMessage(false);
+    }, 2000);
+  };
 
   // On mount if user is logged in fetches which subreddits they're
   // subscribed to, and sets these into state as array
@@ -66,11 +78,14 @@ export default function Home({ userId, toggleLoginModal }) {
               userId={userId}
               posts={homePosts}
               toggleLoginModal={toggleLoginModal}
+              sharePost={sharePost}
             />
           ) : (
             <div>LOAFING</div>
           )}
         </div>
+
+        <CopiedMessage isVisible={copiedMessage} backgroundColour="#2985d5" />
 
         <div>{userId ? <HomeSidebar userId={userId} /> : null}</div>
       </div>
