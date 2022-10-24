@@ -15,6 +15,7 @@ import { db } from '../../../firebase';
 import SubredditHeader from './SubredditHeader/SubredditHeader';
 import SubredditSidebar from './SubredditSidebar/SubredditSidebar';
 import PostOverview from '../../Posts/PostOverview/PostOverview';
+import CopiedMessage from './CopiedMessage/CopiedMessage';
 
 const isMobileUser = () => window.innerWidth <= 768;
 
@@ -27,6 +28,17 @@ export default function Subreddit({ userId, toggleLoginModal }) {
   const [isMobile, setIsMobileUser] = useState(isMobileUser());
   const [displayPosts, setDisplayPosts] = useState(true);
   const [displaySidebar, setDisplaySidebar] = useState(false);
+  const [copiedMessage, setCopiedMessage] = useState(false);
+
+  const sharePost = async (postId) => {
+    navigator.clipboard.writeText(
+      `http://localhost:3000/r/learnprogramming/post/${postId}`
+    );
+    setCopiedMessage(!copiedMessage);
+    setTimeout(() => {
+      setCopiedMessage(false);
+    }, 2000);
+  };
 
   const showPosts = () => {
     if (!displayPosts) {
@@ -118,10 +130,16 @@ export default function Subreddit({ userId, toggleLoginModal }) {
                           key={post.id}
                           userId={userId}
                           toggleLoginModal={toggleLoginModal}
+                          sharePost={sharePost}
                         />
                       );
                     })
                   : null}
+
+                <CopiedMessage
+                  isVisible={copiedMessage}
+                  backgroundColour={secondaryColour}
+                />
               </div>
             ) : null}
 

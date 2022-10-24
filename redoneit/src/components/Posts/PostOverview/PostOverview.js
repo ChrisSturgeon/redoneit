@@ -12,6 +12,7 @@ export default function PostOverview({
   homePost,
   userId,
   toggleLoginModal,
+  sharePost,
 }) {
   const navigate = useNavigate();
   const [postData, setPostData] = useState(null);
@@ -126,6 +127,7 @@ export default function PostOverview({
             ></i>
           </button>
         </div>
+        {/* onClick={navigateToPost} */}
 
         <div onClick={navigateToPost} className="details-box">
           <div className="user-time">
@@ -151,14 +153,20 @@ export default function PostOverview({
             }
           })()}
           <div className="comments-share-box">
-            <div className="comments-box">
+            <button className="comments-btn">
               <i className=" fa-regular fa-message"></i> {postData.comments}{' '}
               comments
-            </div>
-            <div className="share-box">
+            </button>
+            <button
+              className="share-btn"
+              onClick={(event) => {
+                event.stopPropagation();
+                sharePost(postId);
+              }}
+            >
               <i className="fa-solid fa-share"></i>
-              <div>share</div>
-            </div>
+              Share
+            </button>
           </div>
         </div>
       </div>
