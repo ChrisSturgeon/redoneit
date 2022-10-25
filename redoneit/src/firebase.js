@@ -658,7 +658,7 @@ export async function createSub(
   rules
 ) {
   await setDoc(doc(db, 'subreddits', `${URL}`), {
-    subName: displayName,
+    subName: URL,
     displayName: displayName,
     primaryColour: primaryColour,
     secondaryColour: secondaryColour,
@@ -667,7 +667,7 @@ export async function createSub(
   const aboutRef = doc(db, 'subreddits', `${URL}`, 'sidebar', 'about');
   await setDoc(aboutRef, {
     blurb: blurb,
-    created: new Date(),
+    created: serverTimestamp(),
     createdBy: userId,
     memberCount: 0,
   });

@@ -7,6 +7,25 @@
   justify-content: center;
 }
 
+.all-subs-step {
+  width: 100%;
+  max-width: 1000px;
+}
+
 .all-subs-table {
   background-color: white;
+  height: auto;
+}
+
+.all-subs-step table {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid red;
+  text-align: center;
+}
+
+.all-subs-step th,
+td {
+  padding: 5px;
+  border-bottom: 1px solid grey;
 }

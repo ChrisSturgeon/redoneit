@@ -127,7 +127,6 @@ export default function PostOverview({
             ></i>
           </button>
         </div>
-        {/* onClick={navigateToPost} */}
 
         <div onClick={navigateToPost} className="details-box">
           <div className="user-time">

@@ -17,9 +17,9 @@ export default function SubredditsTable({ subsData }) {
           return (
             <tr key={sub.subName}>
               <td>{sub.displayName}</td>
-              <td>{sub.displayName}</td>
+              <td>{sub.about.memberCount}</td>
               <td>Created</td>
-              {/* <td>{sub.about.blurb}</td> */}
+              <td>{sub.about.blurb}</td>
             </tr>
           );
         })}

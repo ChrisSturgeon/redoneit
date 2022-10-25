@@ -110,7 +110,7 @@ export default function CreateSub({ userId }) {
 
     await createSub(
       userId,
-      URL,
+      URL.toLowerCase().replace(/\s/g, ''),
       displayName,
       primaryColour,
       secondaryColour,
@@ -118,8 +118,8 @@ export default function CreateSub({ userId }) {
       [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10]
     );
 
-    await joinSub(URL);
-    navigate(`/r/${URL}`);
+    await joinSub(URL.toLowerCase().replace(/\s/g, ''));
+    navigate(`/r/${URL.toLowerCase().replace(/\s/g, '')}`);
   };
 
   // Updates display name character count on input change
