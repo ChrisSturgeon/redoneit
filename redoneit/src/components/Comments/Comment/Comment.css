@@ -4,11 +4,11 @@
 }
 
 .comment-line {
-  border-left: 3px solid var(--main-grey);
+  border-left: 2px solid var(--main-grey);
 }
 
 .comment-line:hover {
-  border-left: 3px solid var(--accent-blue);
+  border-left: 2px solid var(--accent-blue);
 }
 
 .comment-body {
@@ -38,6 +38,24 @@
 
 .user-and-time .posted-interval {
   color: grey;
+}
+
+.comment-delete-btn {
+  display: flex;
+  align-items: center;
+  border: none;
+  gap: 5px;
+  padding: 0.25em 0.5em;
+  background-color: transparent;
+  border-radius: 4px;
+}
+
+.comment-delete-btn:hover {
+  background-color: var(--hover-grey);
+}
+
+.comment-delete-btn i {
+  font-size: 1rem;
 }
 
 .reply-text {
@@ -78,4 +96,10 @@
 
 .reply-box {
   margin-left: 11px;
+}
+
+@media only screen and (max-width: 769px) {
+  .comment-delete-btn .delete-text {
+    display: none;
+  }
 }

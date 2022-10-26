@@ -61,7 +61,6 @@ export default function LoginForm(props) {
           <button onClick={signGoogleUserIn} className="oAuth-btn">
             Continue with Google
           </button>
-          <button className="oAuth-btn">Continue with GitHub</button>
           <div className="line-divider">
             <span className="line"></span>
             <div>OR</div>

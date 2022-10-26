@@ -6,11 +6,11 @@
 }
 
 .reply-line {
-  border-left: 3px solid var(--main-grey);
+  border-left: 2px solid var(--main-grey);
 }
 
 .reply-line:hover {
-  border-left: 3px solid var(--accent-blue);
+  border-left: 2px solid var(--mobile-orange);
 }
 
 .reply-main {

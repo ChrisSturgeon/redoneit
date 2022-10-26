@@ -2,7 +2,7 @@ import './Reply.css';
 import { useEffect, useState } from 'react';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useParams } from 'react-router-dom';
-import { upVoteReply, downVoteReply } from '../../../firebase';
+import { upVoteReply, downVoteReply, deleteReply } from '../../../firebase';
 import { onSnapshot, doc } from 'firebase/firestore';
 import { db, auth } from '../../../firebase';
 
@@ -33,6 +33,10 @@ export default function Reply({ commentId, data, userId, toggleLoginModal }) {
     } else {
       toggleLoginModal();
     }
+  };
+
+  const deleteThisReply = async () => {
+    await deleteReply(subName, postId, data.parentId, data.id);
   };
 
   // Listener for real-time karma updates
@@ -88,6 +92,12 @@ export default function Reply({ commentId, data, userId, toggleLoginModal }) {
           <div className="username">{data.user}</div>
           <div>-</div>
           <div className="posted-interval">{timeInterval} ago</div>
+          {userId === data.userId && (
+            <button className="comment-delete-btn" onClick={deleteThisReply}>
+              <i className="fa-solid fa-trash"></i>
+              <div className="delete-text">Delete Reply</div>
+            </button>
+          )}
         </div>
         <div className="reply-text">{data.text}</div>
         <div className="karma">

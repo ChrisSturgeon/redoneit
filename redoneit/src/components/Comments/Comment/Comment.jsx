@@ -2,7 +2,13 @@ import './Comment.css';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { formatDistanceToNowStrict } from 'date-fns';
-import { db, auth, upVoteComment, downVoteComment } from '../../../firebase';
+import {
+  db,
+  auth,
+  upVoteComment,
+  downVoteComment,
+  deleteComment,
+} from '../../../firebase';
 import {
   onSnapshot,
   doc,
@@ -16,6 +22,7 @@ import ReplyForm from '../ReplyForm/ReplyForm';
 import Reply from '../Reply/Reply';
 
 export default function Comment({ data, userId, toggleLoginModal, username }) {
+  const parentId = data.id;
   const { subName, postId } = useParams();
   const dateObj = new Date(data.posted.seconds * 1000);
   const timeInterval = formatDistanceToNowStrict(dateObj);
@@ -55,6 +62,10 @@ export default function Comment({ data, userId, toggleLoginModal, username }) {
     }
   };
 
+  const deleteThisComment = async () => {
+    await deleteComment(subName, postId, data.id);
+  };
+
   // On mount sets sets listener for this comment's replies, ordered by descending karma score
   useEffect(() => {
     async function getReplies() {
@@ -75,6 +86,7 @@ export default function Comment({ data, userId, toggleLoginModal, username }) {
         const replies = [];
         const data = QuerySnapshot.forEach((doc) => {
           const reply = doc.data();
+          reply.parentId = parentId;
           reply.id = doc.id;
           replies.push(reply);
         });
@@ -82,7 +94,7 @@ export default function Comment({ data, userId, toggleLoginModal, username }) {
       });
     }
     getReplies();
-  }, []);
+  }, [data]);
 
   // Listener for real-time karma updates
   useEffect(() => {
@@ -135,6 +147,12 @@ export default function Comment({ data, userId, toggleLoginModal, username }) {
           <div className="username">{data.user}</div>
           <div>-</div>
           <div className="posted-interval">{timeInterval} ago</div>
+          {userId === data.userId && (
+            <button className="comment-delete-btn" onClick={deleteThisComment}>
+              <i className="fa-solid fa-trash"></i>
+              <div className="delete-text">Delete comment</div>
+            </button>
+          )}
         </div>
         <div className="reply-text">{data.text}</div>
         <div className="karma-and-reply">

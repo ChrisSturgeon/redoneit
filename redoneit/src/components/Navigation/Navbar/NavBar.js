@@ -149,14 +149,6 @@ export default function NavBar(props) {
         </div>
         <div className="main-nav">
           <ul>
-            <li>
-              <button onClick={props.toggleLoginModal}>Test Modal</button>
-            </li>
-            <li>
-              <Link to="r">
-                <button>Test</button>
-              </Link>
-            </li>
             {!props.userName ? (
               <>
                 <li>

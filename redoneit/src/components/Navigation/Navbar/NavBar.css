@@ -114,7 +114,6 @@ ul {
   display: flex;
   list-style: none;
   color: var(--main-black);
-  cursor: pointer;
 }
 
 .signup-btn,
@@ -213,7 +212,6 @@ ul {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  gap: 1em;
 }
 
 a:first-of-type,

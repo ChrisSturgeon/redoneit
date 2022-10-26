@@ -1,7 +1,12 @@
 import './PostOverview.css';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { upVotePost, downVotePost, postVote } from '../../../firebase';
+import {
+  upVotePost,
+  downVotePost,
+  postVote,
+  deletePost,
+} from '../../../firebase';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { db, auth } from '../../../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
@@ -52,6 +57,11 @@ export default function PostOverview({
     if (event.target.tagName !== 'A') {
       navigate(`/r/${subName}/post/${postId}`);
     }
+  };
+
+  const deleteThisPost = async (event) => {
+    event.stopPropagation();
+    await deletePost(subName, postId);
   };
 
   // Create listener for post data and store to state
@@ -147,7 +157,7 @@ export default function PostOverview({
           </button>
         </div>
 
-        <div onClick={navigateToPost} className="details-box">
+        <div onClick={navigateToPost} className="post-details-box">
           <div className="post-details-left">
             <div className="user-time">
               Posted by u/{postData.user} {timeInterval} ago{' '}
@@ -187,6 +197,11 @@ export default function PostOverview({
                 <i className="fa-solid fa-share"></i>
                 Share
               </button>
+              {userId === postData.userId && (
+                <button className="delete-btn" onClick={deleteThisPost}>
+                  <i className="fa-solid fa-trash"></i>Delete Post
+                </button>
+              )}
             </div>
           </div>
           <div className="post-details-right">
@@ -259,6 +274,11 @@ export default function PostOverview({
               Share
             </button>
           </div>
+          {userId === postData.userId && (
+            <button className="delete-btn" onClick={deleteThisPost}>
+              <i className="fa-solid fa-trash"></i>
+            </button>
+          )}
         </div>
       </div>
     );

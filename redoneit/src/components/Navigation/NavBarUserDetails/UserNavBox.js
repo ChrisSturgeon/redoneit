@@ -20,9 +20,9 @@ export default function UserNavBox(props) {
   }, [props.userId]);
 
   return (
-    <button className="user-nav-box">
+    <div className="user-nav-box">
       <div className="username">{userName}</div>
       <div className="karma">{userKarma} karma</div>
-    </button>
+    </div>
   );
 }

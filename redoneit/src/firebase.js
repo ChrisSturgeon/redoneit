@@ -751,3 +751,38 @@ export async function getSubsNames() {
   querySnapShot.forEach((sub) => subs.push(sub.data()));
   return subs;
 }
+
+export async function deletePost(subreddit, postId) {
+  const postRef = doc(db, 'subreddits', `${subreddit}`, 'posts', `${postId}`);
+  await deleteDoc(postRef);
+}
+
+export async function deleteComment(subreddit, postId, commentId) {
+  const commentRef = doc(
+    db,
+    'subreddits',
+    `${subreddit}`,
+    'posts',
+    `${postId}`,
+    'comments',
+    `${commentId}`
+  );
+
+  await deleteDoc(commentRef);
+}
+
+export async function deleteReply(subreddit, postId, commentId, replyId) {
+  const replyRef = doc(
+    db,
+    'subreddits',
+    `${subreddit}`,
+    'posts',
+    `${postId}`,
+    'comments',
+    `${commentId}`,
+    'replies',
+    `${replyId}`
+  );
+
+  await deleteDoc(replyRef);
+}

@@ -38,7 +38,7 @@
   color: #0079d3;
 }
 
-.details-box {
+.post-details-box {
   display: flex;
   justify-content: space-between;
   padding: 1em;
@@ -72,6 +72,9 @@
   font-size: 0.8rem;
   color: var(--dark-grey);
   margin-bottom: 0.3em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .post-title {
@@ -105,10 +108,10 @@
 }
 
 .comments-btn,
-.share-btn {
+.share-btn,
+.delete-btn {
   padding: 0.25em 0.6em;
   display: flex;
-  align-items: center;
   gap: 5px;
   font-size: 0.9rem;
   background-color: transparent;
@@ -117,8 +120,14 @@
   border-radius: 3px;
 }
 
+.delete-btn i {
+  font-size: 1rem;
+  margin-right: 3px;
+}
+
 .comments-btn:hover,
-.share-btn:hover {
+.share-btn:hover,
+.delete-btn:hover {
   background-color: var(--hover-grey);
 }
 
@@ -194,6 +203,10 @@
 
 .mobile-share i {
   font-size: 1.2rem;
+}
+
+.mobile-post-bottom .delete-btn {
+  align-items: center;
 }
 
 @media only screen and (max-width: 600px) {
