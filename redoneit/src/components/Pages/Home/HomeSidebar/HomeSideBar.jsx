@@ -49,6 +49,15 @@ export default function HomeSidebar({ userId }) {
                 Create Community
               </motion.button>
             </Link>
+            <Link to="/r">
+              <motion.button
+                className="home-sidebar-community"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.8 }}
+              >
+                All communities
+              </motion.button>
+            </Link>
           </div>
         </div>
       </div>

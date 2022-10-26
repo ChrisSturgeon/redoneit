@@ -12,10 +12,6 @@ export default function HomePostsTable({
   // into random order for rendering
   const shuffledPosts = shuffleArray(posts);
 
-  useEffect(() => {
-    console.log('new table');
-  }, [posts]);
-
   if (posts) {
     return (
       <div>

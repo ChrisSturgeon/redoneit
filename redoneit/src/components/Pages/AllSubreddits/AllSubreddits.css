@@ -1,5 +1,5 @@
 .all-subs-body {
-  margin-top: 6vh;
+  margin-top: 50px;
   min-height: 94vh;
   padding: 1em;
   background-color: var(--home-bg-grey);
@@ -20,12 +20,59 @@
 .all-subs-step table {
   width: 100%;
   padding: 5px;
-  border: 1px solid red;
   text-align: center;
+  border-radius: 5px;
+}
+
+.all-subs-step table th {
+  background-color: var(--accent-blue);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .all-subs-step th,
 td {
-  padding: 5px;
-  border-bottom: 1px solid grey;
+  padding: 10px 8px;
+}
+
+.all-subs-table tr:nth-child(even) {
+  background-color: var(--table-grey);
+}
+
+.all-subs-table tr {
+  cursor: pointer;
+}
+.all-subs-table tr:hover {
+  background-color: var(--accent-blue);
+  color: white;
+}
+
+th:first-of-type {
+  border-top-left-radius: 5px;
+}
+
+th:last-of-type {
+  border-top-right-radius: 5px;
+}
+
+table tr:last-of-type td:first-of-type {
+  border-bottom-left-radius: 5px;
+}
+
+table tr:last-of-type td:last-of-type {
+  border-bottom-right-radius: 5px;
+}
+
+@media only screen and (max-width: 500px) {
+  .all-subs-step table th {
+    background-color: var(--accent-blue);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .all-subs-step table td {
+    font-size: 0.8rem;
+  }
 }

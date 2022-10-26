@@ -1,5 +1,6 @@
 import './AllSubreddits.css';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { doc, getDoc, onSnapshot, query, collection } from 'firebase/firestore';
 import { db, getAllSubs, getSubsNames } from '../../../firebase';
 import { format } from 'date-fns';
@@ -7,6 +8,7 @@ import { format } from 'date-fns';
 export default function AllSubreddits() {
   const [subsNames, setSubsNames] = useState(null);
   const [subsData, setSubsData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getNames = async () => {
@@ -29,12 +31,7 @@ export default function AllSubreddits() {
           'about'
         );
         const aboutData = await getDoc(subRef);
-        // if (aboutData.exists()) {
-        //   console.log(aboutData.data());
-        // } else {
-        //   console.log('Data missing');
-        // }
-        // console.log(subInfo);
+
         subInfo.about = { ...aboutData.data() };
         setSubsData((prevData) => prevData.concat(subInfo));
       });
@@ -48,7 +45,6 @@ export default function AllSubreddits() {
     <div className="all-subs-body">
       {subsData && (
         <div className="all-subs-step">
-          <button onClick={() => console.log(subsNames)}>Click</button>
           <table className="all-subs-table">
             <thead>
               <tr>
@@ -68,7 +64,10 @@ export default function AllSubreddits() {
                 }
 
                 return (
-                  <tr key={sub.subName}>
+                  <tr
+                    onClick={() => navigate(`/r/${sub.subName}`)}
+                    key={sub.subName}
+                  >
                     <td>{sub.displayName}</td>
                     <td>{sub.about.memberCount}</td>
                     {createdString ? (

@@ -5,10 +5,6 @@
   font-family: 'IBM-Plex-Sans', Helvetica, Arial, sans-serif;
 }
 
-body {
-  overscroll-behavior-y: none;
-}
-
 button {
   cursor: pointer;
 }
@@ -85,6 +81,7 @@ textarea {
   --post-btn-active-bg: rgb(237, 246, 249);
   --mobile-blue: rgb(8, 20, 51);
   --mobile-orange: #ff4500;
+  --table-grey: rgb(245, 245, 246);
 }
 
 table {
