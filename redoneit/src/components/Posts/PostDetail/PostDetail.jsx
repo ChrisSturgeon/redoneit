@@ -1,25 +1,31 @@
 import './PostDetail.css';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { db, downVotePost, upVotePost } from '../../../firebase';
+import { db, auth, downVotePost, upVotePost } from '../../../firebase';
+
 import {
   onSnapshot,
   doc,
   query,
   collection,
   orderBy,
+  getDocs,
 } from 'firebase/firestore';
 
 // Component imports
 import Comment from '../../Comments/Comment/Comment';
 import CommentForm from '../../Comments/CommentForm/CommentForm';
 import CopiedMessage from '../../Pages/Subreddit/CopiedMessage/CopiedMessage';
+import { set } from 'date-fns';
 
 export default function PostDetail({ userId, username, toggleLoginModal }) {
   const { subName, postId } = useParams();
   const [overview, setOverview] = useState(null);
   const [comments, setComments] = useState(null);
+  const [noComments, setNoComments] = useState(true);
   const [copiedMessage, setCopiedMessage] = useState(false);
+  const [hasUpVoted, setHasUpvoted] = useState(null);
+  const [hasDownVoted, setHasDownVoted] = useState(null);
 
   const sharePost = async (postId) => {
     navigator.clipboard.writeText(
@@ -29,6 +35,26 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
     setTimeout(() => {
       setCopiedMessage(false);
     }, 2000);
+  };
+
+  // If user is logged in calls firebase upvote post function
+  //  with post details, or opens login modal
+  const upVoteThisPost = () => {
+    if (userId) {
+      upVotePost(overview.subreddit, postId, overview.userId);
+    } else {
+      toggleLoginModal();
+    }
+  };
+
+  // If user is logged in calls firebase downvote post function
+  //  with post details, or opens login modal
+  const downVoteThisPost = () => {
+    if (userId) {
+      downVotePost(overview.subreddit, postId, overview.userId);
+    } else {
+      toggleLoginModal();
+    }
   };
 
   // Sets listener for postoverview information and stores to state
@@ -41,8 +67,26 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
         }
       );
     }
+
     getOverview();
   }, [subName, postId]);
+
+  // Colours upvote/downvote button if user has voted on post
+  useEffect(() => {
+    if (userId && overview) {
+      if (overview.upVotedBy.includes(userId)) {
+        setHasUpvoted(true);
+      } else {
+        setHasUpvoted(false);
+      }
+
+      if (overview.downVotedBy.includes(userId)) {
+        setHasDownVoted(true);
+      } else {
+        setHasDownVoted(false);
+      }
+    }
+  }, [userId, overview]);
 
   // Sets listener for post's comments to ordered by descending karma
   useEffect(() => {
@@ -58,15 +102,24 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
         ),
         orderBy('karma', 'desc')
       );
-      onSnapshot(queryRef, (QuerySnapshot) => {
-        const comments = [];
-        const data = QuerySnapshot.forEach((doc) => {
-          const comment = doc.data();
-          comment.id = doc.id;
-          comments.push(comment);
+
+      const lengthSnap = await getDocs(queryRef);
+
+      if (lengthSnap.size > 0) {
+        onSnapshot(queryRef, (QuerySnapshot) => {
+          const comments = [];
+          const data = QuerySnapshot.forEach((doc) => {
+            const comment = doc.data();
+            comment.id = doc.id;
+            comments.push(comment);
+            setNoComments(false);
+          });
+          setComments(comments);
         });
-        setComments(comments);
-      });
+      } else {
+        setComments(null);
+        setNoComments(true);
+      }
     }
     getComments();
   }, [userId]);
@@ -92,24 +145,24 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
               return (
                 <div key={overview.id} className="post-details-main">
                   <div className="karma-box">
-                    <button
-                      onClick={() =>
-                        upVotePost(overview.subreddit, overview.userId, postId)
-                      }
-                    >
-                      <i className="fa-sharp fa-solid fa-arrow-up"></i>
+                    <button onClick={upVoteThisPost}>
+                      <i
+                        className={
+                          hasUpVoted
+                            ? 'fa-sharp fa-solid fa-arrow-up hasUpVoted'
+                            : 'fa-sharp fa-solid fa-arrow-up'
+                        }
+                      ></i>
                     </button>
                     <div>{overview.karma}</div>
-                    <button
-                      onClick={() =>
-                        downVotePost(
-                          overview.subreddit,
-                          overview.userId,
-                          postId
-                        )
-                      }
-                    >
-                      <i className="fa-sharp fa-solid fa-arrow-down"></i>
+                    <button onClick={downVoteThisPost}>
+                      <i
+                        className={
+                          hasDownVoted
+                            ? 'fa-sharp fa-solid fa-arrow-down hasDownVoted'
+                            : 'fa-sharp fa-solid fa-arrow-down '
+                        }
+                      ></i>
                     </button>
                   </div>
                   <div className="post-details-overview">
@@ -179,6 +232,10 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
                 );
               })
             : null}
+
+          {noComments ? (
+            <div className="no-comments">There are no comments yet! </div>
+          ) : null}
         </div>
       </div>
     </div>

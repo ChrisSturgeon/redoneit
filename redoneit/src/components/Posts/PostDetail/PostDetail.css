@@ -31,7 +31,6 @@
   background-color: white;
   display: flex;
   border: 1px solid var(--medium-grey);
-
   margin-bottom: 1em;
 }
 
@@ -71,8 +70,12 @@
 
 .post-detail-body {
   background-color: white;
-  min-height: 200vh;
+  min-height: 94vh;
   margin-top: 48px;
+}
+
+.no-comments {
+  padding: 1em;
 }
 
 @media screen and (max-width: 769px) {

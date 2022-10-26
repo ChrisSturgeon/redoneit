@@ -6,6 +6,8 @@ import { formatDistanceToNowStrict } from 'date-fns';
 import { db, auth } from '../../../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 
+const isMobileUser = () => window.innerWidth <= 768;
+
 export default function PostOverview({
   postId,
   subName,
@@ -21,11 +23,13 @@ export default function PostOverview({
   const [urlString, setUrlString] = useState(null);
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
+  const [isMobile, setIsMobile] = useState(isMobileUser());
 
   // If user is logged in calls firebase upvote post function
   //  with post details, or opens login modal
-  const upVoteThisPost = () => {
+  const upVoteThisPost = (event) => {
     if (userId) {
+      event.stopPropagation();
       upVotePost(subName, postId, postData.userId);
     } else {
       toggleLoginModal();
@@ -34,8 +38,9 @@ export default function PostOverview({
 
   // If user is logged in calls firebase downvote post function
   //  with post details, or opens login modal
-  const downVoteThisPost = () => {
+  const downVoteThisPost = (event) => {
     if (userId) {
+      event.stopPropagation();
       downVotePost(subName, postId, postData.userId);
     } else {
       toggleLoginModal();
@@ -103,7 +108,21 @@ export default function PostOverview({
     }
   }, [postData, userId]);
 
-  if (postData) {
+  useEffect(() => {
+    const onResize = () => {
+      setIsMobile(isMobileUser);
+      if (window.innerWidth >= 768) {
+      }
+    };
+
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, [isMobile]);
+
+  if (postData && !isMobile) {
     return (
       <div key={postData.id} className="post-main">
         <div className="karma-box">
@@ -129,33 +148,106 @@ export default function PostOverview({
         </div>
 
         <div onClick={navigateToPost} className="details-box">
-          <div className="user-time">
-            Posted by u/{postData.user} {timeInterval} ago{' '}
-            {homePost ? `${postData.subreddit}` : null}
+          <div className="post-details-left">
+            <div className="user-time">
+              Posted by u/{postData.user} {timeInterval} ago{' '}
+              {homePost ? `${postData.subreddit}` : null}
+            </div>
+            <div className="post-title-img">
+              <div className="post-title">{postData.title}</div>
+            </div>
+            {(() => {
+              if (postData.type === 'link') {
+                return (
+                  <a
+                    className="post-url"
+                    href={postData.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {urlString}...
+                  </a>
+                );
+              } else if (postData.type === 'text') {
+                return <div className="post-text">{postData.postText}</div>;
+              }
+            })()}
+            <div className="comments-share-box">
+              <button className="comments-btn">
+                <i className=" fa-regular fa-message"></i> {postData.comments}{' '}
+                comments
+              </button>
+              <button
+                className="share-btn"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  sharePost(postId, subName);
+                }}
+              >
+                <i className="fa-solid fa-share"></i>
+                Share
+              </button>
+            </div>
           </div>
-          <div className="post-title">{postData.title}</div>
-
-          {(() => {
-            if (postData.type === 'link') {
-              return (
-                <a
-                  className="post-url"
-                  href={postData.url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {urlString}...
-                </a>
-              );
-            } else if (postData.type === 'text') {
-              return <div className="post-text">{postData.postText}</div>;
-            }
-          })()}
-          <div className="comments-share-box">
-            <button className="comments-btn">
-              <i className=" fa-regular fa-message"></i> {postData.comments}{' '}
-              comments
+          <div className="post-details-right">
+            {postData.imgUrl && (
+              <div>
+                <img src={postData.imgUrl}></img>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  } else if (postData) {
+    return (
+      <div
+        key={postData.id}
+        onClick={navigateToPost}
+        className="post-mobile-main"
+      >
+        <div className="mobile-post-header">
+          {homePost ? (
+            <div>
+              r/{postData.subreddit} - {timeInterval}
+            </div>
+          ) : (
+            <div>
+              u/{postData.user} - {timeInterval}
+            </div>
+          )}
+        </div>
+        <div className="mobile-post-title-img">
+          <div>{postData.title}</div>
+          {postData.imgUrl && <img src={postData.imgUrl}></img>}
+        </div>
+        <div className="mobile-post-bottom">
+          <div className="mobile-karma-box">
+            <button onClick={upVoteThisPost}>
+              <i
+                className={
+                  hasUpVoted
+                    ? 'fa-sharp fa-solid fa-arrow-up hasUpVoted'
+                    : 'fa-sharp fa-solid fa-arrow-up'
+                }
+              ></i>
             </button>
+            <div>{postData.karma}</div>
+            <button onClick={downVoteThisPost}>
+              <i
+                className={
+                  hasDownVoted
+                    ? 'fa-sharp fa-solid fa-arrow-down hasDownVoted'
+                    : 'fa-sharp fa-solid fa-arrow-down '
+                }
+              ></i>
+            </button>
+          </div>
+          <div className="mobile-comments">
+            <i className=" fa-regular fa-message mobile"></i>
+            {postData.comments}
+          </div>
+          <div className="mobile-share">
             <button
               className="share-btn"
               onClick={(event) => {

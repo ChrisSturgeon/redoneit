@@ -11,11 +11,13 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   const [title, setTitle] = useState('');
   const [titleLength, setTitleLength] = useState(0);
   const [url, setUrl] = useState('');
+  const [imgURL, setIMGURL] = useState('');
   const [urlClass, setURLClass] = useState('');
   const [postText, setPostText] = useState('');
   const [linkBtnActive, setlinkBtnActive] = useState(null);
   const [textBtnActive, setTextBtnActive] = useState(null);
   const navigate = useNavigate();
+  const [directedFromHome, setDirectedFromHome] = useState(false);
   const [fromHomeSub, setFromHomeSub] = useState(false);
 
   // Sets fromHomeSub state with given argument for use in
@@ -33,6 +35,12 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   const urlChange = (event) => {
     setUrl(event.target.value);
   };
+
+  // Updates 'ImgURL' state for use on input change
+  const ImgUrlChange = (event) => {
+    setIMGURL(event.target.value);
+  };
+
   // Updates 'post text' state for use on input change
   const postTextChange = (event) => {
     setPostText(event.target.value);
@@ -43,9 +51,10 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   // user to their newly created post
   const onFormSubmit = async (event) => {
     event.preventDefault();
-    if (userId && fromHomeSub === null) {
+    if (userId && directedFromHome === false) {
       if (postType === 'link') {
-        const newId = await newURLPost(title, url, subName);
+        console.log('Submit link post');
+        const newId = await newURLPost(title, url, imgURL, subName);
         navigate(`/r/${subName}/post/${newId}`);
       }
       if (postType === 'text') {
@@ -66,6 +75,7 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
       }
     } else {
       toggleLoginModal();
+      console.log('Thjios');
     }
   };
 
@@ -110,9 +120,22 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
     }
   }, [url]);
 
+  useEffect(() => {
+    if (subName === 'home') {
+      setDirectedFromHome(true);
+    }
+  }, [subName]);
+
   return (
     <div className="post-form-main">
       <div className="post-form-content">
+        <button
+          onClick={() => {
+            console.log(directedFromHome);
+          }}
+        >
+          Click me
+        </button>
         <h1>
           {subName !== 'home'
             ? `Create a post in r/${subName}`
@@ -172,6 +195,15 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
                 type="text"
                 className={urlClass}
                 disabled={userId ? false : true}
+              ></input>
+              <label htmlFor="imgUrl">Image URL</label>
+              <input
+                value={imgURL}
+                onChange={ImgUrlChange}
+                id="imgUrl"
+                type="text"
+                className={urlClass}
+                // disabled={userId ? false : true}
               ></input>
             </>
           ) : (

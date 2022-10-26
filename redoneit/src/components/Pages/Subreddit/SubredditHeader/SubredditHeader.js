@@ -2,7 +2,7 @@ import './SubredditHeader.css';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { auth, db, joinSub, leaveSub } from '../../../../firebase';
-import { onSnapshot, collection, query } from 'firebase/firestore';
+import { doc, onSnapshot, collection, query } from 'firebase/firestore';
 import Slider from './Slider/Slider';
 
 export default function SubredditHeader({
@@ -17,7 +17,7 @@ export default function SubredditHeader({
 }) {
   const { subName } = useParams();
   const [isMember, setIsMember] = useState(null);
-  const [memberCount, setMemberCount] = useState(null);
+  const [about, setAbout] = useState(null);
 
   const joinSubreddit = async () => {
     if (userId) {
@@ -26,6 +26,21 @@ export default function SubredditHeader({
       toggleLoginModal();
     }
   };
+
+  // On mount creates listener on 'about' document info from
+  // firebase and sets it to 'about' state
+  useEffect(() => {
+    const getAbout = async () => {
+      const docRef = doc(db, 'subreddits', `${subName}`, 'sidebar', 'about');
+      const unsub = onSnapshot(docRef, (doc) => {
+        const data = doc.data();
+        setAbout(data);
+      });
+    };
+    if (subName) {
+    }
+    getAbout();
+  }, [subName]);
 
   // Test to check for collection
   useEffect(() => {
@@ -60,7 +75,9 @@ export default function SubredditHeader({
           <div className="text-info">
             <div className="display-name">{overview.displayName}</div>
             <div className="r-sub-name">r/{overview.subName}</div>
-            <div className="member-count">{overview.memberCount} members</div>
+            {about && (
+              <div className="member-count">{about.memberCount} members</div>
+            )}
           </div>
           <div className="join-box">
             {isMember ? (

@@ -39,8 +39,33 @@
 }
 
 .details-box {
+  display: flex;
+  justify-content: space-between;
   padding: 1em;
   width: 100%;
+}
+
+.post-details-right {
+  padding: 0.2em;
+  margin-left: 1em;
+}
+
+.post-details-right img {
+  max-width: 160px;
+  max-height: 80px;
+}
+
+.post-title-img {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.post-img {
+  max-height: 50px;
+  max-width: 90px;
 }
 
 .user-time {
@@ -95,6 +120,80 @@
 .comments-btn:hover,
 .share-btn:hover {
   background-color: var(--hover-grey);
+}
+
+.post-mobile-main {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  border: 1px solid var(--medium-grey);
+
+  margin-bottom: 1em;
+  padding: 0.75em;
+}
+
+.mobile-post-header {
+  font-size: 0.8rem;
+  color: var(--dark-grey);
+}
+
+.mobile-post-title-img {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.mobile-post-title-img img {
+  max-height: 50px;
+  max-width: 100px;
+}
+
+.mobile-post-bottom {
+  display: flex;
+  gap: 1em;
+}
+
+.mobile-karma-box {
+  padding: 0.25em 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--medium-grey);
+  border-radius: 99px;
+}
+
+.mobile-karma-box button {
+  border: none;
+  background-color: transparent;
+  padding: 0 10px;
+  font-size: 0.6rem;
+}
+
+.mobile-karma-box button i,
+.mobile-comments i {
+  font-size: 1rem;
+}
+
+.mobile-comments {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0 0.75em;
+  border: 1px solid var(--medium-grey);
+  border-radius: 99px;
+}
+
+.mobile-share button {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.mobile-share i {
+  font-size: 1.2rem;
 }
 
 @media only screen and (max-width: 600px) {

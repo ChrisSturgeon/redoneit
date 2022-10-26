@@ -8,6 +8,7 @@ import {
   collection,
   doc,
   orderBy,
+  getDocs,
 } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
@@ -25,10 +26,11 @@ export default function Subreddit({ userId, toggleLoginModal }) {
   const [posts, setPosts] = useState(null);
   const [primaryColour, setPrimaryColour] = useState(null);
   const [secondaryColour, setSecondaryColour] = useState(null);
-  const [isMobile, setIsMobileUser] = useState(isMobileUser());
+  const [isMobile, setIsMobile] = useState(isMobileUser());
   const [displayPosts, setDisplayPosts] = useState(true);
   const [displaySidebar, setDisplaySidebar] = useState(false);
   const [copiedMessage, setCopiedMessage] = useState(false);
+  const [noPosts, setNoPosts] = useState(null);
 
   const sharePost = async (postId) => {
     navigator.clipboard.writeText(
@@ -56,7 +58,7 @@ export default function Subreddit({ userId, toggleLoginModal }) {
 
   useEffect(() => {
     const onResize = () => {
-      setIsMobileUser(isMobileUser);
+      setIsMobile(isMobileUser);
       if (window.innerWidth >= 768) {
         setDisplaySidebar(false);
         setDisplayPosts(true);
@@ -86,15 +88,22 @@ export default function Subreddit({ userId, toggleLoginModal }) {
         collection(db, 'subreddits', `${subName}`, 'posts'),
         orderBy('karma', 'desc')
       );
-      onSnapshot(queryRef, (querySnapshot) => {
-        const posts = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          data.id = doc.id;
-          posts.push(data);
+
+      const lengthSnap = await getDocs(queryRef);
+
+      if (lengthSnap.size > 0) {
+        onSnapshot(queryRef, (querySnapshot) => {
+          const posts = [];
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            data.id = doc.id;
+            posts.push(data);
+          });
+          setPosts(posts);
         });
-        setPosts(posts);
-      });
+      } else {
+        setNoPosts(true);
+      }
     }
     fetchSubData();
     postsSub();
@@ -139,6 +148,10 @@ export default function Subreddit({ userId, toggleLoginModal }) {
                       );
                     })
                   : null}
+
+                {noPosts && (
+                  <div className="no-comments">There are no posts yet!</div>
+                )}
 
                 <CopiedMessage
                   isVisible={copiedMessage}
