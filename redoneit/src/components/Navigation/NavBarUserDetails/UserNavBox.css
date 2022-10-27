@@ -3,6 +3,7 @@
   flex-direction: column;
   font-size: 0.75rem;
   min-width: 100px;
+  text-align: center;
 }
 
 .user-nav-box .username {

@@ -51,6 +51,13 @@ export default function SubsNav(props) {
             <Link
               onClick={props.toggleSubsNav}
               className="all-subs-btn"
+              to="/r/home/submit?type=text"
+            >
+              Create Post
+            </Link>
+            <Link
+              onClick={props.toggleSubsNav}
+              className="all-subs-btn"
               to="createsub"
             >
               Create Subreddit

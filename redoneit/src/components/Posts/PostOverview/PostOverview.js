@@ -10,6 +10,8 @@ import {
 import { formatDistanceToNowStrict } from 'date-fns';
 import { db, auth } from '../../../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
+import { Link } from 'react-router-dom';
+import PostDetail from '../PostDetail/PostDetail';
 
 const isMobileUser = () => window.innerWidth <= 768;
 
@@ -21,6 +23,7 @@ export default function PostOverview({
   toggleLoginModal,
   sharePost,
   shareHomePost,
+  postDetail,
 }) {
   const navigate = useNavigate();
   const [postData, setPostData] = useState(null);
@@ -134,7 +137,10 @@ export default function PostOverview({
 
   if (postData && !isMobile) {
     return (
-      <div key={postData.id} className="post-main">
+      <div
+        key={postData.id}
+        className={postDetail ? 'post-main-detail' : 'post-main'}
+      >
         <div className="karma-box">
           <button onClick={upVoteThisPost}>
             <i
@@ -160,8 +166,20 @@ export default function PostOverview({
         <div onClick={navigateToPost} className="post-details-box">
           <div className="post-details-left">
             <div className="user-time">
-              Posted by u/{postData.user} {timeInterval} ago{' '}
-              {homePost ? `${postData.subreddit}` : null}
+              {homePost ? (
+                <>
+                  <Link to={`r/${postData.subreddit}`}>
+                    r/{postData.subreddit}
+                  </Link>
+                  <div>
+                    - Posted by u/{postData.user} - {timeInterval} ago{' '}
+                  </div>
+                </>
+              ) : (
+                <>
+                  Posted by u/{postData.user} - {timeInterval} ago{' '}
+                </>
+              )}
             </div>
             <div className="post-title-img">
               <div className="post-title">{postData.title}</div>
@@ -170,6 +188,7 @@ export default function PostOverview({
               if (postData.type === 'link') {
                 return (
                   <a
+                    id="post-url"
                     className="post-url"
                     href={postData.url}
                     target="_blank"
@@ -187,16 +206,19 @@ export default function PostOverview({
                 <i className=" fa-regular fa-message"></i> {postData.comments}{' '}
                 comments
               </button>
-              <button
-                className="share-btn"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  sharePost(postId, subName);
-                }}
-              >
-                <i className="fa-solid fa-share"></i>
-                Share
-              </button>
+              {!postDetail && (
+                <button
+                  className="share-btn"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    sharePost(postId, subName);
+                  }}
+                >
+                  <i className="fa-solid fa-share"></i>
+                  Share
+                </button>
+              )}
+
               {userId === postData.userId && (
                 <button className="delete-btn" onClick={deleteThisPost}>
                   <i className="fa-solid fa-trash"></i>Delete Post
@@ -224,18 +246,44 @@ export default function PostOverview({
         <div className="mobile-post-header">
           {homePost ? (
             <div>
-              r/{postData.subreddit} - {timeInterval}
+              <Link to={`r/${postData.subreddit}`}>r/{postData.subreddit}</Link>{' '}
+              - {timeInterval} ago
             </div>
           ) : (
             <div>
-              u/{postData.user} - {timeInterval}
+              u/{postData.user} - {timeInterval} ago
             </div>
           )}
         </div>
-        <div className="mobile-post-title-img">
+        <div
+          className={
+            postDetail
+              ? 'mobile-post-title-img-detail'
+              : 'mobile-post-title-img'
+          }
+        >
           <div>{postData.title}</div>
           {postData.imgUrl && <img src={postData.imgUrl}></img>}
         </div>
+        {(() => {
+          if (postDetail) {
+            if (postData.type === 'link') {
+              return (
+                <a
+                  id="post-url-mobile"
+                  className="post-url"
+                  href={postData.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {urlString}...
+                </a>
+              );
+            } else if (postData.type === 'text') {
+              return <div className="post-text">{postData.postText}</div>;
+            }
+          }
+        })()}
         <div className="mobile-post-bottom">
           <div className="mobile-karma-box">
             <button onClick={upVoteThisPost}>
@@ -263,16 +311,18 @@ export default function PostOverview({
             {postData.comments}
           </div>
           <div className="mobile-share">
-            <button
-              className="share-btn"
-              onClick={(event) => {
-                event.stopPropagation();
-                sharePost(postId, subName);
-              }}
-            >
-              <i className="fa-solid fa-share"></i>
-              Share
-            </button>
+            {!postDetail && (
+              <button
+                className="share-btn"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  sharePost(postId, subName);
+                }}
+              >
+                <i className="fa-solid fa-share"></i>
+                Share
+              </button>
+            )}
           </div>
           {userId === postData.userId && (
             <button className="delete-btn" onClick={deleteThisPost}>

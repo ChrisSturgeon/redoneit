@@ -16,7 +16,7 @@ import {
 import Comment from '../../Comments/Comment/Comment';
 import CommentForm from '../../Comments/CommentForm/CommentForm';
 import CopiedMessage from '../../Pages/Subreddit/CopiedMessage/CopiedMessage';
-import { set } from 'date-fns';
+import PostOverview from '../PostOverview/PostOverview';
 
 export default function PostDetail({ userId, username, toggleLoginModal }) {
   const { subName, postId } = useParams();
@@ -135,80 +135,16 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
           </button>
         </div>
         <div className="post-detail-body">
-          {/* Post Header conditional*/}
-          {(() => {
-            if (overview) {
-              let urlString = null;
-              if (overview.type === 'link') {
-                urlString = overview.url.split('').slice(12, 60).join('');
-              }
-              return (
-                <div key={overview.id} className="post-details-main">
-                  <div className="karma-box">
-                    <button onClick={upVoteThisPost}>
-                      <i
-                        className={
-                          hasUpVoted
-                            ? 'fa-sharp fa-solid fa-arrow-up hasUpVoted'
-                            : 'fa-sharp fa-solid fa-arrow-up'
-                        }
-                      ></i>
-                    </button>
-                    <div>{overview.karma}</div>
-                    <button onClick={downVoteThisPost}>
-                      <i
-                        className={
-                          hasDownVoted
-                            ? 'fa-sharp fa-solid fa-arrow-down hasDownVoted'
-                            : 'fa-sharp fa-solid fa-arrow-down '
-                        }
-                      ></i>
-                    </button>
-                  </div>
-                  <div className="post-details-overview">
-                    <div className="user-time">Posted by u/{overview.user}</div>
-                    <div className="post-title">{overview.title}</div>
-                    {(() => {
-                      if (overview.type === 'link') {
-                        return (
-                          <a
-                            className="post-url"
-                            href={overview.url}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {urlString}...
-                          </a>
-                        );
-                      } else if (overview.type === 'text') {
-                        return (
-                          <div className="post-text">{overview.postText}</div>
-                        );
-                      }
-                    })()}
-                    <div className="comments-share-box">
-                      <div className="comments-box">
-                        <i className=" fa-regular fa-message"></i>{' '}
-                        {overview.comments} comments
-                      </div>
-                      <button
-                        className="share-btn"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          sharePost(postId);
-                        }}
-                      >
-                        <i className="fa-solid fa-share"></i>
-                        Share
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            } else {
-              return <div>...</div>;
-            }
-          })()}
+          {overview && (
+            <PostOverview
+              postId={postId}
+              subName={subName}
+              homePost={false}
+              userId={userId}
+              toggleLoginModal={toggleLoginModal}
+              postDetail={true}
+            />
+          )}
 
           <CommentForm
             userId={userId}
