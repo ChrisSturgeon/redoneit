@@ -10,21 +10,17 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   const [postType, setPostType] = useState(null);
   const [title, setTitle] = useState('');
   const [titleLength, setTitleLength] = useState(0);
+  const [showTitleError, setShowTitleError] = useState(false);
   const [url, setUrl] = useState('');
   const [imgURL, setIMGURL] = useState('');
-  const [urlClass, setURLClass] = useState('');
+  const [URLValid, setURLValid] = useState(null);
   const [postText, setPostText] = useState('');
   const [linkBtnActive, setlinkBtnActive] = useState(null);
   const [textBtnActive, setTextBtnActive] = useState(null);
   const navigate = useNavigate();
   const [directedFromHome, setDirectedFromHome] = useState(false);
   const [fromHomeSub, setFromHomeSub] = useState(false);
-
-  // Sets fromHomeSub state with given argument for use in
-  // dropdown menu when creating a new post via the homepage link
-  const dropDownSelect = (subreddit) => {
-    setFromHomeSub(subreddit);
-  };
+  const [homeSubOpen, setHomeSubOpen] = useState(false);
 
   // Updates 'title' state for use on input change
   const titleChange = (event) => {
@@ -46,36 +42,66 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
     setPostText(event.target.value);
   };
 
+  const toggleHomeSubOpen = () => {
+    setHomeSubOpen(!homeSubOpen);
+  };
+
+  const selectSubFromHome = (subreddit) => {
+    setFromHomeSub(subreddit);
+    toggleHomeSubOpen();
+  };
+
   // Calls Firebase new post function with post-type
   // state on submit, then auto-forwards
   // user to their newly created post
   const onFormSubmit = async (event) => {
     event.preventDefault();
+
     if (userId && directedFromHome === false) {
       if (postType === 'link') {
-        console.log('Submit link post');
-        const newId = await newURLPost(title, url, imgURL, subName);
-        navigate(`/r/${subName}/post/${newId}`);
+        if (URLValid && titleLength > 0) {
+          const newId = await newURLPost(title, url, imgURL, subName);
+          navigate(`/r/${subName}/post/${newId}`);
+        } else if (URLValid && titleLength < 1) {
+          setShowTitleError(true);
+        } else if (titleLength > 1 && !URLValid) {
+          setURLValid(false);
+        }
       }
       if (postType === 'text') {
-        const newId = await newTextPost(title, postText, subName);
-        navigate(`/r/${subName}/post/${newId}`);
+        if (titleLength > 0) {
+          const newId = await newTextPost(title, postText, subName);
+          navigate(`/r/${subName}/post/${newId}`);
+        } else {
+          setShowTitleError(true);
+        }
       }
-    } else if (userId && fromHomeSub) {
-      if (postType === 'link') {
-        console.log('home post link');
-        const newId = await newURLPost(title, url, fromHomeSub);
-        navigate(`/r/${fromHomeSub}/post/${newId}`);
-      }
+    } else if (userId && directedFromHome) {
+      if (fromHomeSub) {
+        if (postType === 'link') {
+          if (URLValid && titleLength > 0) {
+            const newId = await newURLPost(title, url, imgURL, fromHomeSub);
+            navigate(`/r/${fromHomeSub}/post/${newId}`);
+          } else if (URLValid && titleLength < 1) {
+            setShowTitleError(true);
+          } else if (titleLength > 1 && !URLValid) {
+            setURLValid(false);
+          }
+        }
 
-      if (postType === 'text') {
-        console.log('home post text');
-        const newId = await newTextPost(title, postText, fromHomeSub);
-        navigate(`/r/${fromHomeSub}/post/${newId}`);
+        if (postType === 'text') {
+          if (titleLength > 0) {
+            const newId = await newTextPost(title, postText, fromHomeSub);
+            navigate(`/r/${fromHomeSub}/post/${newId}`);
+          } else {
+            setShowTitleError(true);
+          }
+        }
+      } else {
+        toggleHomeSubOpen();
       }
     } else {
       toggleLoginModal();
-      console.log('Thjios');
     }
   };
 
@@ -97,6 +123,9 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   // user how close to the 300 character limit they are
   useEffect(() => {
     setTitleLength(title.length);
+    if (title.length > 0) {
+      setShowTitleError(false);
+    }
   }, [title]);
 
   // Sets post-type state from URL search params
@@ -113,13 +142,16 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   useEffect(() => {
     if (url) {
       if (url.startsWith('https://')) {
-        setURLClass('url-valid');
+        setURLValid(true);
       } else {
-        setURLClass('url-invalid');
+        setURLValid(false);
       }
     }
   }, [url]);
 
+  // Sets conditional rendering to true if user arrives from link on
+  // the home-page, to allow them to select which subreddit
+  // they want to post in
   useEffect(() => {
     if (subName === 'home') {
       setDirectedFromHome(true);
@@ -129,31 +161,22 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
   return (
     <div className="post-form-main">
       <div className="post-form-content">
-        <button
-          onClick={() => {
-            console.log(directedFromHome);
-          }}
-        >
-          Click me
-        </button>
         <h1>
           {subName !== 'home'
             ? `Create a post in r/${subName}`
             : 'Create a post'}
         </h1>
         <hr></hr>
-        {subName === 'home' && fromHomeSub === false ? (
+        {subName === 'home' ? (
           <HomeNewPostDropdown
             userId={userId}
-            dropDownSelect={dropDownSelect}
+            fromHomeSub={fromHomeSub}
+            homeSubOpen={homeSubOpen}
+            toggleHomeSubOpen={toggleHomeSubOpen}
+            selectSubFromHome={selectSubFromHome}
           />
         ) : null}
-        {fromHomeSub ? (
-          <div>
-            Making a post in {fromHomeSub}
-            <button onClick={() => setFromHomeSub(null)}>Change</button>
-          </div>
-        ) : null}
+
         <div className="post-type">
           <button
             onClick={selectTextPost}
@@ -173,7 +196,10 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
           </button>
         </div>
         <form onSubmit={onFormSubmit} className="new-post-form">
-          <label htmlFor="titleInput">Title</label>
+          <label className="title-label" htmlFor="titleInput">
+            Title*{' '}
+            {showTitleError && <div className="url-error"> enter a title </div>}
+          </label>
           <div className="title-input">
             <input
               value={title}
@@ -181,20 +207,22 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
               id="titleInput"
               type="text"
               maxLength={300}
-              disabled={userId ? false : true}
             ></input>
-            <div>{titleLength}/300</div>
+            <div className="title-counter">{titleLength}/300</div>
           </div>
           {postType === 'link' ? (
             <>
-              <label htmlFor="postURL">URL</label>
+              <label className="url-label" htmlFor="postURL">
+                URL*{' '}
+                {URLValid || URLValid === null ? null : (
+                  <div className="url-error">- must begin with "https://"</div>
+                )}
+              </label>
               <input
                 value={url}
                 onChange={urlChange}
                 id="postURL"
                 type="text"
-                className={urlClass}
-                disabled={userId ? false : true}
               ></input>
               <label htmlFor="imgUrl">Image URL</label>
               <input
@@ -202,18 +230,12 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
                 onChange={ImgUrlChange}
                 id="imgUrl"
                 type="text"
-                className={urlClass}
-                // disabled={userId ? false : true}
               ></input>
             </>
           ) : (
             <>
               <label htmlFor="postText">Text</label>
-              <textarea
-                onChange={postTextChange}
-                id="postText"
-                disabled={userId ? false : true}
-              ></textarea>
+              <textarea onChange={postTextChange} id="postText"></textarea>
             </>
           )}
 

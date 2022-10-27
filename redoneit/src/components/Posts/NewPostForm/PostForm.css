@@ -66,26 +66,60 @@
   margin-right: 10px;
 }
 
-#titleInput {
-  padding: 0.25em;
-  border: none;
-}
-
 .title-input {
+  width: 100%;
   display: flex;
   gap: 0.5em;
   align-items: center;
-  padding: 0.25em;
 }
 
-.title-input {
-  background-color: var(--light-grey);
-  border: 1px solid var(--main-grey);
+.title-input input {
+  width: inherit;
+}
+
+.title-input input:focus {
+  border: 1px solid transparent;
+  outline: 2px solid var(--accent-blue);
+  background-color: white;
+}
+
+.title-input .title-counter {
+  position: relative;
+  font-size: 0.8rem;
+  width: 0;
+  right: 60px;
+}
+
+.new-post-form #postURL {
+  padding: 12px;
+  font-size: 1rem;
   border-radius: 4px;
+  border: 1px solid var(--medium-grey);
 }
 
 .new-post-form input {
   width: 100%;
+  background-color: var(--light-grey);
+  padding: 12px;
+  padding-right: 60px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--medium-grey);
+}
+
+.new-post-form input:focus {
+  border: 1px solid transparent;
+  outline: 2px solid var(--accent-blue);
+}
+
+.url-label,
+.title-label {
+  display: flex;
+  gap: 5px;
+}
+
+.url-error {
+  color: red;
 }
 
 .new-post-form .url-valid {
@@ -120,11 +154,13 @@
   font-size: 1rem;
   border: 1px solid var(--main-grey);
   border-radius: 4px;
+  background-color: var(--light-grey);
 }
 
 .new-post-form textarea:focus {
-  border: 1px solid black;
-  outline: none;
+  border: 1px solid transparent;
+  outline: 2px solid var(--accent-blue);
+  background-color: white;
 }
 
 @media only screen and (min-width: 1200px) {

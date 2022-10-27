@@ -125,6 +125,10 @@ ul {
   border: 1px solid var(--accent-blue);
 }
 
+.login-btn {
+  margin-left: 1em;
+}
+
 .signup-btn {
   color: var(--accent-blue);
   background-color: transparent;
