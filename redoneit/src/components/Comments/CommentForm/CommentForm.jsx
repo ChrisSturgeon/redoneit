@@ -17,7 +17,7 @@ export default function CommentForm({ userId, username, toggleLoginModal }) {
   // Checks comment field has text and calls firebase submit comment function with value
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    if (commentText.length > 0) {
+    if (commentText.length > 0 && userId) {
       await submitComment(subName, postId, commentText);
       setCommentText('');
       setIsFormValid(false);
@@ -50,7 +50,9 @@ export default function CommentForm({ userId, username, toggleLoginModal }) {
               Comment
             </button>
           ) : (
-            <button onClick={() => toggleLoginModal()}>Login to comment</button>
+            <button className="login-btn" onClick={() => toggleLoginModal()}>
+              Login to comment
+            </button>
           )}
         </form>
       ) : (
