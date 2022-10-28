@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/redoneit/static/css/main.13df0462.css",
+    "main.js": "/redoneit/static/js/main.1f9ef2c9.js",
+    "static/js/787.bf77d92b.chunk.js": "/redoneit/static/js/787.bf77d92b.chunk.js",
+    "static/media/NotoSans-Bold.ttf": "/redoneit/static/media/NotoSans-Bold.23e70cfbbe0783c66804.ttf",
+    "static/media/NotoSans-SemiBold.ttf": "/redoneit/static/media/NotoSans-SemiBold.99df72e26c72877cb1f9.ttf",
+    "static/media/NotoSans-Black.ttf": "/redoneit/static/media/NotoSans-Black.4a2324b5d2997bf513b1.ttf",
+    "static/media/IBMPlexSans-SemiBold.ttf": "/redoneit/static/media/IBMPlexSans-SemiBold.f2e690b59fb90d236c08.ttf",
+    "static/media/IBMPlexSans-Regular.ttf": "/redoneit/static/media/IBMPlexSans-Regular.d77342fdcbcb6b3ce1b5.ttf",
+    "static/media/IBMPlexSans-Bold.ttf": "/redoneit/static/media/IBMPlexSans-Bold.e933eba4e2fcc3d71b31.ttf",
+    "static/media/loginDecoration.png": "/redoneit/static/media/loginDecoration.a31e4b3d05f6d07c51a7.png",
+    "static/media/homeBanner.png": "/redoneit/static/media/homeBanner.574c10f30d77570b9c17.png",
+    "static/media/snooHome.png": "/redoneit/static/media/snooHome.f11945c89abe59a391a7.png",
+    "static/media/navLogo.png": "/redoneit/static/media/navLogo.b31490f4d2c259eabebd.png",
+    "index.html": "/redoneit/index.html",
+    "main.13df0462.css.map": "/redoneit/static/css/main.13df0462.css.map",
+    "main.1f9ef2c9.js.map": "/redoneit/static/js/main.1f9ef2c9.js.map",
+    "787.bf77d92b.chunk.js.map": "/redoneit/static/js/787.bf77d92b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.13df0462.css",
+    "static/js/main.1f9ef2c9.js"
+  ]
+}
