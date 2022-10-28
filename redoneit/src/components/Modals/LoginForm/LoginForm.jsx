@@ -1,19 +1,20 @@
 import './LoginForm.css';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import stepArt from '../../../imgs/loginDecoration.png';
 import { signInWithRedirect, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, provider } from '../../../firebase';
 
-import React, { useState } from 'react';
-
 export default function LoginForm(props) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
+  // Updates email state on input change
   const onEmailChange = (event) => {
     setEmail(event.target.value);
   };
 
+  //Updates password state on input change
   const onPasswordChange = (event) => {
     setPassword(event.target.value);
   };
@@ -39,6 +40,7 @@ export default function LoginForm(props) {
     ? (document.body.style.overflow = 'hidden')
     : (document.body.style.overflow = 'auto');
 
+  // Signs in Google user with redirect
   const signGoogleUserIn = () => {
     signInWithRedirect(auth, provider);
   };

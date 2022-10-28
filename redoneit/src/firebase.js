@@ -655,6 +655,7 @@ export function shuffleArray(array) {
   return array;
 }
 
+// Creates subreddit document in firestore
 export async function createSub(
   userId,
   URL,
@@ -685,6 +686,7 @@ export async function createSub(
   });
 }
 
+// Returns true if given subreddit url is original, or false if already taken
 export async function isOriginalURL(URL) {
   const subRef = doc(db, 'subreddits', `${URL}`);
   const sub = await getDoc(subRef);
@@ -696,6 +698,7 @@ export async function isOriginalURL(URL) {
   }
 }
 
+// Returns true if given subreddit name is original, or false if already taken
 export async function isOriginalName(name) {
   const nameQuery = query(
     collection(db, 'subreddits'),
@@ -715,24 +718,7 @@ export async function isOriginalName(name) {
   }
 }
 
-export async function getDefaultHomePosts() {
-  const defaultSubs = ['technology', 'dogs', 'askreddit', 'learnprogramming'];
-
-  defaultSubs.forEach(async (subName) => {
-    const queryRef = query(
-      collection(db, 'subreddits', `${subName}`, 'posts'),
-      orderBy('karma', 'desc'),
-      limit(3)
-    );
-    const querySnapshot = await getDocs(queryRef);
-    querySnapshot.forEach((doc) => {
-      const postData = doc.data();
-      postData.id = doc.id;
-      defaultSubs((prevPosts) => prevPosts.concat(postData));
-    });
-  });
-}
-
+// Returns meta-data about each subreddit
 export async function getAllSubs() {
   let subs = [];
   const subsRef = query(collection(db, 'subreddits'));
@@ -749,6 +735,7 @@ export async function getAllSubs() {
   return subs;
 }
 
+// Returns array of subreddit names and datsa
 export async function getSubsNames() {
   let subs = [];
   const subsRef = query(collection(db, 'subreddits'));
@@ -763,6 +750,7 @@ export async function deletePost(subreddit, postId) {
   await deleteDoc(postRef);
 }
 
+// Deletes comment in firestore db
 export async function deleteComment(subreddit, postId, commentId) {
   const commentRef = doc(
     db,
@@ -777,6 +765,7 @@ export async function deleteComment(subreddit, postId, commentId) {
   await deleteDoc(commentRef);
 }
 
+// Deletes reply in firestore db
 export async function deleteReply(subreddit, postId, commentId, replyId) {
   const replyRef = doc(
     db,
@@ -793,6 +782,7 @@ export async function deleteReply(subreddit, postId, commentId, replyId) {
   await deleteDoc(replyRef);
 }
 
+// Checks username has not already taken by another user for use during registration validation
 export async function checkUsernameAvailable(requestedUsername) {
   const nameQuery = query(
     collection(db, 'users'),

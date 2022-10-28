@@ -42,10 +42,12 @@ export default function NewPostForm({ userId, toggleLoginModal }) {
     setPostText(event.target.value);
   };
 
+  // Opens/closes home subs div
   const toggleHomeSubOpen = () => {
     setHomeSubOpen(!homeSubOpen);
   };
 
+  // Sets chose subreddit into state
   const selectSubFromHome = (subreddit) => {
     setFromHomeSub(subreddit);
     toggleHomeSubOpen();

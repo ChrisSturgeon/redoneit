@@ -1,5 +1,5 @@
 import './Hamburger.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
 const path01Variants = {

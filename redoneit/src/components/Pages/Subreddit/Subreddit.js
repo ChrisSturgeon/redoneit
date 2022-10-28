@@ -1,7 +1,8 @@
 import './Subreddit.css';
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+
+// Firebase Firestore imports
 import {
   onSnapshot,
   query,
@@ -18,6 +19,7 @@ import SubredditSidebar from './SubredditSidebar/SubredditSidebar';
 import PostOverview from '../../Posts/PostOverview/PostOverview';
 import CopiedMessage from './CopiedMessage/CopiedMessage';
 
+// Returns true is user screen width is below 769px
 const isMobileUser = () => window.innerWidth <= 768;
 
 export default function Subreddit({ userId, toggleLoginModal }) {
@@ -32,6 +34,7 @@ export default function Subreddit({ userId, toggleLoginModal }) {
   const [copiedMessage, setCopiedMessage] = useState(false);
   const [noPosts, setNoPosts] = useState(null);
 
+  // Copies post URL to user's clipboard and displays notifcation message
   const sharePost = async (postId) => {
     navigator.clipboard.writeText(
       `http://localhost:3000/r/${subName}/post/${postId}`
@@ -42,6 +45,7 @@ export default function Subreddit({ userId, toggleLoginModal }) {
     }, 2000);
   };
 
+  // Switches content to sub's posts for use on mobile display
   const showPosts = () => {
     if (!displayPosts) {
       setDisplayPosts(true);
@@ -49,6 +53,7 @@ export default function Subreddit({ userId, toggleLoginModal }) {
     }
   };
 
+  // Switches content to sub's sidebar for use on mobile display
   const showSidebar = () => {
     if (!displaySidebar) {
       setDisplayPosts(false);
@@ -56,6 +61,7 @@ export default function Subreddit({ userId, toggleLoginModal }) {
     }
   };
 
+  // On user screen resize checks to for width to enable/disable mobile layout
   useEffect(() => {
     const onResize = () => {
       setIsMobile(isMobileUser);
@@ -64,7 +70,6 @@ export default function Subreddit({ userId, toggleLoginModal }) {
         setDisplayPosts(true);
       }
     };
-
     window.addEventListener('resize', onResize);
 
     return () => {

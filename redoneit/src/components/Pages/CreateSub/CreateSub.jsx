@@ -1,7 +1,9 @@
 import './CreateSub.css';
 import React, { useEffect, useState } from 'react';
-import SubPreview from './SubPreview/SubPreview';
-import Error from './Error/Error';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+
+// Firebase function imports
 import {
   createSub,
   isOriginalName,
@@ -9,8 +11,9 @@ import {
   joinSub,
 } from '../../../firebase';
 
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+// Component imports
+import SubPreview from './SubPreview/SubPreview';
+import Error from './Error/Error';
 
 export default function CreateSub({ userId }) {
   const [displayName, setDisplayName] = useState('');

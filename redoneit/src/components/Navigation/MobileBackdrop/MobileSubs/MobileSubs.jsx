@@ -2,7 +2,6 @@ import './MobileSubs.css';
 import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import SubNavLink from '../../SubNavigationLink/SubNavLink';
 
 export default function MobileSubs({

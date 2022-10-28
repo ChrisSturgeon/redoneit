@@ -1,6 +1,6 @@
 import './NavBar.css';
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import navLogo from '../../../imgs/navLogo.png';
 
@@ -59,7 +59,6 @@ export default function NavBar(props) {
         setHasFavourites(false);
       }
     }
-
     userSubs();
   }, [userId]);
 

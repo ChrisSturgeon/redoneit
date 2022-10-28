@@ -1,8 +1,8 @@
 import './AllSubreddits.css';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { doc, getDoc, onSnapshot, query, collection } from 'firebase/firestore';
-import { db, getAllSubs, getSubsNames } from '../../../firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { db, getSubsNames } from '../../../firebase';
 import { format } from 'date-fns';
 
 export default function AllSubreddits() {
@@ -10,6 +10,7 @@ export default function AllSubreddits() {
   const [subsData, setSubsData] = useState([]);
   const navigate = useNavigate();
 
+  // Gets list of all subreddit names and sets them into state
   useEffect(() => {
     const getNames = async () => {
       const names = await getSubsNames();
@@ -18,6 +19,7 @@ export default function AllSubreddits() {
     getNames();
   }, []);
 
+  // Gets additional 'about' data for each subreddit and stores to state
   useEffect(() => {
     const getAboutData = async () => {
       setSubsData([]);
@@ -31,7 +33,6 @@ export default function AllSubreddits() {
           'about'
         );
         const aboutData = await getDoc(subRef);
-
         subInfo.about = { ...aboutData.data() };
         setSubsData((prevData) => prevData.concat(subInfo));
       });

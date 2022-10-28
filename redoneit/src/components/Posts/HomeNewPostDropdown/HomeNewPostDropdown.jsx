@@ -57,6 +57,7 @@ export default function HomeNewPostDropdown({
     getMySubscriptions();
   }, [userId]);
 
+  // Sets selected subreddit from dropdown into parent-form's state
   const selectSub = (event) => {
     selectSubFromHome(event.target.value);
   };

@@ -114,9 +114,6 @@ label {
   font-size: 0.8rem;
 }
 
-.user-management div:first-of-type {
-}
-
 .user-management a {
   color: var(--accent-blue);
   font-weight: 700;

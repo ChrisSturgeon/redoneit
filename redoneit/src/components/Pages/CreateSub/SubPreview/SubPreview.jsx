@@ -1,6 +1,5 @@
-import './SubPreview.css';
-
 import React from 'react';
+import './SubPreview.css';
 
 export default function SubPreview({ primary, secondary, displayName, URL }) {
   return (

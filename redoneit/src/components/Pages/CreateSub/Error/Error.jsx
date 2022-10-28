@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { redirect } from 'react-router-dom';
 
 export default function Error({ type }) {
   const idString = `${type}Error`;

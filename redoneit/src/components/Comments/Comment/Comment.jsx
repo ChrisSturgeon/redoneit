@@ -2,6 +2,8 @@ import './Comment.css';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { formatDistanceToNowStrict } from 'date-fns';
+
+// Firebase imports
 import {
   db,
   auth,
@@ -9,6 +11,8 @@ import {
   downVoteComment,
   deleteComment,
 } from '../../../firebase';
+
+// Firestore imports
 import {
   onSnapshot,
   doc,
@@ -62,6 +66,7 @@ export default function Comment({ data, userId, toggleLoginModal, username }) {
     }
   };
 
+  // Calls delete comments function from firebase module
   const deleteThisComment = async () => {
     await deleteComment(subName, postId, data.id);
   };

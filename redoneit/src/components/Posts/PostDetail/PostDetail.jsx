@@ -27,6 +27,7 @@ export default function PostDetail({ userId, username, toggleLoginModal }) {
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
 
+  // Copies post URL into user's clipboard and triggers notification display
   const sharePost = async (postId) => {
     navigator.clipboard.writeText(
       `http://localhost:3000/r/${subName}/post/${postId}`

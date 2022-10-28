@@ -1,18 +1,19 @@
 import './PostOverview.css';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { formatDistanceToNowStrict } from 'date-fns';
+
+// Firebase helper function imports
 import {
+  db,
+  auth,
   upVotePost,
   downVotePost,
-  postVote,
   deletePost,
 } from '../../../firebase';
-import { formatDistanceToNowStrict } from 'date-fns';
-import { db, auth } from '../../../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
-import PostDetail from '../PostDetail/PostDetail';
 
+// Returns true is user's screen width is less than 769px
 const isMobileUser = () => window.innerWidth <= 768;
 
 export default function PostOverview({
@@ -62,6 +63,7 @@ export default function PostOverview({
     }
   };
 
+  // Removes post document form Firestore db
   const deleteThisPost = async (event) => {
     event.stopPropagation();
     await deletePost(subName, postId);
@@ -121,6 +123,7 @@ export default function PostOverview({
     }
   }, [postData, userId]);
 
+  // On screen re-size checks to see if mobile layout should be enabled/disabled
   useEffect(() => {
     const onResize = () => {
       setIsMobile(isMobileUser);

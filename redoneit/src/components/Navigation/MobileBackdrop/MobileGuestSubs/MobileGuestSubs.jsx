@@ -2,8 +2,7 @@ import './MobileGuestSubs.css';
 import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-import SubNavLink from '../../SubNavigationLink/SubNavLink';
+import { useNavigate } from 'react-router-dom';
 
 export default function MobileGuestSubs({
   subsArr,

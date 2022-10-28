@@ -7,9 +7,9 @@ import { onSnapshot, doc } from 'firebase/firestore';
 import { db, auth } from '../../../firebase';
 
 export default function Reply({ commentId, data, userId, toggleLoginModal }) {
-  const { subName, postId } = useParams();
   const dateObj = new Date(data.posted.seconds * 1000);
   const timeInterval = formatDistanceToNowStrict(dateObj);
+  const { subName, postId } = useParams();
   const [postKarma, setPostKarma] = useState(null);
   const [hasUpVoted, setHasUpvoted] = useState(null);
   const [hasDownVoted, setHasDownVoted] = useState(null);
@@ -35,6 +35,7 @@ export default function Reply({ commentId, data, userId, toggleLoginModal }) {
     }
   };
 
+  // Deletes reply document in firestore db
   const deleteThisReply = async () => {
     await deleteReply(subName, postId, data.parentId, data.id);
   };

@@ -1,19 +1,18 @@
 import './SignUpForm.css';
 import React, { useState } from 'react';
 import stepArt from '../../../imgs/loginDecoration.png';
+
+// Firebase Authentication imports
 import {
   getAuth,
   getRedirectResult,
   GoogleAuthProvider,
   signInWithRedirect,
 } from 'firebase/auth';
-import {
-  checkUsernameAvailable,
-  db,
-  provider,
-  registerNewUser,
-} from '../../../firebase';
+
+// Firebase Firestore imports
 import { doc, setDoc } from 'firebase/firestore';
+import { checkUsernameAvailable, db, registerNewUser } from '../../../firebase';
 
 export default function SignUpForm(props) {
   const [userName, setUserName] = useState('');
@@ -61,7 +60,7 @@ export default function SignUpForm(props) {
   };
 
   // Validates the two password are identical and then
-  // calls creates new Firebase user function
+  // calls creates new Firebase user function if username is available
   const onSubmit = async (event) => {
     event.preventDefault();
     // setWaiting(true);

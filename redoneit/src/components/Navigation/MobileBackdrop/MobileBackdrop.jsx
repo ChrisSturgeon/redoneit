@@ -1,9 +1,10 @@
 import './MobileBackdrop.css';
-import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-import MobileSubs from './MobileSubs/MobileSubs';
 import { useState } from 'react';
-import { async } from '@firebase/util';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+// Component imports
+import MobileSubs from './MobileSubs/MobileSubs';
 import MobileGuestSubs from './MobileGuestSubs/MobileGuestSubs';
 
 const slideRight = {
@@ -57,10 +58,12 @@ export default function MobileBackdrop({
     setSubsOpen(!subsOpen);
   };
 
+  // Closes gets subs div
   const toggleGuestSubs = () => {
     setGuestSubs(!guestSubs);
   };
 
+  // Closes mobile menu and opens login modal
   const triggerLoginModal = () => {
     toggleMobileNav();
     toggleLoginModal();

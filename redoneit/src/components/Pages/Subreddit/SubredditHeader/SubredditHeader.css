@@ -7,7 +7,6 @@
 .upper {
   width: 100%;
   min-height: 10vh;
-  /* background-color: #66cc79; */
   z-index: -2;
 }
 
@@ -39,7 +38,6 @@
   align-items: center;
   font-size: 2.2rem;
   color: white;
-  /* background-color: #66cc79; */
   border-radius: 50px;
   border: 6px solid white;
 }

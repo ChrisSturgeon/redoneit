@@ -19,6 +19,7 @@ export default function SubredditHeader({
   const [isMember, setIsMember] = useState(null);
   const [about, setAbout] = useState(null);
 
+  // Subscribes user to subreddit, calling firebase helper function
   const joinSubreddit = async () => {
     if (userId) {
       await joinSub(subName);

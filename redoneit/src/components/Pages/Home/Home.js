@@ -1,11 +1,7 @@
 import './Home.css';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  db,
-  getDefaultHomePosts,
-  getUserSubscriptions,
-} from '../../../firebase';
+import { db, getUserSubscriptions } from '../../../firebase';
 import { query, collection, getDocs, orderBy, limit } from 'firebase/firestore';
 import HomePostsTable from './HomePostsTable/HomePostsTable';
 import HomeSidebar from './HomeSidebar/HomeSideBar';
@@ -15,16 +11,6 @@ export default function Home({ userId, toggleLoginModal }) {
   const [userSubscriptions, setUserSubscriptions] = useState(null);
   const [homePosts, setHomePosts] = useState([]);
   const [copiedMessage, setCopiedMessage] = useState(false);
-
-  const sharePost = async (postId, subName) => {
-    navigator.clipboard.writeText(
-      `http://localhost:3000/r/${subName}/post/${postId}`
-    );
-    setCopiedMessage(!copiedMessage);
-    setTimeout(() => {
-      setCopiedMessage(false);
-    }, 2000);
-  };
 
   // On mount if user is logged in fetches which subreddits they're
   // subscribed to, and sets these into state as array
@@ -76,6 +62,17 @@ export default function Home({ userId, toggleLoginModal }) {
     };
     getHomePosts();
   }, [userSubscriptions]);
+
+  // Copies post URL to users clipboard and displays confirmation
+  const sharePost = async (postId, subName) => {
+    navigator.clipboard.writeText(
+      `http://localhost:3000/r/${subName}/post/${postId}`
+    );
+    setCopiedMessage(!copiedMessage);
+    setTimeout(() => {
+      setCopiedMessage(false);
+    }, 2000);
+  };
 
   return (
     <div className="home-main">
