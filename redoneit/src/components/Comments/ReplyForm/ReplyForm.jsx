@@ -44,8 +44,8 @@ export default function ReplyForm({ commentId, username }) {
             value={replyText}
             placeholder="Type here"
           ></textarea>
-          <button disabled={!isFormValid} type="submit">
-            Comment
+          <button className="login-btn" disabled={!isFormValid} type="submit">
+            Post Reply
           </button>
         </form>
       ) : (

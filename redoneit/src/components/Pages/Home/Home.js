@@ -41,6 +41,9 @@ export default function Home({ userId, toggleLoginModal }) {
           'dogs',
           'askreddit',
           'learnprogramming',
+          'worldnews',
+          'trailrunning',
+          'cooking',
         ];
         setUserSubscriptions(defaultSubs);
       }

@@ -7,12 +7,18 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
 } from 'firebase/auth';
-import { db, provider, registerNewUser } from '../../../firebase';
+import {
+  checkUsernameAvailable,
+  db,
+  provider,
+  registerNewUser,
+} from '../../../firebase';
 import { doc, setDoc } from 'firebase/firestore';
 
 export default function SignUpForm(props) {
   const [userName, setUserName] = useState('');
   const [userNameValid, setUserNameValid] = useState(true);
+  const [userNameAvailable, setUserNameAvailable] = useState(true);
   const [email, setEmail] = useState('');
   const [password1, setPassword1] = useState();
   const [password2, setPassword2] = useState();
@@ -22,8 +28,6 @@ export default function SignUpForm(props) {
   // Updates 'username' state for use on input change
   const handleUserNameChange = (event) => {
     setUserName(event.target.value);
-    if (event.target.value.length < 3) {
-    }
   };
 
   // Updates 'email' state for use on input change
@@ -62,17 +66,23 @@ export default function SignUpForm(props) {
     event.preventDefault();
     // setWaiting(true);
 
-    if (userName.length <= 5) {
-      setUserNameValid(false);
-      return;
-    } else if (password1 !== password2 && password1.length > 4) {
-      setPasswordsMatch(false);
-      return;
-    } else {
-      await registerNewUser(email, password1, userName);
-    }
+    const userNameisAvailable = await checkUsernameAvailable(userName);
 
-    props.handleClose();
+    if (userNameisAvailable) {
+      if (userName.length <= 3) {
+        setUserNameValid(false);
+        return;
+      } else if (password1 !== password2 && password1.length > 4) {
+        setPasswordsMatch(false);
+        return;
+      } else {
+        await registerNewUser(email, password1, userName);
+      }
+
+      props.handleClose();
+    } else {
+      setUserNameAvailable(false);
+    }
   };
 
   return (
@@ -91,15 +101,18 @@ export default function SignUpForm(props) {
 
         <div className="step-body">
           <div className="step-body-right">
-            <button onClick={registerGoogleUser}>Register with Google</button>
+            {/* <button onClick={registerGoogleUser}>Register with Google</button> */}
             <form onSubmit={onSubmit} className="login-form">
               <label htmlFor="username">
                 Choose a Username*{' '}
                 {userNameValid ? null : (
                   <div className="url-error">
-                    Username must be min. 5 characters
+                    Username must be min. 3 characters
                   </div>
                 )}
+                {!userNameAvailable ? (
+                  <div className="url-error">Username already taken</div>
+                ) : null}
               </label>
               <input
                 onChange={handleUserNameChange}

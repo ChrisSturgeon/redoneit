@@ -135,6 +135,12 @@ async function createProfile(userId, username) {
     joined: new Date(),
     subName: 'learnprogramming',
   });
+
+  const worldNewsRef = doc(db, 'users', `${userId}`, 'subscribed', 'worldnews');
+  await setDoc(worldNewsRef, {
+    joined: new Date(),
+    subName: 'worldnews',
+  });
 }
 
 // Upvotes post storing user's ID in array of upvoters,
@@ -785,4 +791,23 @@ export async function deleteReply(subreddit, postId, commentId, replyId) {
   );
 
   await deleteDoc(replyRef);
+}
+
+export async function checkUsernameAvailable(requestedUsername) {
+  const nameQuery = query(
+    collection(db, 'users'),
+    where('username', '==', `${requestedUsername}`)
+  );
+
+  let resultArr = [];
+  const result = await getDocs(nameQuery);
+  result.forEach((doc) => {
+    resultArr.push(doc.data());
+  });
+
+  if (resultArr.length > 0) {
+    return false;
+  } else {
+    return true;
+  }
 }

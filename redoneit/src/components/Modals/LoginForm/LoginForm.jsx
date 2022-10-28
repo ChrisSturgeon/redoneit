@@ -58,14 +58,14 @@ export default function LoginForm(props) {
         </div>
 
         <div className="login-step-body">
-          <button onClick={signGoogleUserIn} className="oAuth-btn">
+          {/* <button onClick={signGoogleUserIn} className="oAuth-btn">
             Continue with Google
           </button>
           <div className="line-divider">
             <span className="line"></span>
             <div>OR</div>
             <span className="line"></span>
-          </div>
+          </div> */}
           <div>
             <form onSubmit={onLoginSubmit} className="login-form">
               <label htmlFor="email">Email</label>

@@ -87,7 +87,7 @@ export default function SubsNav(props) {
                   })}
                 </div>
               ) : (
-                <div>No favourites yet</div>
+                <div className="no-favourites">No favourites yet</div>
               )}
               <h2>YOUR COMMUNITIES</h2>
               {props.subsArr ? (

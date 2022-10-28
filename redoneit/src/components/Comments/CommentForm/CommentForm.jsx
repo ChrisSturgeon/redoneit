@@ -46,8 +46,8 @@ export default function CommentForm({ userId, username, toggleLoginModal }) {
             placeholder="What are your thoughts?"
           ></textarea>
           {userId ? (
-            <button disabled={!isFormValid} type="submit">
-              Comment
+            <button className="login-btn" disabled={!isFormValid} type="submit">
+              Post Comment
             </button>
           ) : (
             <button className="login-btn" onClick={() => toggleLoginModal()}>

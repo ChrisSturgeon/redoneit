@@ -47,9 +47,13 @@ export default function NavBar(props) {
       } else if (userId === false) {
         const defaultSubs = [
           'askreddit',
+          'cooking',
           'dogs',
+          'fightclub',
           'learnprogramming',
           'technology',
+          'webdev',
+          'worldnews',
         ];
         setSubsArr(defaultSubs);
         setHasFavourites(false);
