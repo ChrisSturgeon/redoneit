@@ -14,7 +14,7 @@ Final Javascript project from The Odin Project
 
 ## Overview
 
-![Alt text] (/redoneit/src/imgs/RedoneitHomepage.jpg?raw=true "Homepage screenshot")
+![Homepage screenshot] (https://github.com/ChrisSturgeon/redoneit/blob/main/redoneit/src/imgs/RedoneitHomepage.jpg?raw=true "Homepage screenshot")
 
 <!-- TODO: Add a screenshot of the live project.
     1. Link to a 'live demo.'
